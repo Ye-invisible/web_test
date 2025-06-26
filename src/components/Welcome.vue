@@ -1,12 +1,26 @@
 <script setup>
+    import { useUserStore } from '@/stores/user';
 
+    const userStore = useUserStore()
+    // const isGroup = userStore.isGroup
+    // const singleMember = userStore.singleMember
+    // const groupMember = userStore.groupMember
+    // const allTickets = userStore.allTickets
+
+    const storeBought = () => {
+        if (userStore.isGroup){
+            userStore.allTickets = [...userStore.allTickets,...userStore.groupMember]
+        } else {
+            userStore.allTickets.push(userStore.singleMember)
+        }
+    }
 </script>
 
 <template>
     <div id="welcome">
         <p id="welcomeWord">您可以开始选座了! &#128522;&#127881;</p>
         <button class="autoButton">帮我选座!&#128515;</button>
-        <button class="autoButton">选完了，购买!&#x1F44D;</button>
+        <button class="autoButton" @click="storeBought">选完了，购买!&#x1F44D;</button>
     </div>
 
 </template>

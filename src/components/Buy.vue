@@ -1,12 +1,15 @@
 <script setup>
     import { ref, onMounted, nextTick } from 'vue'
+    import { useUserStore } from '@/stores/user';
+
+    const userStore = useUserStore()
 </script>
 
 <template>
     <div id="buyTickets">
         <div id="buy">
         <div id="types">
-            <RouterLink to="/buy/single" class="routerlink">个人票</RouterLink>
+            <RouterLink to="/buy/single" class="routerlink" >个人票</RouterLink>
             <RouterLink to="/buy/group" class="routerlink">团体票</RouterLink>
         </div>  
         </div>

@@ -3,6 +3,17 @@
     import { ref, computed } from 'vue'
 
     const userStore = useUserStore()
+    const size = userStore.groupSize
+    const members = ref([])
+
+    for(let i = 0; i < size; i++){
+        members.value.push({ name: '', age: '', seats: -1 })
+    }
+
+    const storeInfo = () => {
+        userStore.groupMember = members.value
+    }
+
     const rows = computed(() => Array.from({ length: userStore.groupSize }))
 </script>
 
@@ -16,26 +27,26 @@
                 </tr>
             </thead>
             <tbody id="tableBody">
-                <tr v-for="(item, index) in rows" :key="index" class="form-group">
+                <tr v-for="(item, index) in members" :key="index" class="form-group">
                     <th><input
                         type="text"
                         class="form-input"
                         placeholder="请输入成员姓名"
-                        >
+                        v-model="item.name">
                     </th>
                     <th>
                         <input
                         type="number"
                         class="form-input"
                         placeholder="请输入成员年龄"
-                        >
+                        v-model="item.age">
                     </th>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <RouterLink  class="form-label sure" to="/welcome">确定</RouterLink >
+    <RouterLink  class="form-label sure" to="/welcome" @click="storeInfo">确定</RouterLink >
     <div>
       <RouterView></RouterView>
     </div> 

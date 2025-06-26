@@ -262,11 +262,17 @@
                 // console.log("Seat clicked:", seat)
                 if(selectedList.value.some(s => s.row === seat.row && s.col === seat.col)){
                     selectedList.value.splice(selectedList.value.findIndex(s => s.row === seat.row && s.col === seat.col), 1)
+
                 } else if(selectedList.value.length > 0 && !isCtrlPressed){
                     alert("要同时选取多个座位,按下ctrl键")
                     return
-                }else {
-                    selectedList.value.push(seat)
+                } else{
+                    if(userStore.isGroup){
+                        if(checkGroupChoose(seat.row,seat.col))selectedList.value.push(seat)
+                    } else {
+                        if(checkSingleChoose(seat.row,seat.col))selectedList.value.push(seat)
+                    }
+                    // selectedList.value.push(seat)
                 }
                 clearCanvas()
                 drawSeats()
@@ -282,12 +288,60 @@
         }
     }
 
+    const checkSingleChoose = (row,col) => {
+        // 检查单人手动选座
+        // 要求：小孩不在前三排，老人不在后三排
+        const age = userStore.singleMember.age
+        if (age < 15 && row < 3){
+            alert("小于15岁不能选择前三排!")
+            return false
+        } else if (age > 60 && row > rowNums - 4){
+            alert("大于60岁不能选择后三排!")
+            return false
+        }
+        // userStore.singleMember.row = row
+        // userStore.singleMember.col = col
+        return true
+    }
+
+    const checkGroupChoose = (row,col) => {
+        // 检查团体选座
+        // 要求：首先所有成员必须在同一排，且挨着 其次遵守小孩不在前三排，老人不在后三排的规则
+        let [haveYoung,haveOld] = calGroupAge()
+        if(haveYoung && row < 3){
+            alert("小于15岁不能选择前三排!")
+            return false
+        } else if (haveOld && row > rowNums - 4){
+            alert("大于60岁不能选择后三排!")
+            return false
+        }
+        return true
+    }
+
+    const calGroupAge = () => {
+        let haveYoung = false
+        let haveOld = false
+
+        for (const p of userStore.groupMember) {
+            if (p.age < 15) {
+                haveYoung = true
+                break
+            } else if(p.age > 60){
+                haveOld = true
+                break
+            }
+        }
+
+        return [haveYoung,haveOld]
+    }
+
     onMounted(() => {
         ctx = seats.value.getContext('2d')
         
         drawScreen()
         drawSeats()
         drawSmallBackGround()
+        calGroupAge()
         // drawGround()
 
         // seats.value.addEventListener('click', handleCanvasClick)
