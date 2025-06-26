@@ -19,6 +19,7 @@
             <ol id="ruleLists">
                 <li>少年(15岁以下)不能坐前三排</li>
                 <li>老年人(60岁以上)不能坐最后3排</li>
+                <li>选多个座位按Ctrl的同时点击</li>
             </ol>
         </footer>
     </div>

@@ -1,4 +1,8 @@
 <script setup>
+    import { useUserStore } from '@/stores/user';
+    import { ref, computed } from 'vue'
+
+    const userStore = useUserStore()
 </script>
 
 <template>
@@ -11,12 +15,13 @@
       <label for="age" class="form-label">年龄</label>
       <input type="number" id="age" class="form-input" placeholder="请输入您的年龄">
     </div>
-    <button class="form-label sure">确定</button>
+    <RouterLink  class="form-label sure" to="/welcome">确定</RouterLink >
+    </div>
+    <div>
+      <RouterView></RouterView>
     </div>
 </template>
 
 <style scoped>
     @import '@/assets/form-style.css';
-
-
 </style>

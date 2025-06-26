@@ -90,8 +90,8 @@
             for (let j = 0; j < rowNums; j++) {              
                 let x = topX + Math.sin(angle) * leanStep * j
                 let y = topY + Math.cos(angle) * leanStep * j
-                const seatNumber = `${i + 1}-${j + 1}` // 座位号格式：行-列
-                seatList.value.push({x, y, angle, row: i, col: j}) // 记录
+                const seatNumber = `${j + 1}-${i + 1}` // 座位号格式：行-列
+                seatList.value.push({x, y, angle, row: j, col: i}) // 记录
                 drawSingleSeat(x, y, -angle, 0, seatNumber)
             }
         }
