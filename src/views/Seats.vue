@@ -1,13 +1,16 @@
 <script setup>
-    import { ref, onMounted } from 'vue'
+    import { ref, onMounted, onUnmounted } from 'vue'
     import { getCircleCenterAndRadius, getCentralAngle,rotatePointAroundCenter } from '@/utils/geometry'
 
     const seats = ref(null)
     const seatList = ref([])
+    const selectedList = ref([])  // 选中：黄色
+    const soldList = ref([]) // 卖出：红色
     let ctx = null
+    let timer = null
     
     const drawSeats = () => {
-        // 该函数绘制所有座位
+        // 该函数绘制初始所有座位
         seatList.value = [] // 每次重绘前清空
         let A = [80,80]
         let B = [890,80]
@@ -25,12 +28,23 @@
                 let x = topX + Math.sin(angle) * leanStep * j
                 let y = topY + Math.cos(angle) * leanStep * j
                 seatList.value.push({x, y, angle, row: i, col: j}) // 记录
-                drawSingleSeat(x, y, -angle,true)
+                drawSingleSeat(x, y, -angle,0)
             }
         }
     }
 
-    const drawSingleSeat = (x, y, angle, selected) => {
+    const drawChangedSeats = () => {
+        // 重新绘制被选中的座位为黄色
+        for(let seat of selectedList.value){
+            drawSingleSeat(seat.x,seat.y,-seat.angle,1)
+        }
+        // 重新绘制被选中的座位为红色
+    }
+
+    const drawSingleSeat = (x, y, angle, status) => {
+        // status 如果是1 就是选中 黄色
+        // 如果是 2 就是售出 红色
+
         // 绘制单个座位
         const seat = new Path2D();
         // 以(0,0)为中心绘制座位
@@ -51,10 +65,14 @@
         ctx.save();
         ctx.translate(x + 17, y + 14); // 先平移到目标中心
         ctx.rotate(angle);              // 再旋转
-        if (selected) {
-            ctx.fillStyle = '#f00' // 选中为红色
-            ctx.fill(seat)
+        if (status == 1) {
+            ctx.fillStyle = '#F00' // 选中为黄色
+        } else if(status == 2){
+            ctx.fillStyle = '#F00' // 售出为红色
+        } else {
+            ctx.fillStyle = '#0F0'
         }
+        ctx.fill(seat)
         ctx.stroke(seat);
         ctx.restore();
     }
@@ -83,7 +101,7 @@
         startAngle = Math.atan2(60 - cy1, 60 - cx1)
         endAngle = Math.atan2(60 - cy1, 940 - cx1)
         ctx.beginPath()
-        ctx.arc(cx1, cy1, r1, startAngle, endAngle, false) // false: 顺时针, true: 逆时针
+        ctx.arc(cx1, cy1, r1, startAngle, endAngle, false) 
         ctx.stroke()
 
         ctx.lineWidth = 1.3
@@ -115,7 +133,8 @@
                 localY >= -14 && localY <= 14
             ) {
                 console.log("Seat clicked:", seat)
-                drawAll()
+                selectedList.value.push(seat)
+                drawChangedSeats()
                 break
             }
         }
@@ -129,19 +148,24 @@
         drawBackGround()
         // drawGround()
 
-        seats.value.addEventListener('click', handleCanvasClick)
+        // seats.value.addEventListener('click', handleCanvasClick)
+        // timer = setInterval(drawChangedSeats,1000)
+    })
+
+    onUnmounted(() => {
+        clearInterval(timer)
     })
 </script>
 
 <template>
     <div>
-        <canvas ref="seats" width="950" height="650"></canvas>
+        <canvas ref="seats" width="950" height="650" @click="handleCanvasClick"></canvas>
     </div>
 </template>
 
 <style scoped>
     canvas {
-      background-color: white;
+      background-color: transparent;
       position: absolute;
       top: 350px;
       left: 600px;
