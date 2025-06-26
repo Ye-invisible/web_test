@@ -1,6 +1,7 @@
 <script setup>
     import Seats from './views/Seats.vue';
     import Header from './views/Header.vue';
+    import Buttons from './components/Buttons.vue';
 </script>
 
 <template>
@@ -12,6 +13,7 @@
             <div id="movie"></div>
             <div id="tickets"></div>
         </div>
+        <Buttons id="buttons"></Buttons>
         <div id="seats">
             <Seats />
         </div>
@@ -21,7 +23,9 @@
 </template>
 
 <style>
-    #all {
-        background-color: rgba(153, 72, 235, 0.4);
+    #buttons {
+        position: fixed;
+        top: 25%;
+        right: 18%;
     }
 </style>

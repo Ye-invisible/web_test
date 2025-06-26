@@ -35,5 +35,9 @@ a,
 }
 
 body {
-  background-color: rgb(251, 221, 183);
+  background-image: url(./images/background.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 1;
 }
