@@ -90,8 +90,9 @@
             for (let j = 0; j < rowNums; j++) {              
                 let x = topX + Math.sin(angle) * leanStep * j
                 let y = topY + Math.cos(angle) * leanStep * j
-                const seatNumber = `${j + 1}-${i + 1}` // 座位号格式：行-列
-                seatList.value.push({x, y, angle, row: j, col: i}) // 记录
+                // const seatNumber = `${j + 1}-${i + 1}` // 座位号格式：行-列
+                const seatNumber = `${rowNums - j}-${i+1}` // 座位号格式：行-列
+                seatList.value.push({x, y, angle, row: rowNums - j, col: i + 1}) // 记录
                 drawSingleSeat(x, y, -angle, 0, seatNumber)
             }
         }
@@ -100,7 +101,8 @@
     const drawChangedSeats = () => {
         // 重新绘制被选中的座位为黄色
         for(let seat of selectedList.value){
-            const seatNumber = `${seat.row + 1}-${seat.col + 1}`
+            // const seatNumber = `${seat.row + 1}-${seat.col + 1}`
+            const seatNumber = `${seat.row}-${seat.col}`
             drawSingleSeat(seat.x, seat.y, -seat.angle, 1, seatNumber)
         }
         // 重新绘制被选中的座位为红色

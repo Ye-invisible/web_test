@@ -69,14 +69,17 @@ onMounted(() => {
 
 <style scoped>
 #aside {
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
+  border: transparent;
   border-radius: 8px;
   width: 35%;
   height: 75%;
   position: fixed;
   top: 20%;
   left: 5%;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
+  opacity: 0.8;
+  /* background: linear-gradient(10deg,#f6d6c5,#5407e3); */
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   padding: 10px;
 }

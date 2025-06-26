@@ -3,6 +3,18 @@
     import Header from './views/Header.vue';
     import Buttons from './components/Buttons.vue';
     import Aside from './views/Aside.vue';
+
+    import { onMounted } from 'vue'
+    import { useRouter } from 'vue-router'
+
+    const router = useRouter()
+
+    onMounted(() => {
+        const navEntries = performance.getEntriesByType('navigation')
+            if (navEntries.length > 0 && navEntries[0].type === 'reload') {
+                router.replace('/buy/single')
+            }
+    })
 </script>
 
 <template>

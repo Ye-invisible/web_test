@@ -6,6 +6,7 @@ import singleForm from '@/components/singleForm.vue'
 import groupForm from '@/components/groupForm.vue'
 import Welcome from '@/components/Welcome.vue'
 import GroupTable from '@/components/groupTable.vue'
+import App from '@/App.vue'
 
 const routes = [
   { path: '/buy', component: Buy, children: [
@@ -17,6 +18,7 @@ const routes = [
   { path: '/tickets', component: Tickets},
   { path: '/welcome', component: Welcome},
   { path: '/groupTable', component: GroupTable},
+  { path: '/app', component: App},
 ]
 
 const router = createRouter({
