@@ -242,11 +242,11 @@
         // 检查是否按下了Ctrl键
         const isCtrlPressed = e.ctrlKey
         // console.log('Ctrl键是否按下:', isCtrlPressed)
-        console.log(selectedList.value.length)
-        if(selectedList.value.length > 0 && !isCtrlPressed) {
-            alert("要同时选取多个座位,按下ctrl键")
-            return
-        }
+        // console.log(selectedList.value.length)
+        // if(selectedList.value.length > 0 && !isCtrlPressed) {
+        //     alert("要同时选取多个座位,按下ctrl键")
+        //     return
+        // }
         const scale = seatWidth / 34 // 计算缩放比例
 
         for (let seat of seatList.value) {
@@ -259,10 +259,13 @@
                 localX >= -17 * scale && localX <= 17 * scale &&
                 localY >= -14 * scale && localY <= 14 * scale
             ) {
-                console.log("Seat clicked:", seat)
+                // console.log("Seat clicked:", seat)
                 if(selectedList.value.some(s => s.row === seat.row && s.col === seat.col)){
                     selectedList.value.splice(selectedList.value.findIndex(s => s.row === seat.row && s.col === seat.col), 1)
-                } else {
+                } else if(selectedList.value.length > 0 && !isCtrlPressed){
+                    alert("要同时选取多个座位,按下ctrl键")
+                    return
+                }else {
                     selectedList.value.push(seat)
                 }
                 clearCanvas()

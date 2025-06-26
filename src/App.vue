@@ -2,6 +2,7 @@
     import Seats from './views/Seats.vue';
     import Header from './views/Header.vue';
     import Buttons from './components/Buttons.vue';
+    import Aside from './views/Aside.vue';
 </script>
 
 <template>
@@ -9,9 +10,8 @@
         <header id="header">
             <Header></Header>
         </header>
-        <div id="leftAside">
-            <div id="movie"></div>
-            <div id="tickets"></div>
+        <div id="aside">
+            <Aside></Aside>
         </div>
         <Buttons id="buttons"></Buttons>
         <div id="seats">

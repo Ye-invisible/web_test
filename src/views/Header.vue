@@ -4,7 +4,7 @@
 
 <template>
     <div id="all">
-        <img src="../assets/icon/movie.png">
+        <!-- <img src="../assets/icon/movie.png"> -->
     </div>
     
 
@@ -20,12 +20,12 @@
         top: 0%;
         left: 0%;
     }
-
+/* 
     img {
         width: 10%;
         height: 100%;
         
-    }
+    } */
 
 
 </style>

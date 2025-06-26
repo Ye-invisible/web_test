@@ -10,7 +10,7 @@
 a,
 .green {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
+  color: rgb(10, 10, 10);
   transition: 0.4s;
   padding: 3px;
 }
@@ -40,4 +40,18 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   opacity: 1;
+}
+
+@font-face {
+  font-family: 'Roboto'; 
+  src: url('../assets/fonts/Roboto_Condensed-Black.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Regular'; 
+  src: url('../assets/fonts/ZhiMangXing-Regular.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
