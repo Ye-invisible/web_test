@@ -7,7 +7,7 @@
     const members = ref([])
 
     for(let i = 0; i < size; i++){
-        members.value.push({ name: '', age: '', seats: -1 })
+        members.value.push({ name: '', age: '', seat: null })
     }
 
     const storeInfo = () => {
@@ -36,6 +36,7 @@
             }
         }
         
+        // 存储值到pinia
         userStore.groupMember = members.value
         userStore.hasInput = true
     }

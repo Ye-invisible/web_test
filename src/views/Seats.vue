@@ -62,6 +62,19 @@
     watch(() => userStore.allTickets.length, () => {
         console.log("allTickets Changed!")
         // 监视用户是否确认购买票
+        // 如果是团体购票，因为我没有在welcome.vue中写存储团体座位的逻辑，放在这里写，使用selectedList数组
+        if(!checkSameLineAndAdjacent()){
+            alert("团体选座必须在同一排且无间隔!")
+            return
+        } else {
+            // 符合条件，保存座位内容
+            let length = selectedList.value.length
+            let allLength = userStore.allTickets.length
+            for(let i = 0; i < length; i++){
+                userStore.allTickets[allLength - 1 - i].seat = selectedList.value[i]
+            }
+        }
+
         // 如果确认，把座位变成红色
         console.log(userStore.allTickets)
         drawChangedSeats()
@@ -73,6 +86,23 @@
         if (ctx) {
             ctx.clearRect(0, 0, seats.value.width, seats.value.height)
         }
+    }
+
+    const checkSameLineAndAdjacent = () => {
+        let list = selectedList.value
+        // 检查团体选座是否在同一排     
+        let row = list[0].row
+        for (let seat of list) {
+            if (seat.row != row) return false
+        }
+        // 检查座位是不是挨着的
+        list.sort((p1,p2) => p1.col - p2.col)
+        for (let i = 0; i < list.length - 1; i++) {
+            if(!(list[i].col == list[i+1].col - 1)){
+                return false
+            }
+        }
+        return true
     }
 
     const drawSeats = () => {
