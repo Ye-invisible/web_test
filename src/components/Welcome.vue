@@ -33,18 +33,19 @@
         if (userStore.isGroup){
             userStore.allTickets = [...userStore.allTickets,...userStore.groupMember]
         } else {
-            console.log("IN!")
-            console.log(userStore.allTickets)
+            // console.log("IN!")
+            // console.log(userStore.allTickets)
             userStore.allTickets.push(userStore.singleMember)
         }
-        console.log(userStore.isGroup)
-        console.log(userStore.singleMember)
-        console.log("allTickets :")
-        console.log(userStore.allTickets)
+        // console.log(userStore.isGroup)
+        // console.log(userStore.singleMember)
+        // console.log("allTickets :")
+        // console.log(userStore.allTickets)
+        console.log("购买成功!")
 
         // 重置一些值
-        userStore.hasInput = false 
-        router.push("/buy/single")
+        userStore.reset()
+        // router.push("/buy/single")
         
         // 重置标志
         setTimeout(() => {
@@ -54,8 +55,13 @@
 
     const continueBuy = () => {
         // 跳转回购买界面
-        userStore.hasInput = false
+        userStore.reset()
         router.push('/buy/single')
+    }
+
+    const autoSelected = () => {
+        console.log("autoSelected set!")
+        userStore.autoSelect = true
     }
     
 </script>
@@ -63,7 +69,7 @@
 <template>
     <div id="welcome">
         <p id="welcomeWord">您可以开始选座了! &#128522;&#127881;</p>
-        <button class="autoButton">帮我选座!&#128515;</button>
+        <button class="autoButton" @click="autoSelected">帮我选座!&#128515;</button>
         <button class="autoButton" @click="storeBought">选完了，购买!&#x1F44D;</button>
         <button class="autoButton" @click="continueBuy">继续购票&#9996;</button>
     </div>

@@ -80,6 +80,128 @@
         drawChangedSeats()
         selectedList.value = [] // 清空选取的座位数组
     }, { deep: true })
+
+    watch(() => userStore.autoSelect, () => {
+        if (userStore.autoSelect == false)return
+        // 监视用户是否要求自动选票
+        // 这里其实只要操作两个数组，分别是selectedList(团体购票)，singleMember(个人购票)
+        // 因为老师说没有特别要求，我就自己规定一个自动选票的规则了
+        // 首先取中间位置，如果中间位置没有，向同一排两边找，
+        // 同一排没有，在相邻上下两排重复此操作
+        const horizontalWidth = 4  // 两边找范围
+        const verticalHeight = 4    // 上下找范围
+
+        const size = userStore.showSize
+        let [row,col] = getShowSize(size)
+        // 首先处理个人购票的情况
+        if (!userStore.isGroup) {
+            let [selRow,selCol] = autoSingleSelect(row,col,horizontalWidth,verticalHeight)
+            for(let seat of seatList.value){
+                if(seat.row == selRow && seat.col == selCol){
+                    selectedList.value.push(seat)
+                    userStore.singleMember.seat.col = selCol
+                    userStore.singleMember.seat.row = selRow
+                    break
+                }
+            }
+        } else {
+            // 设置groupMember的值
+            console.log("set group tickets")
+            let selRow = autoGroupSelect(row,col,verticalHeight)  
+            console.log("selRow: " + selRow)
+            let edge = Math.floor((col - size) / 2)
+
+            console.log(userStore.groupMember)
+            for (let i = 0; i < userStore.groupMember.length; i++) {
+                userStore.groupMember[i].seat.row = selRow
+                userStore.groupMember[i].seat.col = edge + i + 1
+                for(let seat of seatList.value){
+                    if(seat.col == edge + i && seat.row == selRow) selectedList.value.push(seat)
+                }
+            }
+        }
+        console.log("Out autoselect")
+        reDrawAll()
+    })
+
+    const reDrawAll = () => {
+        clearCanvas()
+        drawScreen()
+        drawSeats()
+        drawChangedSeats()
+
+        if(userStore.showSize == 0)drawSmallBackGround()
+        else drawBackGround()
+    }
+
+    const autoSingleSelect = (row,col,horizontalWidth,verticalHeight) => {
+        // 自动选个人位置
+        let hasYoung = userStore.singleMember.age < 15
+        let hasOld = userStore.singleMember.age > 60
+
+        let cenCol = Math.floor(col / 2)
+        let cenRow = Math.floor(row / 2)
+        for (let i = 0; i < verticalHeight; i++){
+            if (hasYoung && ((cenRow + i) <= 3 || hasOld &&  (cenRow - i) >= row - 4)){
+                // alert("团队里有青年人,不能选前三排!")
+                continue
+            } 
+
+            for (let j = 0; j < horizontalWidth; j++){
+                if(!isSingleTaken(cenRow + i,cenCol+j)) return [cenRow + i,cenCol+j]
+                if(!isSingleTaken(cenRow + i,cenCol-j)) return [cenRow + i,cenCol-j]
+            }
+            for (let j = 0; j < horizontalWidth; j++){
+                if(!isSingleTaken(cenRow - i,cenCol+j)) return [cenRow - i,cenCol+j]
+                if(!isSingleTaken(cenRow - i,cenCol-j)) return [cenRow - i,cenCol-j]
+            }
+        }
+    }
+
+    const autoGroupSelect = (row,col,verticalHeight) => {
+        // 自动选团体位置
+        // console.log("In autoSelect")
+        let cenRow = Math.floor(row / 2)
+        // console.log("cenRow " + cenRow)
+        for (let i = 0; i < verticalHeight; i++){
+            if(!isLineTaken(cenRow+i,col)) return cenRow + i
+            if(!isLineTaken(cenRow-i,col)) return cenRow - i
+        }
+        return -1
+    }
+
+    const isLineTaken = (row,col) => {
+        // 帮助函数，判断某行有没有已经售出的座位
+        // 如果有，判断是否足够边缘，以至于可以使团体所有人居中坐
+        // 参数：row 要判断的行数 size 是团体的购票人数
+        // 先判断要团体整体居中坐至少要什么范围内没有被占用
+        let size = userStore.showSize
+        let edge = Math.floor(col - size)
+        for (let p of userStore.allTickets){
+            if(p.seat.row == row && (p.seat.col >= edge && p.seat.col <= col - edge - 1)){
+                return true
+            }
+        }
+        return false
+    }
+
+    const isSingleTaken = (row,col) => {
+        // 确认这个椅子有没有被选(在不在userStore的allTickets里面)
+        // 传一个椅子的位置，判断有没有被占用
+        return userStore.allTickets.some(s => s.seat.row === row && s.seat.col === col)
+    }
+
+    const getShowSize = (size) => {
+        // 这个函数返回一些关于不同大小放映厅的参数：行数和列数，
+        if (size == 0){
+            // 小放映厅
+            return [6,17]
+        } else if (size == 1){
+            return [10,20]
+        } else {
+            return [12,26]
+        }
+    }
     
     const clearCanvas = () => {
         // 清理整个画布

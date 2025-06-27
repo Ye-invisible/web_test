@@ -1,13 +1,15 @@
 <script setup>
     import { useUserStore } from '@/stores/user';
     import { ref, computed } from 'vue'
+    import { useRouter } from 'vue-router';
 
     const userStore = useUserStore()
+    const router = useRouter()
     const size = userStore.groupSize
     const members = ref([])
 
     for(let i = 0; i < size; i++){
-        members.value.push({ name: '', age: '', seat: null })
+        members.value.push({ name: '', age: '', seat: {row:-1,col:-1,angle:-1}})
     }
 
     const storeInfo = () => {
@@ -39,6 +41,9 @@
         // 存储值到pinia
         userStore.groupMember = members.value
         userStore.hasInput = true
+
+        // 页面跳转
+        router.push("/welcome")
     }
 
     const rows = computed(() => Array.from({ length: userStore.groupSize }))
@@ -73,11 +78,11 @@
         </table>
     </div>
 
-    <RouterLink  class="form-label sure" to="/welcome" @click="storeInfo">确定</RouterLink >
+    <!-- <RouterLink class="form-label sure" to="/welcome" @click.prevent="storeInfo">确定</RouterLink >
     <div>
       <RouterView></RouterView>
-    </div> 
-    
+    </div>  -->
+    <button class="form-label sure button" to="/welcome" @click.prevent="storeInfo">确定</button>
 </template>
 
 <style>
@@ -93,5 +98,10 @@
 
     #tableHead {
         color: black;
+    }
+
+    .button {
+        width: 100%;
+        height: 40px;
     }
 </style>

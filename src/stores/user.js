@@ -6,12 +6,35 @@ export const useUserStore = defineStore('user', {
     groupSize: 0,
     isGroup: false,
     hasInput: false,
+    autoSelect: false,
 
     groupMember: [], // 仅在isGroup为true的时候有效
-    singleMember: {name:"",age:-1,seat:{row:-1,col:-1,angle:-1}},
+    singleMember: { name:"",
+                    age:-1,
+                    seat:{row:-1,col:-1,angle:-1},
+                    // 现在这个movie对象还用不上，但是考虑到我们之后会列很多电影，我先在这里加上
+                    movie:{
+                      name:"",
+                      size:-1,
+                      showTime:-1
+                    }
+                  },
 
     allTickets: [],  // 成员是singleMember
   }),
   actions: {
+    reset() {
+      console.log("Reset")
+      this.groupMember = []
+      this.singleMember = {
+        name: "",
+        age: -1,
+        seat: { row: -1, col: -1, angle: -1 },
+        movie: { name: "", size: -1, showTime: -1 }
+      }
+      this.isGroup = false
+      this.hasInput = false
+      this.autoSelect = false
+    }
   }
 })
