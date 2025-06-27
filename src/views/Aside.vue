@@ -48,10 +48,11 @@ onMounted(() => {
           <li 
             v-for="(tab, index) in tabs" 
             :key="tab.name"
-            :class="['tabs__nav-item']">
+            :class="['tabs__nav-item']"
+            @click="setActiveTab(index)">
             <RouterLink 
                 :to="tab.route"
-                @click="setActiveTab(index)">
+                class="routerlink">
                 {{ tab.name }}
             </RouterLink>
           </li>
@@ -126,6 +127,14 @@ onMounted(() => {
   font-weight: 500;
   text-align: center;
   flex: 1;
+}
+
+.routerlink {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
 }
 
 .router-link-exact-active {

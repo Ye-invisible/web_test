@@ -2,10 +2,12 @@
     import { useUserStore } from '@/stores/user';
 
     const userStore = useUserStore()
+    import { useRouter } from 'vue-router';
     // const isGroup = userStore.isGroup
     // const singleMember = userStore.singleMember
     // const groupMember = userStore.groupMember
     // const allTickets = userStore.allTickets
+    const router = useRouter()
 
     const storeBought = () => {
         if (userStore.isGroup){
@@ -14,6 +16,11 @@
             userStore.allTickets.push(userStore.singleMember)
         }
     }
+
+    const continueBuy = () => {
+        router.push('/buy/single')
+    }
+    
 </script>
 
 <template>
@@ -21,6 +28,7 @@
         <p id="welcomeWord">您可以开始选座了! &#128522;&#127881;</p>
         <button class="autoButton">帮我选座!&#128515;</button>
         <button class="autoButton" @click="storeBought">选完了，购买!&#x1F44D;</button>
+        <button class="autoButton" @click="continueBuy">继续购票&#9996;</button>
     </div>
 
 </template>
@@ -49,6 +57,6 @@
         border-radius: 5px;
         border: transparent;
         box-shadow: 1px 2px 16px rgb(168, 168, 169);
-        margin-top: 10%;
+        margin-top: 5%;
     }
 </style>

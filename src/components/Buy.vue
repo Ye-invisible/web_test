@@ -66,7 +66,7 @@
     
     #rules {
         position: absolute;
-        top: 88%;
+        top: 86%;
         width: 90%;
         height: 10%;   
         color:  rgb(87, 85, 85);
