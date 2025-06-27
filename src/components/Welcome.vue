@@ -1,9 +1,9 @@
 <script setup>
     import { useUserStore } from '@/stores/user';
+    import { useRouter } from 'vue-router';
     import { ref } from 'vue'
 
     const userStore = useUserStore()
-    import { useRouter } from 'vue-router';
     // const isGroup = userStore.isGroup
     // const singleMember = userStore.singleMember
     // const groupMember = userStore.groupMember
@@ -18,8 +18,7 @@
         if (isProcessing.value) {
             return
         }
-
-            //   检查已选座位和人数是否一致
+        //   检查已选座位和人数是否一致
         if (userStore.isGroup && userStore.groupMember.length != userStore.groupSize){
             alert("选取座位数和购票人数不一致!")
             return 
@@ -27,8 +26,7 @@
             alert("请选取一个座位!")
             return
         }
-
-        
+ 
         isProcessing.value = true
 
         // 把人员加入总票夹
@@ -43,6 +41,10 @@
         console.log(userStore.singleMember)
         console.log("allTickets :")
         console.log(userStore.allTickets)
+
+        // 重置一些值
+        userStore.hasInput = false 
+        router.push("/buy/single")
         
         // 重置标志
         setTimeout(() => {

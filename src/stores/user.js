@@ -10,7 +10,7 @@ export const useUserStore = defineStore('user', {
     groupMember: [], // 仅在isGroup为true的时候有效
     singleMember: {name:"",age:-1,seat:{row:-1,col:-1,angle:-1}},
 
-    allTickets: [],  // 格式大概是这样，一个对象：{name:"kk",tickets:["1-2","2-19"],size:2，age:10} size代表是放映厅大小
+    allTickets: [],  // 成员是singleMember
   }),
   actions: {
   }

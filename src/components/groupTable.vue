@@ -11,6 +11,31 @@
     }
 
     const storeInfo = () => {
+        // 检查输入是否完整
+        for (let i = 0; i < members.value.length; i++) {
+            if (members.value[i].name === '' || members.value[i].age === '') {
+                alert(`请填写第${i + 1}位成员的姓名和年龄!`)
+                return
+            }
+        }
+        
+        // 检查是否有重复姓名
+        const names = members.value.map(member => member.name)
+        const uniqueNames = new Set(names)
+        if (names.length !== uniqueNames.size) {
+            alert("团体成员姓名不能重复!")
+            return
+        }
+        
+        // 检查是否有人已经买过票
+        for (let member of members.value) {
+            const existingTicket = userStore.allTickets.find(ticket => ticket.name === member.name)
+            if (existingTicket) {
+                alert(member.name + " 已经买过票了!")
+                return
+            }
+        }
+        
         userStore.groupMember = members.value
         userStore.hasInput = true
     }

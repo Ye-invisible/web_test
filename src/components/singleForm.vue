@@ -9,10 +9,14 @@
     const age = ref(0)
 
     const storeInfo = () => {
-        userStore.singleMember = {name: name.value, age: age.value, seats:-1}
+        const existingTicket = userStore.allTickets.find(ticket => ticket.name === name.value && ticket.age === age.value)
+        if (existingTicket) {
+            alert(name.value + " 你已经买过票了!")
+            return
+        }
+        userStore.singleMember = {name: name.value, age: age.value, seat:{row: -1, col: -1, angle: -1}}
         userStore.isGroup = false
         userStore.hasInput = true
-
         // console.log("HeyHey!")
         // console.log(userStore.singleMember)
         // router.push('/welcome')

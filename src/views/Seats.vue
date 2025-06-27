@@ -12,6 +12,7 @@
     let ctx = null
     let timer = null
 
+    // 下面是一些canvas绘制电影院布局时的固定参数，尽量别修改
     let rowNums = 6
     let colNums = 17
     let midSeatWidth = 34
@@ -25,6 +26,7 @@
     watch(() => userStore.showSize, () => {
         // 监视用户选择的放映厅大小的变化
         clearCanvas()
+        // 按照用户选择的放映厅大小赋值不同的固定值
         let size = userStore.showSize
         if(size == 0){
             seatWidth = smallSeatWidth
@@ -59,8 +61,11 @@
 
     watch(() => userStore.allTickets.length, () => {
         console.log("allTickets Changed!")
-        // 监视用户选择的放映厅大小的变化
+        // 监视用户是否确认购买票
+        // 如果确认，把座位变成红色
+        console.log(userStore.allTickets)
         drawChangedSeats()
+        selectedList.value = [] // 清空选取的座位数组
     }, { deep: true })
     
     const clearCanvas = () => {
@@ -91,7 +96,7 @@
         let leanStep = 50 * (seatWidth / 34) // 按比例缩放座位间距
 
         for (let i = 0; i < colNums; i++) {
-            let angle = angleAll / 2 - angleStep * i
+            let angle = angleAll / 2 - angleStep * i    // 计算每个座位按照中心旋转的角度
             let [topX, topY] = rotatePointAroundCenter(A[0],A[1],cx,cy,angleStep*i)
             
             for (let j = 0; j < rowNums; j++) {              
@@ -99,7 +104,7 @@
                 let y = topY + Math.cos(angle) * leanStep * j
                 // const seatNumber = `${j + 1}-${i + 1}` // 座位号格式：行-列
                 const seatNumber = `${rowNums - j}-${i+1}` // 座位号格式：行-列
-                seatList.value.push({x, y, angle, row: rowNums - j, col: i + 1}) // 记录
+                seatList.value.push({x, y, angle, row: rowNums - j, col: i + 1}) // 记录选取的座位
                 drawSingleSeat(x, y, -angle, 0, seatNumber)
             }
         }
@@ -114,12 +119,15 @@
         }
         // 重新绘制被选中的座位为红色
         for(let p of userStore.allTickets){
+            console.log("drawing red!")
             const seatNumber = `${p.seat.row}-${p.seat.col}`
             drawSingleSeat(p.seat.x, p.seat.y, -p.seat.angle, 2, seatNumber)
         }
     }
 
     const drawSingleSeat = (x, y, angle, status, seatNumber = '') => {
+        // 绘制单个座位的函数
+
         // status 如果是1 就是选中 黄色
         // 如果是 2 就是售出 红色
 
@@ -170,7 +178,7 @@
     }
 
     const drawScreen = () => {
-        // 绘制屏幕
+        // 绘制底部的屏幕，固定位置
         ctx.moveTo(280,580)
         ctx.lineTo(280,600)
         ctx.lineTo(720,580)
@@ -180,18 +188,18 @@
     }
 
     const drawBackGround = () => {
-        
         // 绘制背景框
-        // 小型放映厅
+        // 中大型放映厅，固定值，尽量不修改，可以试着改一下样式，让它好看一点
         let {cx,cy,r} = getCircleCenterAndRadius([140,590],[860,590],[500,560]) 
         // 中大型放映厅
         // let {cx,cy,r} = getCircleCenterAndRadius([140,590],[860,590],[500,560]) 
+        // 绘制上面那个圆弧
         let startAngle = Math.atan2(590 - cy, 140 - cx)
         let endAngle = Math.atan2(590 - cy, 860 - cx)
         ctx.beginPath()
         ctx.arc(cx, cy, r, startAngle, endAngle, false) // false: 顺时针, true: 逆时针
         ctx.stroke()
-
+        // 绘制下面那个圆弧
         let {cx: cx1, cy: cy1, r: r1} = getCircleCenterAndRadius([60,60],[940,60],[500,30])
         console.log(cx1,cy1,r1)
         startAngle = Math.atan2(60 - cy1, 60 - cx1)
@@ -216,16 +224,15 @@
 
     const drawSmallBackGround = () => {
         // 绘制背景框
-        // 小型放映厅
+        // 小型放映厅，固定值
         let {cx,cy,r} = getCircleCenterAndRadius([220,530],[820,540],[500,500]) 
-        // 中大型放映厅
-        // let {cx,cy,r} = getCircleCenterAndRadius([140,590],[860,590],[500,560]) 
+        // 绘制下面那个圆弧
         let startAngle = Math.atan2(540 - cy, 178 - cx)
         let endAngle = Math.atan2(540 - cy, 830 - cx)
         ctx.beginPath()
         ctx.arc(cx, cy, r, startAngle, endAngle, false) // false: 顺时针, true: 逆时针
         ctx.stroke()
-
+        // 绘制上面那个圆弧
         let {cx: cx1, cy: cy1, r: r1} = getCircleCenterAndRadius([200,180],[800,180],[500,150])
         console.log(cx1,cy1,r1)
         startAngle = Math.atan2(60 - cy1, 60 - cx1)
@@ -253,7 +260,6 @@
             alert("请先输入购票信息!")
             return 
         }
-
         // 检查已选座位和人数是否一致
         // if (userStore.isGroup && selectedList.value.length >= userStore.groupSize){
         //     alert("选取座位数不能超过购票人数!")
@@ -262,19 +268,12 @@
         //     alert("单人票同时只能选取一个座位!")
         //     return
         // }
-
         const rect = seats.value.getBoundingClientRect()
         const mouseX = e.clientX - rect.left
         const mouseY = e.clientY - rect.top
         
         // 检查是否按下了Ctrl键
         const isCtrlPressed = e.ctrlKey
-        // console.log('Ctrl键是否按下:', isCtrlPressed)
-        // console.log(selectedList.value.length)
-        // if(selectedList.value.length > 0 && !isCtrlPressed) {
-        //     alert("要同时选取多个座位,按下ctrl键")
-        //     return
-        // }
         const scale = seatWidth / 34 // 计算缩放比例
 
         for (let seat of seatList.value) {
@@ -355,6 +354,7 @@
     }
 
     const calGroupAge = () => {
+        // 计算一下团体里是否有特殊年龄段的人群
         let haveYoung = false
         let haveOld = false
 
