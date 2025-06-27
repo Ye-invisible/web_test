@@ -12,6 +12,7 @@
 
     const storeInfo = () => {
         userStore.groupMember = members.value
+        userStore.hasInput = true
     }
 
     const rows = computed(() => Array.from({ length: userStore.groupSize }))

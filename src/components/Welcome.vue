@@ -1,5 +1,6 @@
 <script setup>
     import { useUserStore } from '@/stores/user';
+    import { ref } from 'vue'
 
     const userStore = useUserStore()
     import { useRouter } from 'vue-router';
@@ -8,16 +9,50 @@
     // const groupMember = userStore.groupMember
     // const allTickets = userStore.allTickets
     const router = useRouter()
+    
+    // 防止重复执行的标志
+    const isProcessing = ref(false)
 
     const storeBought = () => {
+        // 发现点一次，下面的代码被执行多次，试着阻止短时间内多次调用
+        if (isProcessing.value) {
+            return
+        }
+
+            //   检查已选座位和人数是否一致
+        if (userStore.isGroup && userStore.groupMember.length != userStore.groupSize){
+            alert("选取座位数和购票人数不一致!")
+            return 
+        } else if (!userStore.isGroup && userStore.singleMember.seat.row == -1){
+            alert("请选取一个座位!")
+            return
+        }
+
+        
+        isProcessing.value = true
+
+        // 把人员加入总票夹
         if (userStore.isGroup){
             userStore.allTickets = [...userStore.allTickets,...userStore.groupMember]
         } else {
+            console.log("IN!")
+            console.log(userStore.allTickets)
             userStore.allTickets.push(userStore.singleMember)
         }
+        console.log(userStore.isGroup)
+        console.log(userStore.singleMember)
+        console.log("allTickets :")
+        console.log(userStore.allTickets)
+        
+        // 重置标志
+        setTimeout(() => {
+            isProcessing.value = false
+        }, 1000)
     }
 
     const continueBuy = () => {
+        // 跳转回购买界面
+        userStore.hasInput = false
         router.push('/buy/single')
     }
     
@@ -30,7 +65,6 @@
         <button class="autoButton" @click="storeBought">选完了，购买!&#x1F44D;</button>
         <button class="autoButton" @click="continueBuy">继续购票&#9996;</button>
     </div>
-
 </template>
 
 <style>

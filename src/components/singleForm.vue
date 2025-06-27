@@ -11,6 +11,7 @@
     const storeInfo = () => {
         userStore.singleMember = {name: name.value, age: age.value, seats:-1}
         userStore.isGroup = false
+        userStore.hasInput = true
 
         // console.log("HeyHey!")
         // console.log(userStore.singleMember)

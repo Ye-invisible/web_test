@@ -8,7 +8,7 @@
     const seats = ref(null)
     const seatList = ref([])
     const selectedList = ref([])  // 选中：黄色
-    const soldList = ref([]) // 卖出：红色
+    // const soldList = userStore.allTickets // 卖出：红色
     let ctx = null
     let timer = null
 
@@ -23,6 +23,7 @@
     let M = [400,195]
 
     watch(() => userStore.showSize, () => {
+        // 监视用户选择的放映厅大小的变化
         clearCanvas()
         let size = userStore.showSize
         if(size == 0){
@@ -55,6 +56,12 @@
         drawScreen()
         selectedList.value = []
     })
+
+    watch(() => userStore.allTickets.length, () => {
+        console.log("allTickets Changed!")
+        // 监视用户选择的放映厅大小的变化
+        drawChangedSeats()
+    }, { deep: true })
     
     const clearCanvas = () => {
         // 清理整个画布
@@ -106,6 +113,10 @@
             drawSingleSeat(seat.x, seat.y, -seat.angle, 1, seatNumber)
         }
         // 重新绘制被选中的座位为红色
+        for(let p of userStore.allTickets){
+            const seatNumber = `${p.seat.row}-${p.seat.col}`
+            drawSingleSeat(p.seat.x, p.seat.y, -p.seat.angle, 2, seatNumber)
+        }
     }
 
     const drawSingleSeat = (x, y, angle, status, seatNumber = '') => {
@@ -237,6 +248,21 @@
     }
 
     const handleCanvasClick = (e) => {
+        // 检查是否输入了信息
+        if(!userStore.hasInput){
+            alert("请先输入购票信息!")
+            return 
+        }
+
+        // 检查已选座位和人数是否一致
+        // if (userStore.isGroup && selectedList.value.length >= userStore.groupSize){
+        //     alert("选取座位数不能超过购票人数!")
+        //     return 
+        // } else if (selectedList.value.length >= 1){
+        //     alert("单人票同时只能选取一个座位!")
+        //     return
+        // }
+
         const rect = seats.value.getBoundingClientRect()
         const mouseX = e.clientX - rect.left
         const mouseY = e.clientY - rect.top
@@ -265,17 +291,26 @@
                 if(selectedList.value.some(s => s.row === seat.row && s.col === seat.col)){
                     selectedList.value.splice(selectedList.value.findIndex(s => s.row === seat.row && s.col === seat.col), 1)
 
-                } else if(selectedList.value.length > 0 && !isCtrlPressed){
+                } else if (userStore.isGroup && selectedList.value.length >= userStore.groupSize){
+                    // 检查已选座位和人数是否一致
+                    alert("选取座位数不能超过购票人数!")
+                    return 
+                } else if (!userStore.isGroup && selectedList.value.length >= 1){
+                    // 检查已选座位和人数是否一致
+                    alert("单人票同时只能选取一个座位!")
+                    return
+                }else if(selectedList.value.length > 0 && !isCtrlPressed){
                     alert("要同时选取多个座位,按下ctrl键")
                     return
                 } else{
                     if(userStore.isGroup){
-                        if(checkGroupChoose(seat.row,seat.col))selectedList.value.push(seat)
+                        if(checkGroupChoose(seat))selectedList.value.push(seat)
                     } else {
-                        if(checkSingleChoose(seat.row,seat.col))selectedList.value.push(seat)
+                        if(checkSingleChoose(seat))selectedList.value.push(seat)
                     }
                     // selectedList.value.push(seat)
                 }
+                // 重绘
                 clearCanvas()
                 drawSeats()
                 drawChangedSeats()
@@ -290,19 +325,18 @@
         }
     }
 
-    const checkSingleChoose = (row,col) => {
+    const checkSingleChoose = (seat) => {
         // 检查单人手动选座
         // 要求：小孩不在前三排，老人不在后三排
         const age = userStore.singleMember.age
-        if (age < 15 && row < 3){
+        if (age < 15 && seat.row < 3){
             alert("小于15岁不能选择前三排!")
             return false
-        } else if (age > 60 && row > rowNums - 4){
+        } else if (age > 60 && seat.row > rowNums - 4){
             alert("大于60岁不能选择后三排!")
             return false
         }
-        // userStore.singleMember.row = row
-        // userStore.singleMember.col = col
+        userStore.singleMember.seat = seat
         return true
     }
 
