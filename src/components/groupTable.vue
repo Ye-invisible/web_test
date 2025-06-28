@@ -42,6 +42,9 @@
         userStore.groupMember = members.value
         userStore.hasInput = true
 
+        console.log("groupMember: ")
+        console.log(userStore.groupMember)
+
         // 页面跳转
         router.push("/welcome")
     }

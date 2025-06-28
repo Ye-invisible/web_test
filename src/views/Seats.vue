@@ -106,17 +106,17 @@
             }
         } else {
             // 设置groupMember的值
-            console.log("set group tickets")
+            // console.log("set group tickets")
             let selRow = autoGroupSelect(row,col,verticalHeight)  
-            console.log("selRow: " + selRow)
+            // console.log("selRow: " + selRow)
             let edge = Math.floor((col - size) / 2)
 
-            console.log(userStore.groupMember)
+            // console.log(userStore.groupMember)
             for (let i = 0; i < userStore.groupMember.length; i++) {
                 userStore.groupMember[i].seat.row = selRow
                 userStore.groupMember[i].seat.col = edge + i + 1
                 for(let seat of seatList.value){
-                    if(seat.col == edge + i && seat.row == selRow) selectedList.value.push(seat)
+                    if(seat.col == edge + i + 1 && seat.row == selRow) selectedList.value.push(seat)
                 }
             }
         }
@@ -141,17 +141,28 @@
 
         let cenCol = Math.floor(col / 2)
         let cenRow = Math.floor(row / 2)
+        console.log("cenRow " + cenRow)
+        console.log("cenCol " + cenCol)
         for (let i = 0; i < verticalHeight; i++){
-            if (hasYoung && ((cenRow + i) <= 3 || hasOld &&  (cenRow - i) >= row - 4)){
-                // alert("团队里有青年人,不能选前三排!")
-                continue
-            } 
+            // let flag = false
+            // if (hasYoung && (cenRow - i) <= 3 || hasOld && (cenRow + i) >= row - 4){
+            //     alert("团队里有青年人,不能选前三排!")
+            //     continue
+            // } 
 
             for (let j = 0; j < horizontalWidth; j++){
+                if (hasOld && (cenRow + i) >= row - 4 || hasYoung && (cenRow + i) <= 3) {
+                    console.log("cenRow + i  out i = " + i)
+                    break
+                }
                 if(!isSingleTaken(cenRow + i,cenCol+j)) return [cenRow + i,cenCol+j]
                 if(!isSingleTaken(cenRow + i,cenCol-j)) return [cenRow + i,cenCol-j]
             }
             for (let j = 0; j < horizontalWidth; j++){
+                if (hasYoung && (cenRow - i) <= 3 || hasOld && (cenRow - i) > row - 3) {
+                    console.log("cenRow - i  out i = " + i)
+                    break
+                }
                 if(!isSingleTaken(cenRow - i,cenCol+j)) return [cenRow - i,cenCol+j]
                 if(!isSingleTaken(cenRow - i,cenCol-j)) return [cenRow - i,cenCol-j]
             }
@@ -159,12 +170,29 @@
     }
 
     const autoGroupSelect = (row,col,verticalHeight) => {
+        let [hasYoung, hasOld] = calGroupAge()
+
         // 自动选团体位置
-        // console.log("In autoSelect")
+        console.log("In autoSelect")
         let cenRow = Math.floor(row / 2)
-        // console.log("cenRow " + cenRow)
+        console.log("cenRow " + cenRow)
         for (let i = 0; i < verticalHeight; i++){
+            console.log("i" + i)
+            console.log("hasYoung" + hasYoung)
+            // if (hasYoung && (cenRow + i) <= 3 || hasOld &&  (cenRow - i) >= row - 4){
+            //     // alert("团队里有青年人,不能选前三排!")
+            //     continue
+            // } 
+            if (hasOld && (cenRow + i) >= row - 4 || hasYoung && (cenRow + i) <= 3) {
+                // 判断老年人可不可以坐
+                continue
+            }
             if(!isLineTaken(cenRow+i,col)) return cenRow + i
+
+            if (hasYoung && (cenRow - i) <= 3 || hasOld && (cenRow - i) >= row - 4) {
+                // 判断年轻人可不可以坐
+                continue
+            }
             if(!isLineTaken(cenRow-i,col)) return cenRow - i
         }
         return -1
@@ -175,13 +203,18 @@
         // 如果有，判断是否足够边缘，以至于可以使团体所有人居中坐
         // 参数：row 要判断的行数 size 是团体的购票人数
         // 先判断要团体整体居中坐至少要什么范围内没有被占用
-        let size = userStore.showSize
-        let edge = Math.floor(col - size)
+        let size = userStore.groupSize
+        // console.log("In isLineTaken")
+        // console.log("size: " + userStore.groupSize)
+        let edge = Math.floor((col - size) / 2) 
+        // console.log("edge: " + edge)
         for (let p of userStore.allTickets){
-            if(p.seat.row == row && (p.seat.col >= edge && p.seat.col <= col - edge - 1)){
+            if(p.seat.row == row && (p.seat.col > edge && p.seat.col < col - edge)){
+                // console.log("isLineTaken return true")
                 return true
             }
         }
+        // console.log("isLineTaken return false")
         return false
     }
 
@@ -211,6 +244,7 @@
     }
 
     const checkSameLineAndAdjacent = () => {
+        if(selectedList.value.length == 0) return false
         let list = selectedList.value
         // 检查团体选座是否在同一排     
         let row = list[0].row
@@ -462,15 +496,16 @@
                     // selectedList.value.push(seat)
                 }
                 // 重绘
-                clearCanvas()
-                drawSeats()
-                drawChangedSeats()
-                if(userStore.showSize == 0){
-                    drawSmallBackGround()
-                } else {
-                    drawBackGround()
-                }
-                drawScreen()
+                // clearCanvas()
+                // drawSeats()
+                // drawChangedSeats()
+                // if(userStore.showSize == 0){
+                //     drawSmallBackGround()
+                // } else {
+                //     drawBackGround()
+                // }
+                // drawScreen()
+                reDrawAll()
                 break
             }
         }

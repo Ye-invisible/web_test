@@ -26,6 +26,7 @@ export const useUserStore = defineStore('user', {
     reset() {
       console.log("Reset")
       this.groupMember = []
+      console.log(this.groupMember)
       this.singleMember = {
         name: "",
         age: -1,
