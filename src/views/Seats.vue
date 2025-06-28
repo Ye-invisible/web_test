@@ -23,7 +23,7 @@
     let B = [950,240]
     let M = [400,195]
 
-    watch(() => userStore.showSize, () => {
+    const resetShowSizeParam = () => {
         // 监视用户选择的放映厅大小的变化
         clearCanvas()
         // 按照用户选择的放映厅大小赋值不同的固定值
@@ -35,7 +35,6 @@
             A = [150,220]
             B = [950,240]
             M = [400,195]
-            drawSmallBackGround()
         } else if(size == 1) {
             seatWidth = midSeatWidth
             rowNums = 10 
@@ -43,7 +42,6 @@
             A = [80,80]  
             B = [890,80]
             M = [400,50]
-            drawBackGround()
         } else if(size == 2){
             seatWidth = bigSeatWidth
             rowNums = 12 
@@ -51,13 +49,13 @@
             A = [80,80]  
             B = [890,80]
             M = [400,50]
-            drawBackGround()
         }
 
-        drawSeats()
-        drawScreen()
+        reDrawAll()
         selectedList.value = []
-    })
+    }
+
+    watch(() => userStore.showSize, resetShowSizeParam)
 
     watch(() => userStore.allTickets.length, () => {
         console.log("allTickets Changed!")
@@ -91,8 +89,8 @@
         const horizontalWidth = 4  // 两边找范围
         const verticalHeight = 4    // 上下找范围
 
-        const size = userStore.showSize
-        let [row,col] = getShowSize(size)
+        const size = userStore.groupSize
+        let [row,col] = getShowSize(userStore.showSize)
         // 首先处理个人购票的情况
         if (!userStore.isGroup) {
             let [selRow,selCol] = autoSingleSelect(row,col,horizontalWidth,verticalHeight)
@@ -106,17 +104,19 @@
             }
         } else {
             // 设置groupMember的值
-            // console.log("set group tickets")
+            console.log("set group tickets")
             let selRow = autoGroupSelect(row,col,verticalHeight)  
-            // console.log("selRow: " + selRow)
+            console.log("selRow: " + selRow)
             let edge = Math.floor((col - size) / 2)
-
+            console.log("edge " + edge)
+            console.log("col " + col)
+            console.log("size " + size)
             // console.log(userStore.groupMember)
             for (let i = 0; i < userStore.groupMember.length; i++) {
                 userStore.groupMember[i].seat.row = selRow
                 userStore.groupMember[i].seat.col = edge + i + 1
                 for(let seat of seatList.value){
-                    if(seat.col == edge + i + 1 && seat.row == selRow) selectedList.value.push(seat)
+                    if(seat.row == selRow && seat.col == edge + i + 1) selectedList.value.push(seat)
                 }
             }
         }
@@ -560,11 +560,7 @@
 
     onMounted(() => {
         ctx = seats.value.getContext('2d')
-        
-        drawScreen()
-        drawSeats()
-        drawSmallBackGround()
-        calGroupAge()
+        resetShowSizeParam()
         // drawGround()
 
         // seats.value.addEventListener('click', handleCanvasClick)
