@@ -12,15 +12,24 @@ export const useUserStore = defineStore('user', {
     singleMember: { name:"",
                     age:-1,
                     seat:{row:-1,col:-1,angle:-1},
+                    size:-1, // 放映厅大小
                     // 现在这个movie对象还用不上，但是考虑到我们之后会列很多电影，我先在这里加上
-                    movie:{
-                      name:"",
-                      size:-1,
-                      showTime:-1
-                    }
                   },
 
     allTickets: [],  // 成员是singleMember
+
+    // 考虑到会有很多个电影，添加如下结构
+    movies: [] ,
+    // 里面成员是movie对象 
+    movie:{
+      // 这些内容由电影界面传递
+      name:"", 
+      startTime:-1,
+      endTime:-1,
+      size: 1,
+
+      allTickets: [] // 该电影的所有购票人
+    }
   }),
   actions: {
     reset() {

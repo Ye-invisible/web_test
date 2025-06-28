@@ -141,8 +141,8 @@
 
         let cenCol = Math.floor(col / 2)
         let cenRow = Math.floor(row / 2)
-        console.log("cenRow " + cenRow)
-        console.log("cenCol " + cenCol)
+        // console.log("cenRow " + cenRow)
+        // console.log("cenCol " + cenCol)
         for (let i = 0; i < verticalHeight; i++){
             // let flag = false
             // if (hasYoung && (cenRow - i) <= 3 || hasOld && (cenRow + i) >= row - 4){
@@ -152,7 +152,7 @@
 
             for (let j = 0; j < horizontalWidth; j++){
                 if (hasOld && (cenRow + i) >= row - 4 || hasYoung && (cenRow + i) <= 3) {
-                    console.log("cenRow + i  out i = " + i)
+                    // console.log("cenRow + i  out i = " + i)
                     break
                 }
                 if(!isSingleTaken(cenRow + i,cenCol+j)) return [cenRow + i,cenCol+j]
@@ -160,7 +160,7 @@
             }
             for (let j = 0; j < horizontalWidth; j++){
                 if (hasYoung && (cenRow - i) <= 3 || hasOld && (cenRow - i) > row - 3) {
-                    console.log("cenRow - i  out i = " + i)
+                    // console.log("cenRow - i  out i = " + i)
                     break
                 }
                 if(!isSingleTaken(cenRow - i,cenCol+j)) return [cenRow - i,cenCol+j]
@@ -173,12 +173,12 @@
         let [hasYoung, hasOld] = calGroupAge()
 
         // 自动选团体位置
-        console.log("In autoSelect")
+        // console.log("In autoSelect")
         let cenRow = Math.floor(row / 2)
-        console.log("cenRow " + cenRow)
+        // console.log("cenRow " + cenRow)
         for (let i = 0; i < verticalHeight; i++){
-            console.log("i" + i)
-            console.log("hasYoung" + hasYoung)
+            // console.log("i" + i)
+            // console.log("hasYoung" + hasYoung)
             // if (hasYoung && (cenRow + i) <= 3 || hasOld &&  (cenRow - i) >= row - 4){
             //     // alert("团队里有青年人,不能选前三排!")
             //     continue

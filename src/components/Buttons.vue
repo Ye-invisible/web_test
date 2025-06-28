@@ -24,6 +24,8 @@ const updateLine = () => {
 }
 
 onMounted(() => {
+  userStore.showSize = userStore.movie.size
+  activeIndex.value = userStore.showSize
   nextTick(updateLine)
 })
 
@@ -35,13 +37,20 @@ watch(activeIndex, () => {
 <template>
   <nav ref="navRef" class="vue-nav">
     <ul>
-      <li
+      <!-- <li
         v-for="(item, idx) in menu"
         :key="item"
         :class="{ active: idx === activeIndex }"
         @click="activeIndex = idx"
+      > -->
+      <li
+        v-for="(item, idx) in menu"
+        :key="item"
+        :class="{ active: idx === activeIndex }"
       >
-        <a href="#" @click="userStore.showSize = idx">{{ item }}</a>
+        <!-- 改成多电影后，电影院大小应该不再能够由用户自行选择，而是我们提前定好每个电影放映厅大小 -->
+        <!-- <a href="#" @click="userStore.showSize = idx">{{ item }}</a> -->
+        <a href="#">{{ item }}</a>
       </li>
     </ul>
     <div ref="lineRef" class="line"></div>

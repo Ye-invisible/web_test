@@ -63,6 +63,15 @@
         // console.log("autoSelected set!")
         userStore.autoSelect = true
     }
+
+    const chooseOtherMovie = () => {
+        userStore.movie.allTickets = userStore.allTickets
+        userStore.movie.size = userStore.showSize
+        userStore.movies.push(userStore.movie)
+
+        //跳转到电影界面--还未设计
+        // router.push()
+    }
     
 </script>
 
@@ -72,6 +81,7 @@
         <button class="autoButton" @click="autoSelected">帮我选座!&#128515;</button>
         <button class="autoButton" @click="storeBought">选完了，购买!&#x1F44D;</button>
         <button class="autoButton" @click="continueBuy">继续购票&#9996;</button>
+        <button class="autoButton" @click="chooseOtherMovie">浏览其他电影&#9996;</button>
     </div>
 </template>
 
