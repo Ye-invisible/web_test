@@ -59,9 +59,17 @@
 
     watch(() => userStore.allTickets.length, () => {
         console.log("allTickets Changed!")
+        console.log(userStore.isCleanupOperation)
+        
+        // 如果是清理操作，不执行团体选座检查
+        // if (userStore.isCleanupOperation) {
+        //     console.log("Cleanup operation detected, skipping group seating check")
+        //     return
+        // } else
+        
         // 监视用户是否确认购买票
         // 如果是团体购票，因为我没有在welcome.vue中写存储团体座位的逻辑，放在这里写，使用selectedList数组
-        if(!checkSameLineAndAdjacent()){
+        if(userStore.isBuying && !checkSameLineAndAdjacent()){
             alert("团体选座必须在同一排且无间隔!")
             return
         } else {

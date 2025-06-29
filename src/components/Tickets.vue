@@ -6,26 +6,53 @@
 
     let timer = null;
 
+    // 格式化时间的函数
+    const formatTime = (date) => {
+        // if (!date || !(date instanceof Date)) {
+        //     return '未设置'
+        // }
+        
+        // const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const day = String(date.getDate()).padStart(2, '0')
+        const hours = String(date.getHours()).padStart(2, '0')
+        const minutes = String(date.getMinutes()).padStart(2, '0')
+        
+        return `${month}-${day} ${hours}:${minutes}`
+    }
+
     const deleteOverTime = () => {
+        // userStore.isCleanupOperation = true
         // 定时的删除超时未支付的票
         const currentDate = new Date()
+        // console.log("current Time")
+        // console.log(currentDate)
         const startTime = userStore.movie.startTime
+        // console.log("start Time")
+        // console.log(startTime)
+        // console.log(currentDate > startTime)
 
+        // console.log(userStore.allTickets)
         // 过滤掉过期的预订票
         userStore.allTickets = userStore.allTickets.filter(p => {
             if (p.isBooking && currentDate > startTime) {
-                // 如果预订票过期，返回 false（不保留）
+                // 如果预订票过期，返回 false（不保留）               
                 return false
             }
             return true // 保留其他票
         })
+        // userStore.isCleanupOperation = false
+        // console.log(userStore.allTickets)
     }
 
     onMounted(() => {
+        console.log("In timer")
+        userStore.isBuying = false
         timer = setInterval(deleteOverTime,1000)
     })
 
     onUnmounted(() => {
+        userStore.isBuying = true
         clearInterval(timer)
     })
 </script>
@@ -46,7 +73,7 @@
                 <tr v-for="(item, index) in userStore.allTickets" :key="index" class="form-group">
                     <td class="ticket">{{ item.name }}</td>
                     <td class="ticket">{{ userStore.movie.name }}</td>
-                    <td class="ticket">{{ userStore.movie.startTime }}</td>
+                    <td class="ticket">{{ formatTime(userStore.movie.startTime) }}</td>
                     <td class="ticket">{{ item.seat.row + '-' + item.seat.col }}</td>
                     <td class="ticket">
                         <button class="button" v-if="item.isBooking">取消预定</button>

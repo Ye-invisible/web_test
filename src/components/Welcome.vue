@@ -1,7 +1,7 @@
 <script setup>
     import { useUserStore } from '@/stores/user';
     import { useRouter } from 'vue-router';
-    import { ref } from 'vue'
+    import { ref,onMounted } from 'vue'
 
     const userStore = useUserStore()
     // const isGroup = userStore.isGroup

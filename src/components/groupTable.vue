@@ -96,6 +96,7 @@
     }
 
     #inputTable {
+        width: 100%;
         margin: auto;
     }
 
