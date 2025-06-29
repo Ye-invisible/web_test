@@ -21,6 +21,21 @@
         return `${month}-${day} ${hours}:${minutes}`
     }
 
+    const cancelBuyOrBook = (item,flag) => {
+        // flag 为false代表不是预定票
+        // 从 allTickets 数组中删除指定的票务项目
+        const index = userStore.allTickets.findIndex(ticket => 
+            ticket.name === item.name && 
+            ticket.seat.row === item.seat.row && 
+            ticket.seat.col === item.seat.col
+        )
+        
+        userStore.allTickets.splice(index, 1)
+        if(!flag) alert("退票成功！")
+        else alert("取消预定成功!")
+
+    }
+
     const deleteOverTime = () => {
         // userStore.isCleanupOperation = true
         // 定时的删除超时未支付的票
@@ -76,8 +91,8 @@
                     <td class="ticket">{{ formatTime(userStore.movie.startTime) }}</td>
                     <td class="ticket">{{ item.seat.row + '-' + item.seat.col }}</td>
                     <td class="ticket">
-                        <button class="button" v-if="item.isBooking">取消预定</button>
-                        <button class="button" v-else>退票</button>
+                        <button class="button" v-if="item.isBooking" @click="cancelBuyOrBook(item,true)">取消预定</button>
+                        <button class="button" v-else @click="cancelBuyOrBook(item,false)">退票</button>
                     </td>
                 </tr>
             </tbody>

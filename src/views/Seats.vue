@@ -83,7 +83,7 @@
 
         // 如果确认，把座位变成红色
         console.log(userStore.allTickets)
-        drawChangedSeats()
+        reDrawAll()
         selectedList.value = [] // 清空选取的座位数组
     }, { deep: true })
 
