@@ -113,7 +113,7 @@
         } else {
             // 设置groupMember的值
             console.log("set group tickets")
-            let selRow = autoGroupSelect(row,col,verticalHeight)  
+            let selRow = autoGroupSelect(row,col,horizontalWidth,verticalHeight)  
             console.log("selRow: " + selRow)
             let edge = Math.floor((col - size) / 2)
             console.log("edge " + edge)
@@ -181,9 +181,9 @@
         let [hasYoung, hasOld] = calGroupAge()
 
         // 自动选团体位置
-        // console.log("In autoSelect")
+        console.log("In autoSelect")
         let cenRow = Math.floor(row / 2)
-        // console.log("cenRow " + cenRow)
+        console.log("cenRow " + cenRow)
         for (let i = 0; i < verticalHeight; i++){
             // console.log("i" + i)
             // console.log("hasYoung" + hasYoung)
@@ -191,17 +191,21 @@
             //     // alert("团队里有青年人,不能选前三排!")
             //     continue
             // } 
-            if (hasOld && (cenRow + i) >= row - 4 || hasYoung && (cenRow + i) <= 3) {
+            if (!(hasOld && (cenRow + i) >= row - 4 || hasYoung && (cenRow + i) <= 3)) {
                 // 判断老年人可不可以坐
-                continue
+                console.log("in 1")
+                if(!isLineTaken(cenRow+i,col)) return cenRow + i
+                // continue
             }
-            if(!isLineTaken(cenRow+i,col)) return cenRow + i
+            
 
-            if (hasYoung && (cenRow - i) <= 3 || hasOld && (cenRow - i) >= row - 4) {
+            if (!(hasYoung && (cenRow - i) <= 3 || hasOld && (cenRow - i) >= row - 2)) {
                 // 判断年轻人可不可以坐
-                continue
+                console.log("in 2")
+                if(!isLineTaken(cenRow-i,col)) return cenRow - i
+                // continue
             }
-            if(!isLineTaken(cenRow-i,col)) return cenRow - i
+            
         }
         return -1
     }

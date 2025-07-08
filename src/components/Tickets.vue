@@ -31,7 +31,7 @@
         )
         
         userStore.allTickets.splice(index, 1)
-        if(!flag) alert("退票成功！")
+        if(!flag) alert("退款成功！")
         else alert("取消预定成功!")
 
     }
