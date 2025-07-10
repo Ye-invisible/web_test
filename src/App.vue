@@ -3,6 +3,7 @@
     import Header from './views/Header.vue';
     import Buttons from './components/Buttons.vue';
     import Aside from './views/Aside.vue';
+    import Movies from './views/Movies.vue';
 
     import { onMounted } from 'vue'
     import { useRouter } from 'vue-router'
@@ -13,13 +14,16 @@
     onMounted(() => {
         const navEntries = performance.getEntriesByType('navigation')
             if (navEntries.length > 0 && navEntries[0].type === 'reload') {
-                router.replace('/buy/single')
+                // router.replace('/buy/single')
             }
     })
 </script>
 
 <template>
-    <div id="all">
+<div id="movies">
+    <Movies></Movies>
+</div>
+    <!-- <div id="all">
         <header id="header">
             <Header></Header>
         </header>
@@ -32,13 +36,18 @@
         </div>
         <div id="buy"></div>
         <footer id="footer"></footer>
-    </div>
+    </div> -->
 </template>
 
 <style>
-    #buttons {
+    #movies {
+        height: 100vh;
+        width: 100vw;
+    }
+
+    /* #buttons {
         position: fixed;
         top: 25%;
         right: 18%;
-    }
+    } */
 </style>
