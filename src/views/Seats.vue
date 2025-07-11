@@ -94,8 +94,8 @@
         // 因为老师说没有特别要求，我就自己规定一个自动选票的规则了
         // 首先取中间位置，如果中间位置没有，向同一排两边找，
         // 同一排没有，在相邻上下两排重复此操作
-        const horizontalWidth = 4  // 两边找范围
-        const verticalHeight = 4    // 上下找范围
+        const horizontalWidth = Math.ceil(colNums/2)  // 两边找范围
+        const verticalHeight = Math.ceil(rowNums/2)    // 上下找范围
 
         const size = userStore.groupSize
         let [row,col] = getShowSize(userStore.showSize)
@@ -112,8 +112,12 @@
             }
         } else {
             // 设置groupMember的值
-            // console.log("set group tickets")
-            let selRow = autoGroupSelect(row,col,horizontalWidth,verticalHeight)  
+            let selRow = autoGroupSelect(row,col,horizontalWidth,verticalHeight) 
+            console.log("out autoGroupSelect return ", selRow)
+            if(selRow == -1) {
+                alert("没有符合要求的座位,无法自动选座。请手动选座。") 
+                return
+            }
             // console.log("selRow: " + selRow)
             let edge = Math.floor((col - size) / 2)
             // console.log("edge " + edge)
@@ -130,16 +134,58 @@
         }
         // console.log("Out autoselect")
         reDrawAll()
-    })
+    })   
 
-    const reDrawAll = () => {
-        clearCanvas()
-        drawScreen()
-        drawSeats()
-        drawChangedSeats()
+    const autoGroupSelect = (row,col,horizontalWidth,verticalHeight) => {
+        let [hasYoung, hasOld] = calGroupAge()
+        console.log("get in autoselect")
+        console.log("hasYoung", hasYoung, "hasOld", hasOld)
 
-        if(userStore.showSize == 0)drawSmallBackGround()
-        else drawBackGround()
+        // 自动选团体位置
+        let cenRow = Math.floor(row / 2)
+        console.log("cenRow " + cenRow)
+        console.log("verticalHeight" + verticalHeight)
+        for (let i = 0; i <= verticalHeight; i++){
+            // console.log("i" + i)
+            // console.log("hasYoung" + hasYoung)
+            // if (hasYoung && (cenRow + i) <= 3 || hasOld &&  (cenRow - i) >= row - 4){
+            //     // alert("团队里有青年人,不能选前三排!")
+            //     continue
+            // } 
+            if (cenRow + i <= row && !(hasOld && (cenRow + i) >= row - 2 || hasYoung && (cenRow + i) <= 3)) {
+                console.log("in 1")
+                if(!isLineTaken(cenRow + i,col)) return cenRow + i
+                // continue
+            }
+
+            if (cenRow - i > 0 && !(hasYoung && (cenRow - i) <= 3 || hasOld && (cenRow - i) >= row - 2)) {
+                console.log("in 2")
+                if(!isLineTaken(cenRow - i,col)) return cenRow - i
+                // continue
+            }
+            
+        }
+        return -1
+    }
+
+    const isLineTaken = (row,col) => {
+        // 帮助函数，判断某行有没有已经售出的座位
+        // 如果有，判断是否足够边缘，以至于可以使团体所有人居中坐
+        // 参数：row 要判断的行数 size 是团体的购票人数
+        // 先判断要团体整体居中坐至少要什么范围内没有被占用
+        let size = userStore.groupSize
+        console.log("In isLineTaken")
+        console.log("size: " + userStore.groupSize)
+        let edge = Math.floor((col - size) / 2) 
+        console.log("edge: " + edge)
+        for (let p of userStore.allTickets){
+            if(p.seat.row == row && (p.seat.col > edge && p.seat.col < col - edge)){
+                console.log("isLineTaken return true")
+                return true
+            }
+        }
+        console.log("isLineTaken return false")
+        return false
     }
 
     const autoSingleSelect = (row,col,horizontalWidth,verticalHeight) => {
@@ -177,57 +223,14 @@
         }
     }
 
-    const autoGroupSelect = (row,col,verticalHeight) => {
-        let [hasYoung, hasOld] = calGroupAge()
+    const reDrawAll = () => {
+        clearCanvas()
+        drawScreen()
+        drawSeats()
+        drawChangedSeats()
 
-        // 自动选团体位置
-        // console.log("In autoSelect")
-        let cenRow = Math.floor(row / 2)
-        // console.log("cenRow " + cenRow)
-        for (let i = 0; i < verticalHeight; i++){
-            // console.log("i" + i)
-            // console.log("hasYoung" + hasYoung)
-            // if (hasYoung && (cenRow + i) <= 3 || hasOld &&  (cenRow - i) >= row - 4){
-            //     // alert("团队里有青年人,不能选前三排!")
-            //     continue
-            // } 
-            if (!(hasOld && (cenRow + i) >= row - 4 || hasYoung && (cenRow + i) <= 3)) {
-                // 判断老年人可不可以坐
-                // console.log("in 1")
-                if(!isLineTaken(cenRow+i,col)) return cenRow + i
-                // continue
-            }
-            
-
-            if (!(hasYoung && (cenRow - i) <= 3 || hasOld && (cenRow - i) >= row - 2)) {
-                // 判断年轻人可不可以坐
-                // console.log("in 2")
-                if(!isLineTaken(cenRow-i,col)) return cenRow - i
-                // continue
-            }
-            
-        }
-        return -1
-    }
-
-    const isLineTaken = (row,col) => {
-        // 帮助函数，判断某行有没有已经售出的座位
-        // 如果有，判断是否足够边缘，以至于可以使团体所有人居中坐
-        // 参数：row 要判断的行数 size 是团体的购票人数
-        // 先判断要团体整体居中坐至少要什么范围内没有被占用
-        let size = userStore.groupSize
-        // console.log("In isLineTaken")
-        // console.log("size: " + userStore.groupSize)
-        let edge = Math.floor((col - size) / 2) 
-        // console.log("edge: " + edge)
-        for (let p of userStore.allTickets){
-            if(p.seat.row == row && (p.seat.col > edge && p.seat.col < col - edge)){
-                // console.log("isLineTaken return true")
-                return true
-            }
-        }
-        // console.log("isLineTaken return false")
-        return false
+        if(userStore.showSize == 0)drawSmallBackGround()
+        else drawBackGround()
     }
 
     const isSingleTaken = (row,col) => {
@@ -527,10 +530,10 @@
         // 检查单人手动选座
         // 要求：小孩不在前三排，老人不在后三排
         const age = userStore.singleMember.age
-        if (age < 15 && seat.row < 3){
+        if (age < 15 && seat.row < 4){
             alert("小于15岁不能选择前三排!")
             return false
-        } else if (age > 60 && seat.row > rowNums - 4){
+        } else if (age > 60 && seat.row > rowNums - 3){
             alert("大于60岁不能选择后三排!")
             return false
         }
@@ -575,16 +578,18 @@
 
     const calGroupAge = () => {
         // 计算一下团体里是否有特殊年龄段的人群
+        // console.log("in calGroupAge")
+        // console.log("groupMember")
+        // console.log(userStore.groupMember)
         let haveYoung = false
         let haveOld = false
 
         for (const p of userStore.groupMember) {
+            // console.log(p)
             if (p.age < 15) {
                 haveYoung = true
-                break
             } else if(p.age > 60){
                 haveOld = true
-                break
             }
         }
 
@@ -595,11 +600,20 @@
         ctx = seats.value.getContext('2d')
         resetShowSizeParam()
         // drawGround()
-
         // seats.value.addEventListener('click', handleCanvasClick)
         // timer = setInterval(drawChangedSeats,1000)
     })
 
+    watch(() => userStore.halfQuit, (newValue) => {
+        console.log("in halfQuit watch!")
+        if(newValue == true){
+            userStore.halfQuit = false
+            selectedList.value = []
+            console.log(userStore.halfQuit)
+        }
+        
+        reDrawAll()
+    })
     onUnmounted(() => {
         // clearInterval(timer)
     })
