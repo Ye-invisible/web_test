@@ -12,7 +12,7 @@
     
     // 防止重复执行的标志
     const isProcessing = ref(false)
-    const hasBuy = false
+    let hasBuy = false
 
     const storeBought = () => {
         // 发现点一次，下面的代码被执行多次，试着阻止短时间内多次调用
