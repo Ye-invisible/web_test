@@ -2,6 +2,12 @@ import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
+    // 获取用户屏幕尺寸
+    screenWidth: 0,
+    screenHeight: 0,
+    originScreenWidth: 1707,
+    originScreenHeight: 979,
+
     showSize: 0, // 放映厅大小 0 小 1 中 2 大
     groupSize: 0,
     // 选座界面用来控制的一些布尔值，不用管
