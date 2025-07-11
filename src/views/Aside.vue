@@ -1,8 +1,9 @@
 <script setup>
 import { ref, onMounted, nextTick } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
 
 const activeTab = ref(0)
+const router = useRouter()
 const decorationStyle = ref({
   width: '0px',
   transform: 'translateX(0px)'
@@ -36,6 +37,8 @@ const setActiveTab = (index) => {
 }
 
 onMounted(() => {
+  activeTab.value = 0
+  router.push('/buy')
   updateDecoration()
 })
 </script>
@@ -130,11 +133,17 @@ onMounted(() => {
 }
 
 .routerlink {
-  display: block;
-  width: 100%;
-  height: 100%;
+  display: flex;
+  width: 115%;
+  height: 170%;
   text-decoration: none;
+  justify-content: center;
+  align-items: center;
   color: inherit;
+
+  position: relative;
+  left: -8%;
+  top: -40%;
 }
 
 .router-link-exact-active {

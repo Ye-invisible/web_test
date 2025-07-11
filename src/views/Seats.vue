@@ -58,8 +58,8 @@
     watch(() => userStore.showSize, resetShowSizeParam)
 
     watch(() => userStore.allTickets.length, () => {
-        console.log("allTickets Changed!")
-        console.log(userStore.isCleanupOperation)
+        // console.log("allTickets Changed!")
+        // console.log(userStore.isCleanupOperation)
         
         // 如果是清理操作，不执行团体选座检查
         // if (userStore.isCleanupOperation) {
@@ -82,7 +82,7 @@
         }
 
         // 如果确认，把座位变成红色
-        console.log(userStore.allTickets)
+        // console.log(userStore.allTickets)
         reDrawAll()
         selectedList.value = [] // 清空选取的座位数组
     }, { deep: true })
@@ -112,13 +112,13 @@
             }
         } else {
             // 设置groupMember的值
-            console.log("set group tickets")
+            // console.log("set group tickets")
             let selRow = autoGroupSelect(row,col,horizontalWidth,verticalHeight)  
-            console.log("selRow: " + selRow)
+            // console.log("selRow: " + selRow)
             let edge = Math.floor((col - size) / 2)
-            console.log("edge " + edge)
-            console.log("col " + col)
-            console.log("size " + size)
+            // console.log("edge " + edge)
+            // console.log("col " + col)
+            // console.log("size " + size)
             // console.log(userStore.groupMember)
             for (let i = 0; i < userStore.groupMember.length; i++) {
                 userStore.groupMember[i].seat.row = selRow
@@ -128,7 +128,7 @@
                 }
             }
         }
-        console.log("Out autoselect")
+        // console.log("Out autoselect")
         reDrawAll()
     })
 
@@ -181,9 +181,9 @@
         let [hasYoung, hasOld] = calGroupAge()
 
         // 自动选团体位置
-        console.log("In autoSelect")
+        // console.log("In autoSelect")
         let cenRow = Math.floor(row / 2)
-        console.log("cenRow " + cenRow)
+        // console.log("cenRow " + cenRow)
         for (let i = 0; i < verticalHeight; i++){
             // console.log("i" + i)
             // console.log("hasYoung" + hasYoung)
@@ -193,7 +193,7 @@
             // } 
             if (!(hasOld && (cenRow + i) >= row - 4 || hasYoung && (cenRow + i) <= 3)) {
                 // 判断老年人可不可以坐
-                console.log("in 1")
+                // console.log("in 1")
                 if(!isLineTaken(cenRow+i,col)) return cenRow + i
                 // continue
             }
@@ -201,7 +201,7 @@
 
             if (!(hasYoung && (cenRow - i) <= 3 || hasOld && (cenRow - i) >= row - 2)) {
                 // 判断年轻人可不可以坐
-                console.log("in 2")
+                // console.log("in 2")
                 if(!isLineTaken(cenRow-i,col)) return cenRow - i
                 // continue
             }
@@ -317,7 +317,7 @@
         }
         // 重新绘制被选中的座位为红色
         for(let p of userStore.allTickets){
-            console.log("drawing red!")
+            // console.log("drawing red!")
             const seatNumber = `${p.seat.row}-${p.seat.col}`
             drawSingleSeat(p.seat.x, p.seat.y, -p.seat.angle, 2, seatNumber)
         }
@@ -399,7 +399,7 @@
         ctx.stroke()
         // 绘制下面那个圆弧
         let {cx: cx1, cy: cy1, r: r1} = getCircleCenterAndRadius([60,60],[940,60],[500,30])
-        console.log(cx1,cy1,r1)
+        // console.log(cx1,cy1,r1)
         startAngle = Math.atan2(60 - cy1, 60 - cx1)
         endAngle = Math.atan2(60 - cy1, 940 - cx1)
         ctx.beginPath()
@@ -432,7 +432,7 @@
         ctx.stroke()
         // 绘制上面那个圆弧
         let {cx: cx1, cy: cy1, r: r1} = getCircleCenterAndRadius([200,180],[800,180],[500,150])
-        console.log(cx1,cy1,r1)
+        // console.log(cx1,cy1,r1)
         startAngle = Math.atan2(60 - cy1, 60 - cx1)
         endAngle = Math.atan2(60 - cy1, 940 - cx1)
         ctx.beginPath()
@@ -501,7 +501,7 @@
                     return
                 } else{
                     if(userStore.isGroup){
-                        if(checkGroupChoose(seat))selectedList.value.push(seat)
+                        if(checkGroupChoose(seat.row, seat.col))selectedList.value.push(seat)
                     } else {
                         if(checkSingleChoose(seat))selectedList.value.push(seat)
                     }
@@ -541,6 +541,27 @@
     const checkGroupChoose = (row,col) => {
         // 检查团体选座
         // 要求：首先所有成员必须在同一排，且挨着 其次遵守小孩不在前三排，老人不在后三排的规则
+        //检查是否在同一排且相邻
+        // console.log("In checkGroupChoose")
+        // console.log(selectedList.value)
+        let selectedColList = selectedList.value.map(seat => seat.col)
+        // console.log("selectedColList")
+        // console.log(selectedColList)
+        let leftMostCol = Math.min(...selectedColList)
+        let rightMostCol = Math.max(...selectedColList) 
+        // console.log("leftMostCol" + leftMostCol)
+        // console.log("rightMostCol" + rightMostCol)
+        if(selectedList.value.length > 0){
+            let groupRow = selectedList.value[0].row
+            let groupCol = selectedList.value[0].col
+            // console.log("groupCol" + groupCol)
+            // console.log("col" + col)
+            if(!(row == groupRow && (col == leftMostCol - 1 || col == rightMostCol + 1))) {
+                alert("团体成员必须在同一排且相邻!")
+                return false
+            }
+        }
+        // 检查是否有年龄限制，不符合要求的
         let [haveYoung,haveOld] = calGroupAge()
         if(haveYoung && row < 3){
             alert("小于15岁不能选择前三排!")

@@ -60,6 +60,17 @@
         // console.log(userStore.allTickets)
     }
 
+    function bookToBuy(item) {
+        const index = userStore.allTickets.findIndex(ticket => 
+            ticket.name === item.name && 
+            ticket.seat.row === item.seat.row && 
+            ticket.seat.col === item.seat.col
+        )
+        
+        userStore.allTickets[index].isBooking = false
+        alert("付款成功!")
+    }
+
     onMounted(() => {
         console.log("In timer")
         userStore.isBuying = false
@@ -93,6 +104,7 @@
                     <td class="ticket">
                         <button class="button" v-if="item.isBooking" @click="cancelBuyOrBook(item,true)">取消预定</button>
                         <button class="button" v-else @click="cancelBuyOrBook(item,false)">退票</button>
+                        <button class="button" v-show="item.isBooking" @click="bookToBuy(item)">付款</button>
                     </td>
                 </tr>
             </tbody>
