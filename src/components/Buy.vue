@@ -1,17 +1,29 @@
 <script setup>
     import { ref, onMounted, nextTick } from 'vue'
     import { useUserStore } from '@/stores/user';
+    import { useRouter } from 'vue-router';
 
     const userStore = useUserStore()
+    const router = useRouter()
+
+    function buySingle() {
+        router.push("/single")
+    }
+
+    function buyGroup() {
+        router.push("/group")
+    }
 </script>
 
 <template>
     <div id="buyTickets">
         <div id="buy">
-        <div id="types">
-            <RouterLink to="/buy/single" class="routerlink" >个人票</RouterLink>
-            <RouterLink to="/buy/group" class="routerlink">团体票</RouterLink>
-        </div>  
+            <div id="types">
+                <!-- <RouterLink to="/buy/single" class="routerlink" >个人票</RouterLink>
+                <RouterLink to="/buy/group" class="routerlink">团体票</RouterLink>  -->
+                <button class="routerlink" @click="buySingle">个人票</button>
+                <button class="routerlink" @click="buyGroup">团体票</button> 
+            </div>  
         </div>
 
         <div id="view">
@@ -36,6 +48,7 @@
         align-items: center;
         width: 100%;
         height: 640px;
+
     }
 
     #types {
@@ -55,21 +68,27 @@
         margin-right: 10%;
         border-radius: 7px;
         width: 50%;
-        height: 30%;
+        height: 10%;
         text-align: center;
-    }
+        text-decoration: none;
+        color: black;
+        padding: 4%;
 
+        box-shadow: 5px 5px 4px;
+    }
+/* 
     #types .router-link-exact-active {
         background: linear-gradient(45deg, #7f87e7, #94caf6);
         transition: 1s;
-    }
+    } */
     
     #rules {
         position: absolute;
-        top: 86%;
-        width: 90%;
+        top: 80%;
+        width: 100%;
         height: 10%;   
-        color:  rgb(87, 85, 85);
+        color:  rgb(244, 243, 243);
+        text-align: left;
 
         margin-left: 10%;
     }

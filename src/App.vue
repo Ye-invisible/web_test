@@ -1,5 +1,5 @@
 <script setup>
-    import Seats from './views/Seats.vue';
+    import Seats from './components/Seats.vue';
     import Header from './views/Header.vue';
     import Buttons from './components/Buttons.vue';
     import Aside from './views/Aside.vue';
@@ -7,6 +7,7 @@
     import { onMounted, ref } from 'vue'
     import { useRouter } from 'vue-router'
     import { useUserStore } from './stores/user';
+    import SeatView from './views/SeatView.vue';
 
     const router = useRouter()
     const userStore = useUserStore()
@@ -29,6 +30,8 @@
             // 应用缩放
         document.getElementById('all').style.transform = `scale(${scale.value})`;
         document.getElementById('all').style.transformOrigin = 'top left'; // 设置缩放原点
+
+        router.push('/seats')
     })
 </script>
 
@@ -37,28 +40,45 @@
         <header id="header">
             <Header></Header>
         </header>
-        <div id="aside">
+        <!-- <div id="aside">
             <Aside></Aside>
+        </div> -->
+        <!-- <Buttons id="buttons"></Buttons> -->
+        <div>
+            <!-- <SeatView></SeatView> -->
+             <RouterView></RouterView>
         </div>
-        <Buttons id="buttons"></Buttons>
-        <div id="seats">
-            <Seats />
-        </div>
-        <div id="buy"></div>
-        <footer id="footer"></footer>
+        <!-- <div id="buy"></div>
+        <footer id="footer"></footer> -->
     </div>
 </template>
 
 <style>
-    #all {
+    /* #all {
         width: 100%; 
         height: 100%; 
         overflow: hidden; 
-    }
+    } */
 
-    #buttons {
+    /* #buttons {
         position: fixed;
         top: 25%;
         right: 18%;
+    } */
+
+    #header {
+        position: fixed;
+        width: 100%;
+        height: 23%;
+        top: 0%;
+        left: 0%;
+        z-index:4;
     }
+
+    /* #seats {
+        width: 50%;
+        height: 50%;
+        /* z-index: 4; */
+
+        /* border: 1px solid white; */ 
 </style>

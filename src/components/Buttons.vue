@@ -90,7 +90,7 @@ watch(activeIndex, () => {
     }
     .vue-nav ul li a {
         text-decoration: none;
-        color: #7784f6;
+        color: #ffffff;
         text-transform: uppercase;
         display: block;
         font-weight: 600;

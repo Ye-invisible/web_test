@@ -11,9 +11,9 @@ const decorationStyle = ref({
 
 const tabs = [
   { name: '购票', route: '/buy' },
-  { name: '今日放映', route: '/movie' },
-  { name: '我的票夹', route: '/tickets' }
+  { name: '当前电影', route: '/movie' },
 ]
+// { name: '我的票夹', route: '/tickets' }
 
 const updateDecoration = () => {
   nextTick(() => {
@@ -82,7 +82,7 @@ onMounted(() => {
   top: 20%;
   left: 5%;
   background-color: rgb(255, 255, 255);
-  opacity: 0.8;
+  opacity: 0.5;
   /* background: linear-gradient(10deg,#f6d6c5,#5407e3); */
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   padding: 10px;

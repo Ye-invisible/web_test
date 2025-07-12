@@ -99,7 +99,7 @@
 
 <template>
     <div id="welcome">
-        <p id="welcomeWord">您可以开始选座了! &#128522;&#127881;</p>
+        <!-- <p id="welcomeWord">您可以开始选座了! &#128522;&#127881;</p> -->
         <button class="autoButton" @click="autoSelected">帮我选座!&#128515;</button>
         <button class="autoButton" @click="bookTicket">预定,暂不付款!&#9997;</button>
         <button class="autoButton" @click="storeBought">选完了,直接购买!&#x1F44D;</button>
@@ -111,27 +111,29 @@
 <style>
     #welcome {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        flex-direction: row;
+        justify-content: space-between;
     }
 
-    #welcomeWord {
+    /* #welcomeWord {
         font-size: xx-large;
         text-align: center;
         color: black;
         margin-top: 20%;
         margin-bottom: 20%;
-    }
+    } */
 
     .autoButton {
         padding: 15px 0;
-        width: 40%;
-        background: linear-gradient(45deg,rgb(182, 247, 163),rgb(24, 112, 5));
+        width: 16%;
+        background: linear-gradient(45deg,rgb(178, 5, 2),rgb(172, 2, 2));
         margin: auto;
-        font-size: 18px;
+        font-size: 15px;
         border-radius: 5px;
         border: transparent;
-        box-shadow: 1px 2px 16px rgb(168, 168, 169);
+        color: white;
+        box-shadow: 1px 2px 16px rgb(101, 2, 2);
+        opacity: 0.8;
         margin-top: 1%;
     }
 </style>

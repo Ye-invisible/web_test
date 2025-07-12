@@ -43,4 +43,10 @@
 
 <style scoped>
     @import '@/assets/form-style.css';
+
+  .form-container {
+    position: relative;
+    top: -9%;
+    left: -5%;
+  }
 </style>

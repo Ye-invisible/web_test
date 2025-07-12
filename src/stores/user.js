@@ -10,7 +10,7 @@ export const useUserStore = defineStore('user', {
     originScreenWidth: 1707,
     originScreenHeight: 979,
 
-    showSize: 0, // 放映厅大小 0 小 1 中 2 大
+    showSize: 2, // 放映厅大小 0 小 1 中 2 大
     groupSize: 0,
     // 选座界面用来控制的一些布尔值，不用管
     isGroup: false,
@@ -36,7 +36,7 @@ export const useUserStore = defineStore('user', {
       name:"杀破狼", 
       startTime: new Date(2025, 6, 30, 22, 50, 0), // 应该为一个date对象
       endTime:-1,
-      size: 0,
+      size: 1,
 
       allTickets: [] // 该电影的所有购票人
     }

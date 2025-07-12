@@ -35,7 +35,8 @@ a,
 }
 
 body {
-  background-image: url(./images/background.jpg);
+  /* background-image: url(./images/background.jpg); */
+  background-color: rgb(108, 106, 106);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -52,6 +53,13 @@ body {
 @font-face {
   font-family: 'Regular'; 
   src: url('../assets/fonts/ZhiMangXing-Regular.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Double'; 
+  src: url('../assets/fonts/BitcountGridDouble.ttf') format('woff');
   font-weight: normal;
   font-style: normal;
 }

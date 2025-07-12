@@ -92,7 +92,7 @@
     @import '@/assets/form-style.css';
     #tableOuter {
         height: 600px;
-        overflow-y: scroll;
+        overflow-y: hidden;
     }
 
     #inputTable {

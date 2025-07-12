@@ -2,6 +2,8 @@
     import { ref, onMounted, onUnmounted, watch } from 'vue'
     import { getCircleCenterAndRadius, getCentralAngle,rotatePointAroundCenter } from '@/utils/geometry'
     import { useUserStore } from '@/stores/user'
+    import Buttons from '@/components/Buttons.vue'
+    import Welcome from '@/components/Welcome.vue'
 
     const userStore = useUserStore()
 
@@ -265,8 +267,8 @@
         drawSeats()
         drawChangedSeats()
 
-        if(userStore.showSize == 0)drawSmallBackGround()
-        else drawBackGround()
+        // if(userStore.showSize == 0)drawSmallBackGround()
+        // else drawBackGround()
     }
 
     const isSingleTaken = (row,col) => {
@@ -392,19 +394,30 @@
         ctx.save();
         ctx.translate(x + 17 * scale, y + 14 * scale); // 调整中心点位置
         ctx.rotate(angle);
+        ctx.globalAlpha = 0.8;
         if (status == 1) {
-            ctx.fillStyle = '#FF0' // 选中为黄色
+            ctx.fillStyle = '#FFCC66'; // 选中为黄色
+            ctx.fill(seat);
+            ctx.strokeStyle = 'transparent'; 
+            ctx.stroke(seat);
         } else if(status == 2){
-            ctx.fillStyle = '#F00' // 售出为红色
+            ctx.fillStyle = '#990000'; // 售出为红色
+            ctx.fill(seat);
+            ctx.strokeStyle = 'transparent'; 
+            ctx.stroke(seat);
         } else {
-            ctx.fillStyle = '#0F0'
+            ctx.fillStyle = '#009966'; // 未售出为绿色
+            ctx.fill(seat);
+            ctx.strokeStyle = 'transparent'; 
+            ctx.stroke(seat);
         }
-        ctx.fill(seat)
-        ctx.stroke(seat);
+        ctx.globalAlpha = 1.0;
+        // ctx.fill(seat)
+        // ctx.stroke(seat);
         
         // 绘制座位号
         if (seatNumber) {
-            ctx.fillStyle = '#000' // 文字颜色为黑色
+            ctx.fillStyle = '#FFF' // 文字颜色为黑色
             ctx.font = `${10 * scale}px Arial` // 字体大小按比例缩放
             ctx.textAlign = 'center'
             ctx.textBaseline = 'top'
@@ -416,80 +429,86 @@
 
     const drawScreen = () => {
         // 绘制底部的屏幕，固定位置
-        ctx.moveTo(280,580)
-        ctx.lineTo(280,600)
-        ctx.lineTo(720,580)
-        ctx.lineTo(720,600)
-        ctx.fillStyle = '#BBB'
+        ctx.globalAlpha = 0.8;
+        // ctx.moveTo(280,580)
+        // ctx.lineTo(280,600)
+        // ctx.lineTo(720,580)
+        // ctx.lineTo(720,600)
+        ctx.moveTo(280,570)
+        ctx.lineTo(280,590)
+        ctx.lineTo(720,570)
+        ctx.lineTo(720,590)
+        ctx.fillStyle = '#666'
         ctx.fill()
+        ctx.globalAlpha = 1;
     }
 
-    const drawBackGround = () => {
-        // 绘制背景框
-        // 中大型放映厅，固定值，尽量不修改，可以试着改一下样式，让它好看一点
-        let {cx,cy,r} = getCircleCenterAndRadius([140,590],[860,590],[500,560]) 
-        // 中大型放映厅
-        // let {cx,cy,r} = getCircleCenterAndRadius([140,590],[860,590],[500,560]) 
-        // 绘制上面那个圆弧
-        let startAngle = Math.atan2(590 - cy, 140 - cx)
-        let endAngle = Math.atan2(590 - cy, 860 - cx)
-        ctx.beginPath()
-        ctx.arc(cx, cy, r, startAngle, endAngle, false) // false: 顺时针, true: 逆时针
-        ctx.stroke()
-        // 绘制下面那个圆弧
-        let {cx: cx1, cy: cy1, r: r1} = getCircleCenterAndRadius([60,60],[940,60],[500,30])
-        // console.log(cx1,cy1,r1)
-        startAngle = Math.atan2(60 - cy1, 60 - cx1)
-        endAngle = Math.atan2(60 - cy1, 940 - cx1)
-        ctx.beginPath()
-        ctx.arc(cx1, cy1, r1, startAngle, endAngle, false) 
-        ctx.stroke()
+    // const drawBackGround = () => {
+    //     // 绘制背景框
+    //     // 中大型放映厅，固定值，尽量不修改，可以试着改一下样式，让它好看一点
+    //     let {cx,cy,r} = getCircleCenterAndRadius([140,590],[860,590],[500,560]) 
+    //     // 中大型放映厅
+    //     // let {cx,cy,r} = getCircleCenterAndRadius([140,590],[860,590],[500,560]) 
+    //     // 绘制上面那个圆弧
+    //     let startAngle = Math.atan2(590 - cy, 140 - cx)
+    //     let endAngle = Math.atan2(590 - cy, 860 - cx)
+    //     ctx.beginPath()
+    //     ctx.arc(cx, cy, r, startAngle, endAngle, false) // false: 顺时针, true: 逆时针
+    //     ctx.stroke()
+    //     // 绘制下面那个圆弧
+    //     let {cx: cx1, cy: cy1, r: r1} = getCircleCenterAndRadius([60,60],[940,60],[500,30])
+    //     // console.log(cx1,cy1,r1)
+    //     startAngle = Math.atan2(60 - cy1, 60 - cx1)
+    //     endAngle = Math.atan2(60 - cy1, 940 - cx1)
+    //     ctx.beginPath()
+    //     ctx.arc(cx1, cy1, r1, startAngle, endAngle, false) 
+    //     ctx.stroke()
 
-        ctx.lineWidth = 0.8
+    //     ctx.lineWidth = 0.8
       
-        ctx.beginPath()
-        ctx.moveTo(60,60)
-        ctx.lineTo(140,590)
-        ctx.stroke();
+    //     ctx.beginPath()
+    //     ctx.moveTo(60,60)
+    //     ctx.lineTo(140,590)
+    //     ctx.stroke();
 
-        ctx.beginPath()
-        ctx.moveTo(940,60)
-        ctx.lineTo(860,590)
-        // ctx.lineTo(500,20)
-        ctx.stroke()
-    }
+    //     ctx.beginPath()
+    //     ctx.moveTo(940,60)
+    //     ctx.lineTo(860,590)
+    //     // ctx.lineTo(500,20)
+    //     ctx.stroke()
+    // }
 
-    const drawSmallBackGround = () => {
-        // 绘制背景框
-        // 小型放映厅，固定值
-        let {cx,cy,r} = getCircleCenterAndRadius([220,530],[820,540],[500,500]) 
-        // 绘制下面那个圆弧
-        let startAngle = Math.atan2(540 - cy, 178 - cx)
-        let endAngle = Math.atan2(540 - cy, 830 - cx)
-        ctx.beginPath()
-        ctx.arc(cx, cy, r, startAngle, endAngle, false) // false: 顺时针, true: 逆时针
-        ctx.stroke()
-        // 绘制上面那个圆弧
-        let {cx: cx1, cy: cy1, r: r1} = getCircleCenterAndRadius([200,180],[800,180],[500,150])
-        // console.log(cx1,cy1,r1)
-        startAngle = Math.atan2(60 - cy1, 60 - cx1)
-        endAngle = Math.atan2(60 - cy1, 940 - cx1)
-        ctx.beginPath()
-        ctx.arc(cx1, cy1, r1, startAngle, endAngle, false) 
-        ctx.stroke()
+    // const drawSmallBackGround = () => {
+    //     // 绘制背景框
+    //     // 小型放映厅，固定值
+    //     let {cx,cy,r} = getCircleCenterAndRadius([220,530],[820,540],[500,500]) 
+    //     // 绘制下面那个圆弧
+    //     let startAngle = Math.atan2(540 - cy, 178 - cx)
+    //     let endAngle = Math.atan2(540 - cy, 830 - cx)
+    //     ctx.beginPath()
+    //     ctx.arc(cx, cy, r, startAngle, endAngle, false) // false: 顺时针, true: 逆时针
+    //     ctx.stroke()
+    //     // 绘制上面那个圆弧
+    //     let {cx: cx1, cy: cy1, r: r1} = getCircleCenterAndRadius([200,180],[800,180],[500,150])
+    //     // console.log(cx1,cy1,r1)
+    //     startAngle = Math.atan2(60 - cy1, 60 - cx1)
+    //     endAngle = Math.atan2(60 - cy1, 940 - cx1)
+    //     ctx.beginPath()
+    //     ctx.arc(cx1, cy1, r1, startAngle, endAngle, false) 
+    //     ctx.stroke()
 
-        ctx.lineWidth = 0.8
-        ctx.beginPath()
-        ctx.moveTo(100,200)
-        ctx.lineTo(180,540)
-        ctx.stroke();
+    //     ctx.lineWidth = 0.8
+    //     ctx.beginPath()
+    //     ctx.moveTo(100,200)
+    //     ctx.lineTo(180,540)
+    //     ctx.stroke();
 
-        ctx.beginPath()
-        ctx.moveTo(900,200)
-        ctx.lineTo(830,543)
-        // ctx.lineTo(500,20)
-        ctx.stroke()
-    }
+    //     ctx.beginPath()
+    //     ctx.moveTo(900,200)
+    //     ctx.lineTo(830,543)
+    //     // ctx.lineTo(500,20)
+    //     ctx.stroke()
+    // }
 
     const handleCanvasClick = (e) => {
         // 检查是否输入了信息
@@ -658,21 +677,63 @@
         // clearInterval(timer)
     })
 
+    // 格式化时间的函数
+    const formatTime = (date) => {
+        // if (!date || !(date instanceof Date)) {
+        //     return '未设置'
+        // }
+        
+        // const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const day = String(date.getDate()).padStart(2, '0')
+        const hours = String(date.getHours()).padStart(2, '0')
+        const minutes = String(date.getMinutes()).padStart(2, '0')
+        
+        return `${month}-${day} ${hours}:${minutes}`
+    }
+
 </script>
 
 <template>
-    <div id="seat">
-        <canvas ref="seats" width="950" height="650" @click="handleCanvasClick"></canvas>
-    </div>
+    <div id="seatsWhole">  
+        <Buttons id="buttons"></Buttons>
+        <div id="info">
+            <span>Show Time: {{ formatTime(userStore.movie.startTime) }}</span>
+        </div>
+        <div id="seat">
+            <canvas ref="seats" width="950" height="650" @click="handleCanvasClick"></canvas>
+        </div>  
+        <Welcome id="welcome"/> 
+    </div>  
 </template>
 
 <style scoped>
-    #seat {
+    #seatsWhole {
         position: fixed;
+        width: 55%;
+        height: 68%;
+        top: 30%;
+        left: 42%;
+        /* border: 1px solid white; */
+        /* justify-content: center;
+        align-items: center; */
+    }
+
+    #seat {
+        /* position: fixed;
         width: 55%;
         height: 60%;
         top: 30%;
         left: 42%;
+        background-color: transparent; */
+
+        position: relative;
+        width: 55%;
+        height: 60%;
+        top: -8%;
+        justify-content: center;
+        background-color: transparent;
+        align-items: center;
     }
 
     canvas {
@@ -682,6 +743,28 @@
       left: -2%;
     }
 
+    #buttons {
+        width: 100%;
+        position: relative;
+        top: -7%;
+        right: -25%;
+    }
+
+    #info {
+        position: relative;
+        top: -6%;
+        left: 36%;
+        font-family: 'Double', monospace;
+        font-size: 20px;
+        color: white;
+        margin-bottom: -2%;
+    }
+
+    #welcome {
+        position: relative;
+        bottom: -20%;
+        left: 6%;
+    }
     /* #buttons {
         display: flex;
 
