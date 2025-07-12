@@ -1,6 +1,9 @@
 <script setup>
     import { useUserStore } from '@/stores/user';
     import { onMounted, onUnmounted } from 'vue';
+    import 'bootstrap/dist/css/bootstrap.min.css';
+    import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import Circle from './User.vue';
 
     const userStore = useUserStore()
 
@@ -84,33 +87,35 @@
 </script>
 
 <template>
-    <div id="tableOuter">
-        <table id="inputTable">
-            <thead id="tableHead">
-                <tr>
-                    <th>姓名</th>                 
-                    <th>电影</th>
-                    <th>上映时间</th>
-                    <th>座位号</th>
-                    <th>退票/取消预定</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                <tr v-for="(item, index) in userStore.allTickets" :key="index" class="form-group">
-                    <td class="ticket">{{ item.name }}</td>
-                    <td class="ticket">{{ userStore.movie.name }}</td>
-                    <td class="ticket">{{ formatTime(userStore.movie.startTime) }}</td>
-                    <td class="ticket">{{ item.seat.row + '-' + item.seat.col }}</td>
-                    <td class="ticket">
-                        <button class="button" v-if="item.isBooking" @click="cancelBuyOrBook(item,true)">取消预定</button>
-                        <button class="button" v-else @click="cancelBuyOrBook(item,false)">退票</button>
-                        <button class="button" v-show="item.isBooking" @click="bookToBuy(item)">付款</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div id="tickets">
+        <Circle id="circle"></Circle>
+        <div id="tableOuter">
+            <table id="inputTable" class="table table-striped">
+                <thead id="tableHead">
+                    <tr>
+                        <th>姓名</th>                 
+                        <th>电影</th>
+                        <th>上映时间</th>
+                        <th>座位号</th>
+                        <th>退票/取消预定</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr v-for="(item, index) in userStore.allTickets" :key="index" class="form-group">
+                        <td class="ticket">{{ item.name }}</td>
+                        <td class="ticket">{{ userStore.movie.name }}</td>
+                        <td class="ticket">{{ formatTime(userStore.movie.startTime) }}</td>
+                        <td class="ticket">{{ item.seat.row + '-' + item.seat.col }}</td>
+                        <td class="ticket">
+                            <button class="ticketButton" v-if="item.isBooking" @click="cancelBuyOrBook(item,true)">取消预定</button>
+                            <button class="ticketButton" v-else @click="cancelBuyOrBook(item,false)">退票</button>
+                            <button class="ticketButton" v-show="item.isBooking" @click="bookToBuy(item)">付款</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-
     <!-- <RouterLink class="form-label sure" to="/welcome" @click.prevent="storeInfo">确定</RouterLink >
     <div>
       <RouterView></RouterView>
@@ -119,8 +124,29 @@
 
 <style>
     @import '@/assets/form-style.css';
+
+    #circle {
+        position: absolute;
+        width: 20%;
+        height: 50%;
+        top: 20%;
+        left: 10%;
+    }
+
+    #tableOuter {
+        position: absolute;
+        width: 120%;
+        height: 76%;
+        top: 3%;
+        left: 15%;
+        align-items: center;
+        
+        border: 5px solid rgb(157, 5, 5);
+        
+    }
+
     #inputTable {
-        width: 150%;
+        width: 170%;
         overflow-x: scroll;
     }
 
@@ -130,10 +156,12 @@
         padding-right: 1%;
     }
 
-    .button {
+    .ticketButton {
+        width: 40%;
         border: transparent;
         border-radius: 5px;
         opacity: 0.8;
+        margin-left: 10%;
         /* box-shadow: 1px 2px 3px gray; */
     }
     /* #tableOuter {

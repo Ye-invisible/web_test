@@ -71,7 +71,7 @@
         }
         // 跳转回购买界面
         userStore.reset()
-        router.push('/buy/single')
+        router.push('/seats')
     }
 
     const autoSelected = () => {
@@ -103,7 +103,7 @@
         <button class="autoButton" @click="autoSelected">帮我选座!&#128515;</button>
         <button class="autoButton" @click="bookTicket">预定,暂不付款!&#9997;</button>
         <button class="autoButton" @click="storeBought">选完了,直接购买!&#x1F44D;</button>
-        <button class="autoButton" @click="continueBuy">继续购票&#9996;</button>
+        <button class="autoButton" @click="continueBuy">清除购票信息&#9996;</button>
         <button class="autoButton" @click="chooseOtherMovie">浏览其他电影&#10004;</button>
     </div>
 </template>

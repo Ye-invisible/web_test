@@ -2,12 +2,23 @@
     import 'bootstrap/dist/css/bootstrap.min.css';
     import 'bootstrap/dist/js/bootstrap.bundle.min.js';
     import Buy from './Buy.vue';
+    import { RouterView, useRouter, RouterLink } from 'vue-router';
+    import { onMounted } from 'vue';
+
+    const router = useRouter()
+
+    // onMounted(() => {
+    //     router.push('/buy')
+    // })
 </script>
 
 <template>
     <div id="toggle">
         <!-- 按钮触发侧边栏 -->
-        <button class="btn btn-danger m-3 toggleButton" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
+        <!-- <RouterLink to="/buy" class="btn btn-danger m-3 toggleButton" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
+        Buy
+        </RouterLink> -->
+        <button to="/buy" class="btn btn-danger m-3 toggleButton" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
         Buy
         </button>
 
@@ -24,7 +35,7 @@
                 <a href="#" class="list-group-item list-group-item-action">服务</a>
                 <a href="#" class="list-group-item list-group-item-action">联系方式</a>
                 </div> -->
-                <Buy/>
+                <Buy></Buy>
             </div>
         </div>
     </div> 
@@ -40,6 +51,11 @@
         z-index: 7;
     }
 
+    /* #buyView {
+        position: absolute;
+        top: -20%;
+        left: 20%;
+    } */
 
     .offcanvas {
         position: relative;

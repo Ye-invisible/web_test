@@ -2,6 +2,7 @@
     import { useUserStore } from '@/stores/user';
     import { ref, computed } from 'vue'
     import { useRouter } from 'vue-router';
+import Circle from './User.vue';
 
     const userStore = useUserStore()
     const router = useRouter()
@@ -53,59 +54,105 @@
 </script>
 
 <template>
-    <div id="tableOuter">
-        <table id="inputTable">
+    <!-- <Circle id="circle"></Circle> -->
+    <div id="groupTable">
+        <div id="tableOuter">
+        <table id="inputTable" class="table align-middle table-borderless table-danger table-hover">
             <thead id="tableHead">
                 <tr>
-                    <th>姓名</th>
-                    <th>年龄</th>
+                    <th scope="col">姓名</th>
+                    <th scope="col">年龄</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
                 <tr v-for="(item, index) in members" :key="index" class="form-group">
-                    <th><input
+                    <td scope="row"><input
                         type="text"
                         class="form-input"
                         placeholder="请输入成员姓名"
                         v-model="item.name">
-                    </th>
-                    <th>
+                    </td>
+                    <td scope="row">
                         <input
                         type="number"
                         class="form-input"
                         placeholder="请输入成员年龄"
                         v-model="item.age">
-                    </th>
+                    </td>
                 </tr>
             </tbody>
         </table>
+        </div>
     </div>
+    
 
     <!-- <RouterLink class="form-label sure" to="/welcome" @click.prevent="storeInfo">确定</RouterLink >
     <div>
       <RouterView></RouterView>
     </div>  -->
-    <button class="form-label sure button" to="/welcome" @click.prevent="storeInfo">确定</button>
+    <button class="form-label sure button btn btn-light" to="/welcome" @click.prevent="storeInfo">Finish</button>
 </template>
 
 <style>
     @import '@/assets/form-style.css';
+    /* #circle {
+        position: absolute;
+        width: 20%;
+        height: 50%;
+        top: 20%;
+        left: 1%;
+    } */
+    #groupTable {
+        display: flex;
+        flex-direction: row;
+    }
+
     #tableOuter {
-        height: 600px;
-        overflow-y: hidden;
+        height: 700px;
+        width: 50%;
+        margin-left: 25%;
+        text-align: center;
+        overflow-y: scroll;
+        margin-top: 1%;
+        border-radius: 10px;
+        scrollbar-width: none;
+        /* display: flex;
+        flex-direction: column; */
+        box-shadow: 10px 10px 10px rgb(52, 1, 1);
     }
 
     #inputTable {
         width: 100%;
         margin: auto;
+        /* 自定义表格样式 */
+        --bs-table-bg: #8f0101; /* 表格背景色 */
+        --bs-table-striped-bg: #ffcdd2; /* 条纹表格的条纹颜色 */
+        --bs-table-hover-bg: #ef9a9a; /* 悬停时的背景色 */
+        --bs-table-color: #ffffff; /* 文字颜色 */
+        --bs-table-border-color: transparent; /* 边框颜色 */
+
+        border-color: transparent;
+        opacity: 0.9;
     }
 
     #tableHead {
-        color: black;
+        color: rgb(255, 255, 255);
+        /* text-align: center; */
     }
 
     .button {
-        width: 100%;
-        height: 40px;
+        position: absolute;
+        width: 10%;
+        height: 10%;
+        font-family: 'Double';
+        font-size: 200%;
+        color: white;
+        background-color: brown;
+        /* margin-left: 25%; */
+        top: 40%;
+        left: 80%;
+        border-radius: 200px;
+        border-color: transparent;
+        box-shadow: 10px 10px 10px black;
     }
 </style>

@@ -33,12 +33,12 @@
       <label for="age" class="form-label">年龄</label>
       <input type="number" id="age" class="form-input" placeholder="请输入您的年龄" v-model="age">
     </div>
-    <RouterLink  class="form-label sure" to="/welcome" @click="storeInfo">确定</RouterLink >
+    <RouterLink  class="form-label sure" to="/seats" @click="storeInfo">确定</RouterLink >
     <!-- <button  class="form-label sure" to="/welcome" @click="storeInfo">确定</button> -->
     </div>
-    <div>
+    <!-- <div>
       <RouterView></RouterView>
-    </div>
+    </div> -->
 </template>
 
 <style scoped>
@@ -46,7 +46,8 @@
 
   .form-container {
     position: relative;
+    width: 120%;
     top: -9%;
-    left: -5%;
+    left: -12%;
   }
 </style>

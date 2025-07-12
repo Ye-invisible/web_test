@@ -42,12 +42,12 @@
 
 <template>
     <div class="form-container">
-    <div class="form-group">
-      <label for="number" class="form-label">请输入人数</label>
-      <input type="number" id="number" v-model="userInputGroupSize" class="form-input" placeholder="请输入人数">
-    </div>
-    <RouterLink class="form-label sure" to="/groupTable" v-show="userInputGroupSize <= 20 && userInputGroupSize <= curMaxCol" @click="finishInputSize">确定</RouterLink>
-    </div>
+      <div class="form-group">
+        <label for="number" class="form-label">请输入人数</label>
+        <input type="number" id="number" v-model="userInputGroupSize" class="form-input" placeholder="请输入人数">
+      </div>
+      <RouterLink class="form-label sure" to="/groupTable" v-show="userInputGroupSize <= 20 && userInputGroupSize <= curMaxCol" @click="finishInputSize">确定</RouterLink>
+      </div>
     <div>
       <RouterView></RouterView>
     </div>

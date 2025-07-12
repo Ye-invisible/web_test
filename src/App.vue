@@ -44,7 +44,7 @@
             <Aside></Aside>
         </div> -->
         <!-- <Buttons id="buttons"></Buttons> -->
-        <div>
+        <div id="content">
             <!-- <SeatView></SeatView> -->
              <RouterView></RouterView>
         </div>
@@ -65,6 +65,16 @@
         top: 25%;
         right: 18%;
     } */
+     #content {
+        position: fixed;
+        width: 100%;
+        height: 76%;
+        top: 23%;
+        left: 0.6%;
+        align-items: center;
+        
+        /* border: 1px solid white; */
+     }
 
     #header {
         position: fixed;

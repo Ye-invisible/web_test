@@ -1,33 +1,31 @@
 <script setup>
     import { ref, onMounted, nextTick } from 'vue'
     import { useUserStore } from '@/stores/user';
-    import { useRouter } from 'vue-router';
+    import { useRouter, RouterLink, RouterView } from 'vue-router';
 
     const userStore = useUserStore()
     const router = useRouter()
 
-    function buySingle() {
-        router.push("/single")
-    }
+    // function buySingle() {
+    //     router.push("/buy/single")
+    // }
 
-    function buyGroup() {
-        router.push("/group")
-    }
+    // function buyGroup() {
+    //     router.push("/buy/group")
+    // }
 </script>
 
 <template>
     <div id="buyTickets">
         <div id="buy">
             <div id="types">
-                <!-- <RouterLink to="/buy/single" class="routerlink" >个人票</RouterLink>
-                <RouterLink to="/buy/group" class="routerlink">团体票</RouterLink>  -->
-                <button class="routerlink" @click="buySingle">个人票</button>
-                <button class="routerlink" @click="buyGroup">团体票</button> 
+                <RouterLink to="/buy/single" class="routerlink">个人票</RouterLink>
+                <RouterLink to="/buy/group" class="routerlink">团体票</RouterLink> 
             </div>  
         </div>
 
         <div id="view">
-            <RouterView></RouterView>
+            <RouterView/>
         </div>
         <footer id="rules">
             <h1 id="ruleTitle">购票规则:</h1>
@@ -73,6 +71,7 @@
         text-decoration: none;
         color: black;
         padding: 4%;
+        background-color: white;
 
         box-shadow: 5px 5px 4px;
     }
@@ -100,4 +99,9 @@
     #ruleLists {
         font-size: small;
     }
+
+    /* #view {
+        width: inherit;
+        height: 10%;
+    } */
 </style>
