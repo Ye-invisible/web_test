@@ -91,6 +91,16 @@
 
     watch(() => userStore.autoSelect, () => {
         if (userStore.autoSelect == false)return
+        if(userStore.singleMember.name === "" && userStore.groupMember.length === 0){
+            alert("请输入购票信息!")
+            userStore.autoSelect = false
+            return
+        }
+        if(userStore.isGroup && selectedList.value.length >= userStore.groupSize || !userStore.isGroup && selectedList.value.length > 1){
+            alert("选取座位数不得超过购票人数!")
+            userStore.autoSelect = false
+            return 
+        }
         // 监视用户是否要求自动选票
         // 这里其实只要操作两个数组，分别是selectedList(团体购票)，singleMember(个人购票)
         // 因为老师说没有特别要求，我就自己规定一个自动选票的规则了
@@ -140,13 +150,13 @@
 
     const autoGroupSelect = (row,col,horizontalWidth,verticalHeight) => {
         let [hasYoung, hasOld] = calGroupAge()
-        console.log("get in autoselect")
-        console.log("hasYoung", hasYoung, "hasOld", hasOld)
+        // console.log("get in autoselect")
+        // console.log("hasYoung", hasYoung, "hasOld", hasOld)
 
         // 自动选团体位置
         let cenRow = Math.floor(row / 2)
-        console.log("cenRow " + cenRow)
-        console.log("verticalHeight" + verticalHeight)
+        // console.log("cenRow " + cenRow)
+        // console.log("verticalHeight" + verticalHeight)
         for (let i = 0; i <= verticalHeight; i++){
             // console.log("i" + i)
             // console.log("hasYoung" + hasYoung)

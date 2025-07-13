@@ -76,6 +76,7 @@
 
     const autoSelected = () => {
         // console.log("autoSelected set!")
+        
         userStore.autoSelect = true
     }
 

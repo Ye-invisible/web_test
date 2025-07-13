@@ -47,7 +47,7 @@ import Circle from './User.vue';
         console.log(userStore.groupMember)
 
         // 页面跳转
-        router.push("/welcome")
+        router.push("/seats")
     }
 
     const rows = computed(() => Array.from({ length: userStore.groupSize }))
@@ -103,6 +103,8 @@ import Circle from './User.vue';
         left: 1%;
     } */
     #groupTable {
+        /* position: absolute;
+        left: 50%; */
         display: flex;
         flex-direction: row;
     }
@@ -150,7 +152,7 @@ import Circle from './User.vue';
         background-color: brown;
         /* margin-left: 25%; */
         top: 40%;
-        left: 80%;
+        left: 20%;
         border-radius: 200px;
         border-color: transparent;
         box-shadow: 10px 10px 10px black;
