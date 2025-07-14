@@ -96,7 +96,7 @@
             userStore.autoSelect = false
             return
         }
-        if(userStore.isGroup && selectedList.value.length >= userStore.groupSize || !userStore.isGroup && selectedList.value.length > 1){
+        if(userStore.isGroup && selectedList.value.length >= userStore.groupSize || !userStore.isGroup && selectedList.value.length >= 1){
             alert("选取座位数不得超过购票人数!")
             userStore.autoSelect = false
             return 
@@ -125,7 +125,7 @@
         } else {
             // 设置groupMember的值
             let [selRow, selCol] = autoGroupSelect(row,col,horizontalWidth,verticalHeight) 
-            console.log("out autoGroupSelect return ", selRow)
+            console.log("out autoGroupSelect return ", selRow, selCol)
             if(selRow == -1) {
                 alert("没有符合要求的座位,无法自动选座。请手动选座。") 
                 return
@@ -136,7 +136,7 @@
             // console.log("col " + col)
             // console.log("size " + size)
             // console.log(userStore.groupMember)
-            for (let i = 0; i < userStore.groupMember.length; i++) {
+            for (let i = 0; i < size; i++) {
                 userStore.groupMember[i].seat.row = selRow
                 userStore.groupMember[i].seat.col = selCol + i 
                 for(let seat of seatList.value){
@@ -146,17 +146,18 @@
         }
         // console.log("Out autoselect")
         reDrawAll()
+        userStore.autoSelect = false
     })   
 
     const autoGroupSelect = (row,col,horizontalWidth,verticalHeight) => {
         let [hasYoung, hasOld] = calGroupAge()
-        // console.log("get in autoselect")
-        // console.log("hasYoung", hasYoung, "hasOld", hasOld)
+        console.log("get in autoselect")
+        console.log("hasYoung", hasYoung, "hasOld", hasOld)
 
         // 自动选团体位置
         let cenRow = Math.floor(row / 2)
-        // console.log("cenRow " + cenRow)
-        // console.log("verticalHeight" + verticalHeight)
+        console.log("cenRow " + cenRow)
+        console.log("verticalHeight" + verticalHeight)
         for (let i = 0; i <= verticalHeight; i++){
             // console.log("i" + i)
             // console.log("hasYoung" + hasYoung)
@@ -168,13 +169,13 @@
             if (cenRow + i <= row && !(hasOld && (cenRow + i) >= row - 2 || hasYoung && (cenRow + i) <= 3)) {
                 console.log("in 1")
                 returnCol = isLineTaken(cenRow + i,col)
-                if(returnCol != -1) return [cenRow + i, returnCol]
+                if(returnCol != -1) return [cenRow + i, returnCol + 1]
                 // continue
             }
 
             if (cenRow - i > 0 && !(hasYoung && (cenRow - i) <= 3 || hasOld && (cenRow - i) >= row - 2)) {
                 returnCol = isLineTaken(cenRow - i,col)
-                if(returnCol != -1) return [cenRow - i, returnCol]
+                if(returnCol != -1) return [cenRow - i, returnCol + 1]
                 // continue
             }
             
@@ -196,6 +197,10 @@
         
         // 对于一行中有较大间隔的位置，下面的算法可以找到空隙
         let length = sameRowSeatTaken.length
+        if(length == 0){
+            console.log("line empty")
+            return Math.floor((col - size) / 2)
+        }
         sameRowSeatTaken = sameRowSeatTaken.map(seat => seat.col)
         sameRowSeatTaken.sort((a, b) => a - b)
         console.log("sameRowSeatTaken")
@@ -219,10 +224,10 @@
                 intArray = intArray.filter(n => n != p.seat.col)
             }
         }
-        if(intArray.length == col){
-            console.log("line empty")
-            return Math.floor(col / 2)
-        }
+        // if(intArray.length == col){
+        //     console.log("line empty")
+        //     return Math.floor((col - size) / 2)
+        // }
         let count = 0
         for(let i = 0; i < intArray.length - size + 1; i ++){
             if(intArray[i] + 1 == intArray[i+1]){
@@ -555,11 +560,12 @@
                 // console.log("Seat clicked:", seat)
                 if(selectedList.value.some(s => s.row === seat.row && s.col === seat.col)){
                     selectedList.value.splice(selectedList.value.findIndex(s => s.row === seat.row && s.col === seat.col), 1)
-                    userStore.singleMember = { name:"",
-                                                age:-1,
-                                                seat:{row:-1,col:-1,angle:-1},
-                                                isBooking: false
-                                            } // 取消选择
+                    // userStore.singleMember = { name:"",
+                    //                             age:-1,
+                    //                             seat:{row:-1,col:-1,angle:-1},
+                    //                             isBooking: false
+                    //                         } // 取消选择
+                    // userStore.hasChosen = false
                 } else if (userStore.isGroup && selectedList.value.length >= userStore.groupSize){
                     // 检查已选座位和人数是否一致
                     alert("选取座位数不能超过购票人数!")
@@ -572,6 +578,7 @@
                     alert("要同时选取多个座位,按下ctrl键")
                     return
                 } else{
+                    // userStore.hasChosen = true
                     if(userStore.isGroup){
                         if(checkGroupChoose(seat.row, seat.col))selectedList.value.push(seat)
                     } else {
@@ -719,10 +726,10 @@
 
 <style scoped>
     #seatsWhole {
-        position: fixed;
+        position: absolute;
         width: 55%;
         height: 68%;
-        top: 30%;
+        top: 8%;
         left: 45%;
         /* border: 1px solid white; */
         /* justify-content: center;
@@ -772,7 +779,7 @@
 
     #welcome {
         position: relative;
-        bottom: -20%;
+        bottom: -50%;
         left: 1%;
     }
     /* #buttons {

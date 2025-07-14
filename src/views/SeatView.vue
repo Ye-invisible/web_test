@@ -10,7 +10,7 @@
         <!-- <Aside id="seatAside"></Aside> -->
         <Toggle id="seatToggle"></Toggle>
         <Movie id="seatMovie"/>
-        <Seats />
+        <Seats/>
     </div>
 </template>
 

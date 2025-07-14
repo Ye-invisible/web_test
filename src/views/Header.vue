@@ -14,16 +14,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav" id="tabs">
                     <li class="nav-item tab">
-                        <RouterLink class="nav-link active" aria-current="page" to="/app">Home</RouterLink>
+                        <RouterLink class="nav-link" aria-current="page" to="/app">Home</RouterLink>
                     </li>
                     <li class="nav-item tab">
-                        <RouterLink class="nav-link active" aria-current="page" to="/app">movie</RouterLink>
+                        <RouterLink class="nav-link" aria-current="page" to="/app">movie</RouterLink>
                     </li>                    
                     <li class="nav-item tab">
-                        <RouterLink class="nav-link" to="/seats">seats</RouterLink>
+                        <RouterLink class="nav-link" aria-current="page" to="/seats">seats</RouterLink>
                     </li>
                     <li class="nav-item tab">
-                        <RouterLink class="nav-link" to="/tickets">ticketList</RouterLink>
+                        <RouterLink class="nav-link" aria-current="page" to="/tickets">ticketList</RouterLink>
                     </li>
                     <!-- <li class="nav-item tab">
                         <img src=""/>
@@ -83,6 +83,10 @@
         height: 60px;
         margin-left: -15px;
         margin-right: 20px;
+    }
+
+    .nav-link:focus {
+        color: white; /* 改变文字颜色 */
     }
 /* 
 
