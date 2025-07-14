@@ -723,7 +723,7 @@
         width: 55%;
         height: 68%;
         top: 30%;
-        left: 42%;
+        left: 45%;
         /* border: 1px solid white; */
         /* justify-content: center;
         align-items: center; */
@@ -773,7 +773,7 @@
     #welcome {
         position: relative;
         bottom: -20%;
-        left: 6%;
+        left: 1%;
     }
     /* #buttons {
         display: flex;

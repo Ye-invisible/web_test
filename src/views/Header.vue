@@ -14,9 +14,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav" id="tabs">
                     <li class="nav-item tab">
-                        <RouterLink class="nav-link active" aria-current="page" to="/app">movie</RouterLink>
+                        <RouterLink class="nav-link active" aria-current="page" to="/app">Home</RouterLink>
                     </li>
-                    
+                    <li class="nav-item tab">
+                        <RouterLink class="nav-link active" aria-current="page" to="/app">movie</RouterLink>
+                    </li>                    
                     <li class="nav-item tab">
                         <RouterLink class="nav-link" to="/seats">seats</RouterLink>
                     </li>

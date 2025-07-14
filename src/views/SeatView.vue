@@ -42,6 +42,7 @@
         border-top-right-radius: 50px;
         border-bottom-right-radius: 50px;
 
+        box-shadow: 10px 10px 6px rgb(29, 29, 29);
         /* border: 1px solid white; */
     }
 
