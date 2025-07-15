@@ -193,51 +193,51 @@
         console.log("size: " + userStore.groupSize)
         // let edge = Math.floor((col - size) / 2) 
         // console.log("edge: " + edge)
-        let sameRowSeatTaken = []
-        
-        // 对于一行中有较大间隔的位置，下面的算法可以找到空隙
+        let sameRowSeatTaken = userStore.allTickets.filter(p => p.seat.row == row).map(p => p.seat.col)
+        console.log("sameRowSeatTaken", sameRowSeatTaken)
         let length = sameRowSeatTaken.length
         if(length == 0){
             console.log("line empty")
             return Math.floor((col - size) / 2)
+        } else if (length == col) {
+            return -1
         }
-        sameRowSeatTaken = sameRowSeatTaken.map(seat => seat.col)
         sameRowSeatTaken.sort((a, b) => a - b)
-        console.log("sameRowSeatTaken")
+        console.log("sort sameRowSeatTaken")
         console.log(sameRowSeatTaken)
-        for(let i = Math.floor(length / 2); i < length - 1; i++){
-            if(sameRowSeatTaken[i + 1] - sameRowSeatTaken[i] - 1 >= size){
-                console.log("return: ", sameRowSeatTaken[i] + 1)
-                return sameRowSeatTaken[i] + 1
-            }                
-        }
-        for(let i = Math.floor(length / 2) - 1; i >= 0; i--){
-            if(sameRowSeatTaken[i + 1] - sameRowSeatTaken[i] - 1 >= size) {
-                console.log("return: ", sameRowSeatTaken[i] + 1)
-                return sameRowSeatTaken[i] + 1
-            }             
-        }
-        // 对于一行中座位排列比较紧密时
-        let intArray = Array.from({length: col}, (v, i) => 1 + i) // 1-length的整数数组
-        for (let p of userStore.allTickets){
-            if(p.seat.row == row){
-                intArray = intArray.filter(n => n != p.seat.col)
-            }
-        }
-        // if(intArray.length == col){
-        //     console.log("line empty")
-        //     return Math.floor((col - size) / 2)
+        // for(let i = Math.floor(length / 2); i < length - 1; i++){
+        //     if(sameRowSeatTaken[i + 1] - sameRowSeatTaken[i] - 1 >= size){
+        //         console.log("return: ", sameRowSeatTaken[i] + 1)
+        //         return sameRowSeatTaken[i] + 1
+        //     }                
         // }
+        // for(let i = Math.floor(length / 2) - 1; i >= 0; i--){
+        //     if(sameRowSeatTaken[i + 1] - sameRowSeatTaken[i] - 1 >= size) {
+        //         console.log("return: ", sameRowSeatTaken[i] + 1)
+        //         return sameRowSeatTaken[i] + 1
+        //     }             
+        // }
+
+        // // 对于一行中座位排列比较紧密时
+        let intArray = Array.from({length: col}, (v, i) => 1 + i) // 1---length的整数数组
+        let notTaken = intArray.filter(p => !sameRowSeatTaken.includes(p))
+        // // if(intArray.length == col){
+        // //     console.log("line empty")
+        // //     return Math.floor((col - size) / 2)
+        // // }
+        if(notTaken.length < size) {
+            return -1
+        }
         let count = 0
-        for(let i = 0; i < intArray.length - size + 1; i ++){
-            if(intArray[i] + 1 == intArray[i+1]){
+        for(let i = 0; i < notTaken.length - size + 1; i ++){
+            if(notTaken[i] + 1 == notTaken[i+1]){
                 count += 1
-                if(count + 1 == size) return intArray[i + 1] - size + 1
+                if(count + 1 == size) return notTaken[i + 1] - size + 1
             } else {
                 count = 0
             }
         }
-        // console.log("isLineTaken return false")
+        console.log("isLineTaken return false")
         return -1
     }
 
@@ -557,6 +557,14 @@
                 localX >= -17 * scale && localX <= 17 * scale &&
                 localY >= -14 * scale && localY <= 14 * scale
             ) {
+                // 检查选取的座位是否已经被购买
+                for(let member of userStore.allTickets){
+                    if(member.seat.row == seat.row && member.seat.col == seat.col){
+                        alert("不能选取已经售出的座位!")
+                        return 
+                    }
+                }
+
                 // console.log("Seat clicked:", seat)
                 if(selectedList.value.some(s => s.row === seat.row && s.col === seat.col)){
                     selectedList.value.splice(selectedList.value.findIndex(s => s.row === seat.row && s.col === seat.col), 1)
@@ -642,10 +650,10 @@
         }
         // 检查是否有年龄限制，不符合要求的
         let [haveYoung,haveOld] = calGroupAge()
-        if(haveYoung && row < 3){
+        if(haveYoung && row <= 3){
             alert("小于15岁不能选择前三排!")
             return false
-        } else if (haveOld && row > rowNums - 4){
+        } else if (haveOld && row >= rowNums - 2){
             alert("大于60岁不能选择后三排!")
             return false
         }
