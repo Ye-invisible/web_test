@@ -76,22 +76,19 @@
     width: 100%;
     padding: 15px;
     height: 100%;
-
-    border: 1px solid white;
-    z-index: 2;
-
-    
+    background-color: #eee9e9;
+    opacity: 0.8;
   }
 
   .movie-title {
     font-size: 1.3rem;
     margin-bottom: 8px;
-    color: #f3efef;
+    color: #0b0b0b;
     font-weight: 600;
   }
   
   .movie-genre {
-    color: #666;
+    color: #3e3e3e;
     margin-bottom: 10px;
   }
   
@@ -100,7 +97,7 @@
     justify-content: space-between;
     margin-bottom: 15px;
     font-size: 0.9rem;
-    color: #888;
+    color: #464646;
   }
   
   .movie-showtimes {
@@ -130,7 +127,7 @@
   }
   
   .hall {
-    color: #666;
+    color: #383737;
     font-size: 0.9rem;
   }
   
