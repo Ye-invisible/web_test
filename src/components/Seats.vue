@@ -77,10 +77,15 @@
         } else {
             // 符合条件，保存座位内容
             let length = selectedList.value.length
+            // if(userStore.isGroup && length != userStore.groupSize || !userStore.isGroup && length != 1){
+            //     alert("选取座位数和购票人数不一致!")
+            //     return
+            // } else {
             let allLength = userStore.allTickets.length
             for(let i = 0; i < length; i++){
                 userStore.allTickets[allLength - 1 - i].seat = selectedList.value[i]
             }
+            // }  
         }
 
         // 如果确认，把座位变成红色
@@ -147,6 +152,7 @@
         // console.log("Out autoselect")
         reDrawAll()
         userStore.autoSelect = false
+        userStore.hasChoose = selectedList.value.length
     })   
 
     const autoGroupSelect = (row,col,horizontalWidth,verticalHeight) => {
@@ -592,6 +598,8 @@
                     } else {
                         if(checkSingleChoose(seat))selectedList.value.push(seat)
                     }
+
+                    userStore.hasChoose = selectedList.value.length
                     // selectedList.value.push(seat)
                 }
                 // 重绘
@@ -698,6 +706,7 @@
         
         reDrawAll()
     })
+
     onUnmounted(() => {
         // clearInterval(timer)
     })

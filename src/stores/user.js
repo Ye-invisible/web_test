@@ -7,6 +7,7 @@ export const useUserStore = defineStore('user', {
     // hasChosen: false,
     // 获取用户屏幕尺寸
     screenWidth: 0,
+    hasChoose: 0, // 已经选取的座位数
     screenHeight: 0,
     originScreenWidth: 1707,
     originScreenHeight: 979,
@@ -47,6 +48,7 @@ export const useUserStore = defineStore('user', {
       console.log("Reset")
       this.groupMember = []
       this.isBooking = false // 是否为预定票
+      this.hasChoose = 0
       // console.log(this.groupMember)
       this.singleMember = {
         name: "",

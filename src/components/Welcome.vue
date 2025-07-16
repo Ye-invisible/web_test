@@ -20,13 +20,16 @@
             return
         }
         //   检查已选座位和人数是否一致
-        if (userStore.isGroup && userStore.groupMember.length != userStore.groupSize){
+        // console.log("check! groupMember.length=", userStore.groupMember.length, "groupSize= ", userStore.groupSize)
+        // console.log("groupMember", userStore.groupMember)
+        if (userStore.isGroup && userStore.hasChoose != userStore.groupSize){
             alert("选取座位数和购票人数不一致!")
             return 
-        } else if (!userStore.isGroup && userStore.singleMember.seat.row == -1){
+        }
+         if (!userStore.isGroup && userStore.singleMember.seat.row == -1){
             alert("请选取一个座位!")
             return
-        }
+        } 
  
         isProcessing.value = true
 
@@ -63,6 +66,14 @@
             isProcessing.value = false
         }, 1000)
     }
+
+    // const checkChooseNum = () => {
+    //     console.log("groupMember", userStore.groupMember)
+    //     for(let p of userStore.groupMember){
+    //         if(p.seat.row == -1 || p.seat.col == -1) return 0
+    //     }
+    //     return 1;
+    // }
 
     const continueBuy = () => {
         if(!hasBuy) {

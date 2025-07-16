@@ -2,7 +2,7 @@
     import { useUserStore } from '@/stores/user';
     import { ref, computed } from 'vue'
     import { useRouter } from 'vue-router';
-import Circle from './User.vue';
+    import Circle from './User.vue';
 
     const userStore = useUserStore()
     const router = useRouter()
