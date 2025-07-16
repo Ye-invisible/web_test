@@ -49,7 +49,7 @@
         // console.log(userStore.singleMember)
         // console.log("allTickets :")
         // console.log(userStore.allTickets)
-        console.log("购买成功!")
+        // console.log("购买成功!")
         hasBuy = true
         if(userStore.isBooking){
             alert("预定成功,请在电影开场前完成支付,否则将自动退票!")
@@ -78,7 +78,7 @@
     const continueBuy = () => {
         if(!hasBuy) {
             userStore.halfQuit = true
-            console.log("set halfQuit true")
+            // console.log("set halfQuit true")
         }
         // 跳转回购买界面
         userStore.reset()

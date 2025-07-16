@@ -130,7 +130,7 @@
         } else {
             // 设置groupMember的值
             let [selRow, selCol] = autoGroupSelect(row,col,horizontalWidth,verticalHeight) 
-            console.log("out autoGroupSelect return ", selRow, selCol)
+            // console.log("out autoGroupSelect return ", selRow, selCol)
             if(selRow == -1) {
                 alert("没有符合要求的座位,无法自动选座。请手动选座。") 
                 return
@@ -157,13 +157,13 @@
 
     const autoGroupSelect = (row,col,horizontalWidth,verticalHeight) => {
         let [hasYoung, hasOld] = calGroupAge()
-        console.log("get in autoselect")
-        console.log("hasYoung", hasYoung, "hasOld", hasOld)
+        // console.log("get in autoselect")
+        // console.log("hasYoung", hasYoung, "hasOld", hasOld)
 
         // 自动选团体位置
         let cenRow = Math.floor(row / 2)
-        console.log("cenRow " + cenRow)
-        console.log("verticalHeight" + verticalHeight)
+        // console.log("cenRow " + cenRow)
+        // console.log("verticalHeight" + verticalHeight)
         for (let i = 0; i <= verticalHeight; i++){
             // console.log("i" + i)
             // console.log("hasYoung" + hasYoung)
@@ -173,7 +173,7 @@
             // } 
             let returnCol;
             if (cenRow + i <= row && !(hasOld && (cenRow + i) >= row - 2 || hasYoung && (cenRow + i) <= 3)) {
-                console.log("in 1")
+                // console.log("in 1")
                 returnCol = isLineTaken(cenRow + i,col)
                 if(returnCol != -1) return [cenRow + i, returnCol + 1]
                 // continue
@@ -195,12 +195,12 @@
         // 参数：row 要判断的行数 size 是团体的购票人数
         // 先判断要团体整体居中坐至少要什么范围内没有被占用
         let size = userStore.groupSize
-        console.log("In isLineTaken")
-        console.log("size: " + userStore.groupSize)
+        // console.log("In isLineTaken")
+        // console.log("size: " + userStore.groupSize)
         // let edge = Math.floor((col - size) / 2) 
         // console.log("edge: " + edge)
         let sameRowSeatTaken = userStore.allTickets.filter(p => p.seat.row == row).map(p => p.seat.col)
-        console.log("sameRowSeatTaken", sameRowSeatTaken)
+        // console.log("sameRowSeatTaken", sameRowSeatTaken)
         let length = sameRowSeatTaken.length
         if(length == 0){
             console.log("line empty")
@@ -209,8 +209,8 @@
             return -1
         }
         sameRowSeatTaken.sort((a, b) => a - b)
-        console.log("sort sameRowSeatTaken")
-        console.log(sameRowSeatTaken)
+        // console.log("sort sameRowSeatTaken")
+        // console.log(sameRowSeatTaken)
         // for(let i = Math.floor(length / 2); i < length - 1; i++){
         //     if(sameRowSeatTaken[i + 1] - sameRowSeatTaken[i] - 1 >= size){
         //         console.log("return: ", sameRowSeatTaken[i] + 1)
@@ -243,7 +243,7 @@
                 count = 0
             }
         }
-        console.log("isLineTaken return false")
+        // console.log("isLineTaken return false")
         return -1
     }
 

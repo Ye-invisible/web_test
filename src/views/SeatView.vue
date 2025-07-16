@@ -1,7 +1,7 @@
 <script setup>
     import Seats from '../components/Seats.vue';
-    import Movie from '@/components/Movie.vue';
-    import Aside from './Aside.vue';
+    import Movie from '@/components/SeatMovie.vue';
+    // import Aside from './Aside.vue';
     import Toggle from '@/components/Toggle.vue';
 </script>
 

@@ -17,7 +17,7 @@
                         <RouterLink class="nav-link" aria-current="page" to="/app">Home</RouterLink>
                     </li>
                     <li class="nav-item tab">
-                        <RouterLink class="nav-link" aria-current="page" to="/app">movie</RouterLink>
+                        <RouterLink class="nav-link" aria-current="page" to="/films">movie</RouterLink>
                     </li>                    
                     <li class="nav-item tab">
                         <RouterLink class="nav-link" aria-current="page" to="/seats">seats</RouterLink>

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Buy from '@/components/Buy.vue' 
-import Movie from '@/components/Movie.vue'
+import Movie from '@/components/SeatMovie.vue'
 import Tickets from '@/components/Tickets.vue'
 import singleForm from '@/components/singleForm.vue'
 import groupForm from '@/components/groupForm.vue'
@@ -8,6 +8,7 @@ import Welcome from '@/components/Welcome.vue'
 import GroupTable from '@/components/groupTable.vue'
 import App from '@/App.vue'
 import SeatView from '@/views/SeatView.vue'
+import films from '@/components/films.vue'
 
 const routes = [
   { 
@@ -18,7 +19,7 @@ const routes = [
       { path: 'group', component: groupForm },
     { path: '', redirect: '/buy/single' } // 默认重定向到 single
   ]},
-  { path: '/', redirect: '/seats' }, // 添加根路径重定向
+  { path: '/', redirect: '/films' }, // 添加根路径重定向
   // { path: '/single', component: singleForm },
   // { path: '/group', component: groupForm },
   { path: '/movie', component: Movie},
@@ -27,6 +28,7 @@ const routes = [
   { path: '/groupTable', component: GroupTable},
   { path: '/app', component: App},
   { path: '/seats', component: SeatView},
+  { path: '/films', component: films } // 添加新页面的路由
 ]
 
 const router = createRouter({

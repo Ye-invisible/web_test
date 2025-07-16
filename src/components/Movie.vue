@@ -1,99 +1,141 @@
 <script setup>
+    import { defineProps } from 'vue';
 
+    const props = defineProps({
+    movie: Object
+    });
+
+    const formatTime = (timeStr) => {
+        const date = new Date(timeStr)
+        return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
+    }
 </script>
 
 <template>
-    <div id="content">
-        <div id="imageBox">
-            <img src="../assets/images/movie.jpg" id="movieImage">
-        </div>     
-        <div id="wordBox">
-            <h1 id="title">碟中谍8:最终清算</h1>
-            <h3 id="titleEn">Mission: Impossible - The Final Reckoning</h3>
-            <ul id="desc">
-                <li>动作 惊悚 冒险</li>
-                <li>美国/170分钟</li>
-                <li>2025-05-30 09:00中国大陆上映</li>
-            </ul>
+    <div id="movieContainer" :style="{ backgroundImage: `url(${movie.poster})`}">
+        <!-- <div class="overlay"></div>  -->
+        <div class="movie-rating">{{ movie.rating }}</div>
+
+        <div class="movie-info">
+            <h3 class="movie-title">{{ movie.name }}</h3>
+            <p class="movie-genre">{{ movie.showInfo }}</p>
+            <div class="movie-details">
+              <span class="movie-duration">{{ movie.duration }}分钟</span>
+              <span class="movie-release">{{ movie.releaseDate }}</span>
+            </div>
+            <div class="movie-showtimes">
+              <div 
+                v-for="showtime in movie.showtimes" 
+                :key="showtime.id"
+                class="showtime-item"
+                @click.stop="selectMovieShowtime(movie, showtime)"
+              >
+                <span class="showtime">{{ formatTime(showtime.startTime) }}</span>
+                <span class="hall">{{ showtime.hall }}</span>
+                <span class="price">¥{{ showtime.price }}</span>
+              </div>
+            </div>
         </div>
     </div>
 </template>
 
-<style>
-    #content {
-        display: flex;
-        flex-direction: row;
-        /* align-items: center; */
-/*  
-        border: 1px solid white; */
-        /* border-radius: 100px; */
+<style scoped>
+    #movieContainer {
+        position: relative;
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 450px;
     }
 
-    #imageBox {
+    .overlay {
         position: absolute;
-        width: 50%;
-        margin-top: 6%;
-        margin-left: 2%;
-        display: inline-block;
-
-        /* border: 1px solid white; */
-    }
-
-    #movieImage {
-        width: 90%;
-        margin-bottom: 10%;
-        border-radius: 40px;
-        margin-left: 2%;
-        
-        box-shadow: 10px 10px 100px;
-    }
-
-    #wordBox {
-        position: absolute;
-        top: 0%;
-        right: 0%;
-        width: 50%;
-        display: inline-block;
-        text-align: center;
-
-        /* border: 1px solid white; */
-    }
-
-    #title {
-        font-family: 'Regular', monospace;
-        font-size: 50px;
-        color: white;
-        text-align: center;
-        
-        /* background: linear-gradient(45deg, hsl(0, 91%, 63%), #d40f05);
-        background-color: white;
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent; */
-
-        margin-top: 40%;
-    }
-
-    #titleEn {
-        font-family: 'Roboto', Courier, monospace;
-        font-size: x-large;
-
-        background: linear-gradient(45deg, hsl(0, 91%, 63%), #8e0c05);
-        background-color: white;
-        -webkit-background-clip: text;
-        background-clip: text;
-        margin-bottom: 20%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(254, 254, 254, 0.2); 
+        z-index: 1; 
+    }   
   
-        color: transparent;
-    }
+  .movie-rating {
+    position: absolute;
+    top: 3%;
+    right: 3%;
 
-    #desc {
-        list-style-type: none;
-        text-align: center;
-        color: #ffffff;
-        font-size: small;
-        padding-right: 10%;
+    background: #ff6b6b;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+  
+  .movie-info {
+    position: absolute;
+    top: 40%;
+    width: 100%;
+    padding: 15px;
+    height: 100%;
 
-        padding-top: 36%;
-    }
+    border: 1px solid white;
+    z-index: 2;
+
+    
+  }
+
+  .movie-title {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    color: #f3efef;
+    font-weight: 600;
+  }
+  
+  .movie-genre {
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .movie-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #888;
+  }
+  
+  .movie-showtimes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .showtime-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .showtime-item:hover {
+    background: #e9ecef;
+  }
+  
+  .showtime {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .hall {
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  .price {
+    color: #ff6b6b;
+    font-weight: bold;
+  }
 </style>
