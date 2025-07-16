@@ -21,7 +21,6 @@ export class Movie {
         this.version = version;
         this.actors = actors;
         this.showtimes = []; // 放映场次
-        this.tickets = [];   // 已售座位
         this.category = '正在热映'; // 默认分类
     }
     randomCreateshowtimes() {  
@@ -61,6 +60,13 @@ export class Movie {
         };
         this.showtimes.push(showtime);
         return showtime;
+    }
+    getState(showtimeId) {
+        const showtime = this.showtimes.find(s => s.id === showtimeId);
+        if (showtime) {
+            return showtime.tickets; // 返回该场次的座位情况
+        }
+        return null; // 如果没有找到该场次，返回 null
     }
 
     changeState(showtimeId, state) {

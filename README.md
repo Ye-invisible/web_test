@@ -119,3 +119,24 @@ router.push("/buy/single") // push要跳转的路径
 #### 备注
 
 我的选座界面已经初步实现了大作业文档要求的所有功能，但是还有蛮多bug，我会继续测试和修改，大家要设计新界面可以新开一个分支，把代码推到新分支上，我这个目前的test分支就用来维护我们大作业的单电影版本吧。
+
+
+# 电影界面
+## /stores/movies.js
+包括三个主要结构
+### Movie 类
+电影类,支持添加场次,
+getState(showtimeId)获取票务信息
+changeState改变场次票务情况
+### MovieCollection
+一个大列表,支持通过id查询电影
+### useMovieStore
+包括爬取电影信息功能,存储了一个moviecollection
+
+
+## /components/films.vue
+从moviestore中读取数据,并进行显示
+目前考虑传入两个id作为跳转
+
+## TODO
+滑动展示\跳转链接
