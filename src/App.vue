@@ -7,13 +7,16 @@
     import { onMounted, ref } from 'vue'
     import { useRouter } from 'vue-router'
     import { useUserStore } from './stores/user';
+    import { useMovieStore } from './stores/movies';
+
     import SeatView from './views/SeatView.vue';
 
     const router = useRouter()
     const userStore = useUserStore()
+    const movieStore = useMovieStore();
     const scale = ref(1); // 用于存储缩放比例
 
-    onMounted(() => {
+    onMounted(async () => {
         userStore.screenHeight = window.innerHeight
         userStore.screenWidth = window.innerWidth
 
@@ -32,6 +35,10 @@
         document.getElementById('all').style.transformOrigin = 'top left'; // 设置缩放原点
 
         router.push('/seats')
+
+         if (movieStore.allMovies.length === 0) {
+            await movieStore.fetchMovies();
+        }
     })
 </script>
 

@@ -8,6 +8,7 @@ import Welcome from '@/components/Welcome.vue'
 import GroupTable from '@/components/groupTable.vue'
 import App from '@/App.vue'
 import SeatView from '@/views/SeatView.vue'
+import films from '@/components/films.vue' 
 
 const routes = [
   { 
@@ -27,6 +28,8 @@ const routes = [
   { path: '/groupTable', component: GroupTable},
   { path: '/app', component: App},
   { path: '/seats', component: SeatView},
+  { path: '/films', component: films } // 添加新页面的路由
+
 ]
 
 const router = createRouter({
