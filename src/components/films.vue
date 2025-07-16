@@ -1,12 +1,13 @@
 <script setup>
   import { ref, computed, onMounted } from 'vue'
   import { useMovieStore } from '../stores/movies';
-import Movie from './Movie.vue';
+  import Movie from './Movie.vue';
   
   const loading = ref(true)
   const selectedCategory = ref('正在热映')
-  const categories = ['正在热映', '即将上映', '经典电影','未知类型']
+  const categories = ['正在热映', '即将上映', '经典电影','其他']
   const movies = ref([])
+
   // TODO：利用api得到真实数据
   const movieStore = useMovieStore();
   const mockMovies = movieStore.allMovies;
@@ -19,10 +20,10 @@ import Movie from './Movie.vue';
     const result = movies.value.filter(movie => {
       // 打印每个电影的 category 和目标分类，确认是否匹配
       console.log(
-        '电影名称：', movie.name,
-        '电影category：', movie.category,
-        '目标分类：', selectedCategory.value,
-        '是否匹配：', movie.category === selectedCategory.value
+        '电影名称: ', movie.name,
+        '电影category: ', movie.category,
+        '目标分类: ', selectedCategory.value,
+        '是否匹配: ', movie.category === selectedCategory.value
       );
       return movie.category === selectedCategory.value;
     });
@@ -36,6 +37,7 @@ import Movie from './Movie.vue';
   
   const fetchMovies = async () => {
     loading.value = true
+
     await new Promise(resolve => setTimeout(resolve, 800))
     movies.value = mockMovies
     console.log('fetchmovies:', movies.value); // 检查 movies 数组是否有数据
@@ -46,6 +48,10 @@ import Movie from './Movie.vue';
   onMounted(() => {
     fetchMovies()
   })
+
+  const handleMovieClick = () => {
+    console.log("click!")
+  }
 
 </script>
 
@@ -70,7 +76,7 @@ import Movie from './Movie.vue';
                 :key="movie.id"
                 class="movie-card"
             >
-                <Movie :movie="movie"/>
+                <Movie :movie="movie" @click="handleMovieClick"/>
             </div>
         </div>
         <!-- 正在加载 -->

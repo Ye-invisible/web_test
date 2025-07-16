@@ -2,7 +2,7 @@
     import { defineProps } from 'vue';
 
     const props = defineProps({
-    movie: Object
+      movie: Object
     });
 
     const formatTime = (timeStr) => {

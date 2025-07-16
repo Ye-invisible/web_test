@@ -1,6 +1,6 @@
 import { MovieCollection } from './film.js';
 // 注意：选择 axios 或 fetch 其中一种工具即可，这里以 fetch 为例
-async function fetchHotMovies() {
+export async function fetchMovies() {
   try {
     // 1. 发送请求获取完整数据
     const response = await fetch('https://apis.netstart.cn/maoyan/index/movieOnInfoList');
@@ -47,4 +47,4 @@ async function fetchHotMovies() {
 }
 
 // 执行函数
-fetchHotMovies();
+fetchMovies();
