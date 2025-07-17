@@ -2,8 +2,11 @@
     import { useUserStore } from '@/stores/user';
     import { useRouter } from 'vue-router';
     import { ref, onMounted } from 'vue'
+    import { useMovieStore } from '@/stores/movies';
+    import { Movie } from '@/utils/film';
 
     const userStore = useUserStore()
+    const movieStore = useMovieStore()
     // const isGroup = userStore.isGroup
     // const singleMember = userStore.singleMember
     // const groupMember = userStore.groupMember
@@ -58,6 +61,7 @@
         }
 
         // 重置一些值
+        updateMovieStore()
         userStore.reset()
         // router.push("/buy/single")
         
@@ -91,14 +95,51 @@
         userStore.autoSelect = true
     }
 
+    const updateMovieStore = () => {
+        // 从 localStorage 获取数据
+        const storedMovie = JSON.parse(localStorage.getItem("chosenMovie"));
+        console.log("storedMovie showtimes", storedMovie.showtimes)
+        let chosenMovieShowTimeId = JSON.parse(localStorage.getItem("chosenMovieShowTime")).id;
+
+        // 发现数据结构里提供了直接修改的方法
+        // 将普通对象转换回 Movie 实例
+        const newChosenMovie = new Movie(
+            storedMovie.id,
+            storedMovie.name,
+            storedMovie.poster,
+            storedMovie.genre,
+            storedMovie.rating,
+            storedMovie.releaseDate,
+            storedMovie.releaseDateText,
+            storedMovie.showInfo,
+            storedMovie.version,
+            storedMovie.actors
+        );
+
+        // 恢复 showtimes 数据
+        newChosenMovie.showtimes = storedMovie.showtimes;
+        // 调用类的方法修改票
+        newChosenMovie.changeState(chosenMovieShowTimeId, userStore.allTickets)
+        console.log("changed showtimes:", newChosenMovie.showtimes)
+        // 修改store里该movie。这样修改就保存在movieStore里了
+        let movieIndex = movieStore.movieCollection.movies.findIndex(movie => movie.id === newChosenMovie.id)
+        console.log("movieIndex",movieIndex);
+        
+        movieStore.movieCollection.movies[movieIndex] = newChosenMovie
+        // localStorage.setItem("chosenMovie", JSON.stringify(newChosenMovie))
+        // userStore.movies.push(userStore.movie)
+        // userStore.isBuying = false
+        console.log("in updateMovieStore moviestore allmovies")
+        console.log(movieStore.allMovies)
+    }
+
     const chooseOtherMovie = () => {
         // 完成当前电影的选座，更新当前电影的数据
-        userStore.movie.allTickets = userStore.allTickets
-        userStore.movie.size = userStore.showSize
-        userStore.movies.push(userStore.movie)
-
-        //跳转到电影界面--还未设计
-        // router.push()
+        // userStore.movie.allTickets = userStore.allTickets
+        // userStore.movie.size = userStore.showSize
+        console.log("choose other movie");
+        updateMovieStore()
+        router.push("/films")
     }
 
     const bookTicket = () => {

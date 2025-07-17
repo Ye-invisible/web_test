@@ -1,21 +1,35 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue';
-import Movie from './Movie.vue';
+    import { useMovieStore } from '@/stores/movies';
+import { useUserStore } from '@/stores/user';
+    import { onMounted, ref, watch } from 'vue';
 
-const chosenMovie = ref()
-chosenMovie.value = JSON.parse(localStorage.getItem("chosenMovie"));
-// console.log(chosenMovie.value.name);
-// onMounted(() => {
-//     const movieData = localStorage.getItem("chosenMovie");
-//     if (movieData) {
-//         chosenMovie.value = JSON.parse(movieData); // 直接赋值，无需 await
-//         // console.log("jump");
-//         // console.log(chosenMovie.value); // 打印完整对象以检查结构
-//         // console.log(chosenMovie.value.name);     
-//     } else {
-//         console.error("没有找到 chosenMovie 的数据");
-//     }
-// });
+    const chosenMovie = ref()
+    const chosenMovieShowTime = ref()
+    const SHOWSIZE = ["小型放映厅","中型放映厅","大型放映厅"]
+    const userStore = useUserStore()  
+    const movieStore = useMovieStore()
+
+    // console.log("startTime", userStore.movie)
+    onMounted(() => {
+        chosenMovie.value = JSON.parse(localStorage.getItem("chosenMovie"));
+        // console.log("chosenMovie",chosenMovie.value)
+        chosenMovieShowTime.value = JSON.parse(localStorage.getItem("chosenMovieShowTime"));
+        const chosenShowTimeIndex = chosenMovie.value.showtimes.findIndex(t => chosenMovieShowTime.value.id === t.id)
+
+        // console.log("in seatmovie")
+        // console.log(chosenMovie.value.showtimes)
+        // console.log(chosenShowTimeIndex)
+        userStore.movie = {
+            name: chosenMovie.value.name,
+            size: chosenMovieShowTime.value.showSize,
+            allTickets: movieStore.movieCollection.findMovieById(chosenMovie.value.id).showtimes[chosenShowTimeIndex].tickets,
+            startTime: chosenMovieShowTime.value.formattedTime
+        }
+        userStore.allTickets = userStore.movie.allTickets
+        // console.log("on load userStore movie", chosenMovie.value.showtimes[chosenShowTimeIndex].tickets)
+        // console.log("on load userStore alltickets", userStore.allTickets)
+    })
+
 </script>
 
 <template>
@@ -26,11 +40,15 @@ chosenMovie.value = JSON.parse(localStorage.getItem("chosenMovie"));
         <div id="wordBox">
             <h1 id="title">{{ chosenMovie.name }}</h1>
             <!-- <h3 id="titleEn">Mission: Impossible - The Final Reckoning</h3> -->
-            <ul id="desc">
+            <ul class="desc" id="desc1">
+                <li>放映时间: {{ chosenMovieShowTime.formattedTime }}</li>
+                <li>{{ chosenMovieShowTime.hall }}</li>
+                <li>放映厅大小: {{ SHOWSIZE[chosenMovieShowTime.showSize ]}}</li>
+            </ul>
+            <ul class="desc" id="desc2">
                 <li>{{ chosenMovie.releaseDateText }} 上映</li>
                 <li>演员: {{ chosenMovie.actors.join(" ") }}</li>
                 <li>评分: {{ chosenMovie.rating }}</li>
-                <li>{{ chosenMovie.category }}</li>
             </ul>
         </div>
     </div>
@@ -85,13 +103,13 @@ chosenMovie.value = JSON.parse(localStorage.getItem("chosenMovie"));
         color: white;
         text-align: center;
         
-        /* background: linear-gradient(45deg, hsl(0, 91%, 63%), #d40f05);
+        background: linear-gradient(45deg, hsl(0, 88%, 74%), #f40707);
         background-color: white;
         -webkit-background-clip: text;
         background-clip: text;
-        color: transparent; */
+        color: transparent;
 
-        margin-top: 40%;
+        margin-top: 10%;
     }
 
     #titleEn {
@@ -107,13 +125,15 @@ chosenMovie.value = JSON.parse(localStorage.getItem("chosenMovie"));
         color: transparent;
     }
 
-    #desc {
+    .desc {
         list-style-type: none;
         text-align: center;
         color: #ffffff;
         font-size: small;
         padding-right: 10%;
+    }
 
-        padding-top: 36%;
+    #desc1 {
+        margin-top: 30%;
     }
 </style>

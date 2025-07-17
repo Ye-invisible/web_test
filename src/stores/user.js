@@ -20,7 +20,7 @@ export const useUserStore = defineStore('user', {
     autoSelect: false,
     isBooking: false,
     // isCleanupOperation: false, // 标记是否为清理操作
-    isBuying: true,
+    isBuying: false,
 
     groupMember: [], // 仅在isGroup为true的时候有效
     singleMember: { name:"",
@@ -35,10 +35,9 @@ export const useUserStore = defineStore('user', {
     allTickets: [],  // 成员是singleMember
     movie:{
       // 这些内容由电影界面传递
-      name:"杀破狼", 
       startTime: new Date(2025, 6, 30, 22, 50, 0), // 应该为一个date对象
-      endTime:-1,
-      size: 1,
+      // endTime:-1,
+      size: 2,
 
       allTickets: [] // 该电影的所有购票人
     }
@@ -59,6 +58,7 @@ export const useUserStore = defineStore('user', {
       this.isGroup = false
       this.hasInput = false
       this.autoSelect = false
+      this.isBuying = false
     }
   }
 })

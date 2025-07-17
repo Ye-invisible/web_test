@@ -3,8 +3,8 @@ export const hallType = {
     1: 'IMAX2号厅',
     2: 'DOLBY3号厅',
     3: 'DOLBY4号厅',
-    4: 'STANDARD5号厅',
-    5: 'STANDARD6号厅'
+    4: 'STD5号厅',
+    5: 'STDD6号厅'
 };
 // 定义 Movie 类
 export class Movie {
@@ -20,7 +20,7 @@ export class Movie {
         this.version = version;
         this.actors = actors;
         this.showtimes = []; // 放映场次
-        this.tickets = [];   // 已售座位
+        // this.tickets = [];   // 已售座位
         this.category = '正在热映'; // 默认分类
     }
 
@@ -65,10 +65,14 @@ export class Movie {
     }
 
     changeState(showtimeId, state) {
-        const showtime = this.showtimes.find(s => s.id === showtimeId);
+        const showtimeIndex = this.showtimes.findIndex(s => s.id === showtimeId);
+        const showtime = this.showtimes[showtimeIndex]
         if (showtime) {
             showtime.tickets = state; // 更新作为状态、传入完整数组
         }
+        this.showtimes[showtimeIndex] = showtime;
+        console.log("change movie tickets");
+        console.log(this.showtimes[showtimeIndex])
     }
 
     // changebyseat(showtimeId, row, col, angle) {

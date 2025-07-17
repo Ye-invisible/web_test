@@ -42,7 +42,6 @@
         // 存储值到pinia
         userStore.groupMember = members.value
         userStore.hasInput = true
-
         // console.log("groupMember: ")
         // console.log(userStore.groupMember)
 

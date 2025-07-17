@@ -3,9 +3,12 @@
     import { onMounted, onUnmounted } from 'vue';
     import 'bootstrap/dist/css/bootstrap.min.css';
     import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import Circle from './User.vue';
+    import Circle from './User.vue';
+    import { useMovieStore } from '@/stores/movies';
 
     const userStore = useUserStore()
+    const movieStore = useMovieStore()
+    // const allMovieTickets = ref([])
 
     let timer = null;
 
@@ -14,7 +17,7 @@ import Circle from './User.vue';
         // if (!date || !(date instanceof Date)) {
         //     return '未设置'
         // }
-        
+        console.log(date)
         // const year = date.getFullYear()
         const month = String(date.getMonth() + 1).padStart(2, '0')
         const day = String(date.getDate()).padStart(2, '0')
@@ -75,9 +78,11 @@ import Circle from './User.vue';
     }
 
     onMounted(() => {
-        console.log("In timer")
+        // console.log("In timer")
         userStore.isBuying = false
         timer = setInterval(deleteOverTime,1000)
+
+        // let allmovies = movieStore.allMovies
     })
 
     onUnmounted(() => {
@@ -104,7 +109,7 @@ import Circle from './User.vue';
                     <tr v-for="(item, index) in userStore.allTickets" :key="index" class="form-group">
                         <td class="ticket">{{ item.name }}</td>
                         <td class="ticket">{{ userStore.movie.name }}</td>
-                        <td class="ticket">{{ formatTime(userStore.movie.startTime) }}</td>
+                        <td class="ticket">{{ userStore.movie.startTime }}</td>
                         <td class="ticket">{{ item.seat.row + '-' + item.seat.col }}</td>
                         <td class="ticket">
                             <button class="ticketButton" v-if="item.isBooking" @click="cancelBuyOrBook(item,true)">取消预定</button>

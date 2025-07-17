@@ -2,7 +2,7 @@
   import { ref, computed, onMounted } from 'vue'
   import { useMovieStore } from '../stores/movies';
   import Movie from './Movie.vue';
-    import { useRouter } from 'vue-router';
+  import { useRouter } from 'vue-router';
   
   const loading = ref(true)
   const selectedCategory = ref('正在热映')
@@ -13,13 +13,13 @@
   const movieStore = useMovieStore();
   const router = useRouter();
   const mockMovies = movieStore.allMovies;
-  console.log('mockMovies:', mockMovies);
+//   console.log('mockMovies:', mockMovies);
   // const filteredMovies = computed(() => {
   //   return movies.value.filter(movie => movie.category === selectedCategory.value)
   // })
   
-  const filteredMovies = computed(() => {
-    const result = movies.value.filter(movie => {
+    const filteredMovies = computed(() => {
+        const result = movies.value.filter(movie => {
       // 打印每个电影的 category 和目标分类，确认是否匹配
     //   console.log(
     //     '电影名称: ', movie.name,
@@ -27,9 +27,9 @@
     //     '目标分类: ', selectedCategory.value,
     //     '是否匹配: ', movie.category === selectedCategory.value
     //   );
-      return movie.category === selectedCategory.value;
+         return movie.category === selectedCategory.value;
     });
-    console.log('过滤前总数量：', movies.value.length, '过滤后数量：', result.length);
+    // console.log('过滤前总数量：', movies.value.length, '过滤后数量：', result.length);
     return result;
   });
   
@@ -38,7 +38,7 @@
 
     await new Promise(resolve => setTimeout(resolve, 800))
     movies.value = mockMovies
-    console.log('fetchmovies:', movies.value); // 检查 movies 数组是否有数据
+    // console.log('fetchmovies:', movies.value); // 检查 movies 数组是否有数据
   
     loading.value = false
   }
@@ -46,16 +46,6 @@
   onMounted(() => {
     fetchMovies()
   })
-
-  const handleMovieClick = (movie) => {
-    // console.log("click!")
-    // console.log(movie.showtimes)    
-    localStorage.setItem("chosenMovie", JSON.stringify(movie))
-    // let newValue = JSON.parse(localStorage.getItem("chosenMovie"))
-    // console.log("before jump")
-    // console.log(newValue.id);
-    router.push("/seats")
-  }
 
 </script>
 
@@ -80,7 +70,7 @@
                 :key="movie.id"
                 class="movie-card"
             >
-                <Movie :movie="movie" @click="() => handleMovieClick(movie)"/>
+                <Movie :movie="movie" />
             </div>
         </div>
         <!-- 正在加载 -->

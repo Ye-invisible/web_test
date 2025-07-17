@@ -42,7 +42,7 @@ export const useMovieStore = defineStore('movie', {
                 });
                 
                 this.movieCollection.addMoviesFromApiData(movieList);    
-                console.log('电影数据已成功获取并解析:', parsedMovies);
+                // console.log('电影数据已成功获取并解析:', parsedMovies);
                 
             } catch (error) {
                 console.error('获取或解析电影数据失败：', error.message);

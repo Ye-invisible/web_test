@@ -6,6 +6,8 @@
     import Welcome from '@/components/Welcome.vue'
 
     const userStore = useUserStore()
+    const chosenMovieShowTime = ref()
+    chosenMovieShowTime.value = JSON.parse(localStorage.getItem("chosenMovieShowTime"));
 
     const seats = ref(null)
     const seatList = ref([])
@@ -71,10 +73,11 @@
         
         // 监视用户是否确认购买票
         // 如果是团体购票，因为我没有在welcome.vue中写存储团体座位的逻辑，放在这里写，使用selectedList数组
-        if(userStore.isBuying && !checkSameLineAndAdjacent()){
-            alert("团体选座必须在同一排且无间隔!")
-            return
-        } else {
+        // if(userStore.isBuying && !checkSameLineAndAdjacent()){
+        //     console.log("Here")
+        //     alert("团体选座必须在同一排且无间隔!")
+        //     return
+        // } else {
             // 符合条件，保存座位内容
             let length = selectedList.value.length
             // if(userStore.isGroup && length != userStore.groupSize || !userStore.isGroup && length != 1){
@@ -86,7 +89,7 @@
                 userStore.allTickets[allLength - 1 - i].seat = selectedList.value[i]
             }
             // }  
-        }
+        // }
 
         // 如果确认，把座位变成红色
         // console.log(userStore.allTickets)
@@ -594,6 +597,10 @@
                 } else{
                     // userStore.hasChosen = true
                     if(userStore.isGroup){
+                        // if(!checkSameLineAndAdjacent()) {
+                        //     alert("团体选座必须在同一排且无间隔!")
+                        //     return
+                        // }
                         if(checkGroupChoose(seat.row, seat.col))selectedList.value.push(seat)
                     } else {
                         if(checkSingleChoose(seat))selectedList.value.push(seat)
@@ -732,7 +739,7 @@
     <div id="seatsWhole">  
         <Buttons id="buttons"></Buttons>
         <div id="info">
-            <span>Show Time: {{ formatTime(userStore.movie.startTime) }}</span>
+            <span>Show Time: {{ chosenMovieShowTime.formattedTime }}</span>
         </div>
         <div id="seat">
             <canvas ref="seats" width="950" height="650" @click="handleCanvasClick"></canvas>

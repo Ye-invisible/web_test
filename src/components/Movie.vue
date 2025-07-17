@@ -1,20 +1,38 @@
 <script setup>
     import { defineProps } from 'vue';
+import { useRouter } from 'vue-router';
 
     const SHOWSIZE = ["小型放映厅","中型放映厅","大型放映厅"]
+    const router = useRouter()
 
     const props = defineProps({
       movie: Object
     });
 
     const selectMovieShowtime = (movie, showtime) => {
-      alert(`选择场次: ${movie.name} - ${formatTime(showtime.startTime)} @ ${showtime.hall}`)
+      // alert(`选择场次: ${movie.name} - ${formatTime(showtime.startTime)} @ ${showtime.hall}`)
+
+      localStorage.setItem("chosenMovie", JSON.stringify(movie))
+      localStorage.setItem("chosenMovieShowTime", JSON.stringify(showtime))
+      // console.log(movie)
+      // console.log(showtime)
+      router.push("/seats")
     }
 
     const formatTime = (timeStr) => {
         const date = new Date(timeStr)
         return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
     }
+
+    // const handleMovieClick = (movie) => {
+    //   // console.log("click!")
+    //   // console.log(movie.showtimes)    
+    //   localStorage.setItem("chosenMovie", JSON.stringify(movie))
+    //   // let newValue = JSON.parse(localStorage.getItem("chosenMovie"))
+    //   // console.log("before jump")
+    //   // console.log(newValue.id);
+    //   router.push("/seats")
+    // }
 </script>
 
 <template>
