@@ -804,7 +804,7 @@
     #welcome {
         position: relative;
         bottom: -50%;
-        left: 1%;
+        left: -2%;
     }
     /* #buttons {
         display: flex;
