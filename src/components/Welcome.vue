@@ -29,7 +29,7 @@
             alert("选取座位数和购票人数不一致!")
             return 
         }
-         if (!userStore.isGroup && userStore.singleMember.seat.row == -1){
+         if (!userStore.isGroup && userStore.hasChoose === 0){
             alert("请选取一个座位!")
             return
         } 

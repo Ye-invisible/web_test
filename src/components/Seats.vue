@@ -582,7 +582,7 @@
                     //                             seat:{row:-1,col:-1,angle:-1},
                     //                             isBooking: false
                     //                         } // 取消选择
-                    // userStore.hasChosen = false
+                    userStore.hasChoose = 0
                 } else if (userStore.isGroup && selectedList.value.length >= userStore.groupSize){
                     // 检查已选座位和人数是否一致
                     alert("选取座位数不能超过购票人数!")

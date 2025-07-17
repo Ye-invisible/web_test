@@ -4,6 +4,7 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     // 专门用来实现用户选了座没买就返回主界面
     halfQuit: false,
+    // singleHasChoose: false,
     // hasChosen: false,
     // 获取用户屏幕尺寸
     screenWidth: 0,
