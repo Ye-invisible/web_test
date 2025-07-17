@@ -6,7 +6,7 @@ export const hallType = {
     4: 'STD5号厅',
     5: 'STDD6号厅'
 };
-const genres = ['正在热映', '即将上映', '经典电影','其他'];
+const genres = ['正在热映', '即将上映', '经典电影', '其他'];
 // 定义 Movie 类
 export class Movie {
     constructor(id, name, poster, genre, rating, releaseDate,version) {

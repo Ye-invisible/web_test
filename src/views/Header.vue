@@ -1,6 +1,9 @@
 <script setup>
+    import { ref, onMounted } from 'vue';
     import 'bootstrap/dist/css/bootstrap.min.css';
     import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+    import LoginModal from '@/components/LoginModal.vue';
+
 </script>
 
 <template>
@@ -13,9 +16,9 @@
             <img id="icon" src="../assets/images/dog.ico"/>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav" id="tabs">
-                    <li class="nav-item tab">
+                    <!-- <li class="nav-item tab">
                         <RouterLink class="nav-link" aria-current="page" to="/app">Home</RouterLink>
-                    </li>
+                    </li> -->
                     <li class="nav-item tab">
                         <RouterLink class="nav-link" aria-current="page" to="/films">movie</RouterLink>
                     </li>                    
@@ -24,14 +27,13 @@
                     </li>
                     <li class="nav-item tab">
                         <RouterLink class="nav-link" aria-current="page" to="/tickets">ticketList</RouterLink>
-                    </li>
-                    <!-- <li class="nav-item tab">
-                        <img src=""/>
-                    </li> -->
+                    </li>      
                 </ul>
             </div>
+            <img src="../assets/images/dog3.jpg" class="userHead" data-bs-toggle="modal" data-bs-target="#LoginModal"/>
         </div>
     </nav>
+    <LoginModal />
 </template>
 
 <style>
@@ -87,6 +89,23 @@
 
     .nav-link:focus {
         color: white; /* 改变文字颜色 */
+    }
+
+    .userHead {
+        position: absolute;
+        top: 20%;
+        right: 3%;
+        width: 10%;
+
+        border-radius: 60px;
+        border-width: 10px;
+        border-style: solid;
+        border-color: rgb(244, 8, 43);
+        box-shadow: 10px 10px 10px rgb(17, 17, 17);
+    }
+
+    #loginModal {
+        z-index: 10;
     }
 /* 
 
