@@ -25,6 +25,10 @@ export const useUserStore = defineStore('user', {
     groupMember: [], // 仅在isGroup为true的时候有效
     singleMember: { name:"",
                     age:-1,
+                    movieId: -1,
+                    showtimeId: -1,
+                    moviename: "",
+                    startTime: -1,
                     seat:{row:-1,col:-1,angle:-1},
                     isBooking: false // 是否为预定票，如果不是预定票则为直接购买，点击购买时要弹出付款成功界面，否则不弹出
                   },
@@ -38,6 +42,9 @@ export const useUserStore = defineStore('user', {
       startTime: new Date(2025, 6, 30, 22, 50, 0), // 应该为一个date对象
       // endTime:-1,
       size: 2,
+      name: "",
+      movieId: -1,
+      showtimeId: -1,
 
       allTickets: [] // 该电影的所有购票人
     }

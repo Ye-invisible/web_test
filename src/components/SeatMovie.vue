@@ -23,7 +23,9 @@ import { useUserStore } from '@/stores/user';
             name: chosenMovie.value.name,
             size: chosenMovieShowTime.value.showSize,
             allTickets: movieStore.movieCollection.findMovieById(chosenMovie.value.id).showtimes[chosenShowTimeIndex].tickets,
-            startTime: chosenMovieShowTime.value.formattedTime
+            startTime: chosenMovieShowTime.value.formattedTime,
+            movieId: chosenMovie.value.id,
+            showtimeId: chosenMovieShowTime.value.id
         }
         userStore.allTickets = userStore.movie.allTickets
         // console.log("on load userStore movie", chosenMovie.value.showtimes[chosenShowTimeIndex].tickets)

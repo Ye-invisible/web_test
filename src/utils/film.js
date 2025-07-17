@@ -71,8 +71,8 @@ export class Movie {
             showtime.tickets = state; // 更新作为状态、传入完整数组
         }
         this.showtimes[showtimeIndex] = showtime;
-        console.log("change movie tickets");
-        console.log(this.showtimes[showtimeIndex])
+        // console.log("change movie tickets");
+        // console.log(this.showtimes[showtimeIndex])
     }
 
     // changebyseat(showtimeId, row, col, angle) {

@@ -40,12 +40,20 @@
         if (userStore.isGroup){
             for(let p of userStore.groupMember){
                 p.isBooking = userStore.isBooking
+                p.movieId = userStore.movie.movieId
+                p.showtimeId = userStore.movie.showtimeId
+                p.moviename = userStore.movie.name
+                p.startTime = userStore.movie.startTime
             }
             userStore.allTickets = [...userStore.allTickets,...userStore.groupMember]
         } else {
             // console.log("IN!")
             // console.log(userStore.allTickets)
             userStore.singleMember.isBooking = userStore.isBooking
+            userStore.singleMember.movieId = userStore.movie.movieId
+            userStore.singleMember.showtimeId = userStore.movie.showtimeId
+            userStore.singleMember.moviename = userStore.movie.name
+            userStore.singleMember.startTime = userStore.movie.startTime
             userStore.allTickets.push(userStore.singleMember)
         }
         // console.log(userStore.isGroup)
@@ -98,7 +106,7 @@
     const updateMovieStore = () => {
         // 从 localStorage 获取数据
         const storedMovie = JSON.parse(localStorage.getItem("chosenMovie"));
-        console.log("storedMovie showtimes", storedMovie.showtimes)
+        // console.log("storedMovie showtimes", storedMovie.showtimes)
         let chosenMovieShowTimeId = JSON.parse(localStorage.getItem("chosenMovieShowTime")).id;
 
         // 发现数据结构里提供了直接修改的方法
@@ -120,17 +128,17 @@
         newChosenMovie.showtimes = storedMovie.showtimes;
         // 调用类的方法修改票
         newChosenMovie.changeState(chosenMovieShowTimeId, userStore.allTickets)
-        console.log("changed showtimes:", newChosenMovie.showtimes)
+        // console.log("changed showtimes:", newChosenMovie.showtimes)
         // 修改store里该movie。这样修改就保存在movieStore里了
         let movieIndex = movieStore.movieCollection.movies.findIndex(movie => movie.id === newChosenMovie.id)
-        console.log("movieIndex",movieIndex);
+        // console.log("movieIndex",movieIndex);
         
         movieStore.movieCollection.movies[movieIndex] = newChosenMovie
         // localStorage.setItem("chosenMovie", JSON.stringify(newChosenMovie))
         // userStore.movies.push(userStore.movie)
         // userStore.isBuying = false
-        console.log("in updateMovieStore moviestore allmovies")
-        console.log(movieStore.allMovies)
+        // console.log("in updateMovieStore moviestore allmovies")
+        // console.log(movieStore.allMovies)
     }
 
     const chooseOtherMovie = () => {

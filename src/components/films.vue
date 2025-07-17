@@ -27,7 +27,7 @@
     //     '目标分类: ', selectedCategory.value,
     //     '是否匹配: ', movie.category === selectedCategory.value
     //   );
-         return movie.category === selectedCategory.value;
+        return movie.category === selectedCategory.value;
     });
     // console.log('过滤前总数量：', movies.value.length, '过滤后数量：', result.length);
     return result;

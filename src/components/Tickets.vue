@@ -1,6 +1,6 @@
 <script setup>
     import { useUserStore } from '@/stores/user';
-    import { onMounted, onUnmounted } from 'vue';
+    import { onMounted, onUnmounted, ref } from 'vue';
     import 'bootstrap/dist/css/bootstrap.min.css';
     import 'bootstrap/dist/js/bootstrap.bundle.min.js';
     import Circle from './User.vue';
@@ -8,7 +8,7 @@
 
     const userStore = useUserStore()
     const movieStore = useMovieStore()
-    // const allMovieTickets = ref([])
+    const allMovieTickets = ref([])
 
     let timer = null;
 
@@ -30,16 +30,43 @@
     const cancelBuyOrBook = (item,flag) => {
         // flag 为false代表不是预定票
         // 从 allTickets 数组中删除指定的票务项目
-        const index = userStore.allTickets.findIndex(ticket => 
-            ticket.name === item.name && 
-            ticket.seat.row === item.seat.row && 
-            ticket.seat.col === item.seat.col
-        )
-        
-        userStore.allTickets.splice(index, 1)
+        // const index = userStore.allTickets.findIndex(ticket => 
+        //     ticket.name === item.name && 
+        //     ticket.seat.row === item.seat.row && 
+        //     ticket.seat.col === item.seat.col
+        // )
+        console.log("item", item)
+        // userStore.allTickets.splice(index, 1)
+        let movie = movieStore.movieCollection.movies.find(movie => movie.id === item.movieId)
+        let movieIndex = movieStore.movieCollection.movies.findIndex(movie => movie.id === item.movieId)
+        // console.log("find movie", movie)
+        let showtimeIndex = movie.showtimes.findIndex(showtime => showtime.id === item.showtimeId)
+        // console.log("showtimeId", item.showtimeId)
+        let ticketIndex = movie.showtimes[showtimeIndex].tickets.findIndex(tic => {
+            if(tic.seat.col === item.seat.col && tic.seat.row === item.seat.row) return true
+            return false
+        })
+
+        const newShowtimes = [...movie.showtimes]
+        // console.log("newShowtimes", newShowtimes)
+        // console.log("ticketIndex", ticketIndex)
+        // console.log("splice",newShowtimes[showtimeIndex].tickets.splice(ticketIndex,1))
+        const newTickets = [...newShowtimes[showtimeIndex].tickets]
+        newTickets.splice(ticketIndex, 1)
+        newShowtimes[showtimeIndex] = {
+            ...newShowtimes[showtimeIndex],
+            tickets: newTickets
+        }
+
+        movieStore.movieCollection.movies[movieIndex] = {
+            ...movie,
+            showtimes : newShowtimes
+        }
+
+        getAllTickets()
+
         if(!flag) alert("退款成功！")
         else alert("取消预定成功!")
-
     }
 
     const deleteOverTime = () => {
@@ -67,14 +94,24 @@
     }
 
     function bookToBuy(item) {
-        const index = userStore.allTickets.findIndex(ticket => 
-            ticket.name === item.name && 
-            ticket.seat.row === item.seat.row && 
-            ticket.seat.col === item.seat.col
-        )
+        // const index = userStore.allTickets.findIndex(ticket => 
+        //     ticket.name === item.name && 
+        //     ticket.seat.row === item.seat.row && 
+        //     ticket.seat.col === item.seat.col
+        // )
         
-        userStore.allTickets[index].isBooking = false
+        // userStore.allTickets[index].isBooking = false
+        // 首先找到电影
+        let movie = movieStore.movieCollection.movies.find(movie => movie.id === item.movieId)
+        let showtime = movie.showtimes.find(showtime => showtime.id === item.showtimeId)
+        let ticket = showtime.tickets.find(tic => {
+            if(tic.seat.col === item.seat.col && tic.seat.row === item.seat.row) return true
+            return false
+        })
+        ticket.isBooking = false
+
         alert("付款成功!")
+        getAllTickets()
     }
 
     onMounted(() => {
@@ -82,8 +119,19 @@
         userStore.isBuying = false
         timer = setInterval(deleteOverTime,1000)
 
-        // let allmovies = movieStore.allMovies
+        getAllTickets()
     })
+
+    const getAllTickets = () => {
+        allMovieTickets.value = []
+        let allmovies = movieStore.movieCollection.movies
+        for(let movie of movieStore.movieCollection.movies){
+            for(let showtime of movie.showtimes){
+                allMovieTickets.value = [...allMovieTickets.value, ...showtime.tickets]
+            }  
+        }
+        // console.log("allMovieTickets", allMovieTickets.value)
+    }
 
     onUnmounted(() => {
         userStore.isBuying = true
@@ -106,10 +154,21 @@
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <tr v-for="(item, index) in userStore.allTickets" :key="index" class="form-group">
+                    <!-- <tr v-for="(item, index) in userStore.allTickets" :key="index" class="form-group">
                         <td class="ticket">{{ item.name }}</td>
                         <td class="ticket">{{ userStore.movie.name }}</td>
                         <td class="ticket">{{ userStore.movie.startTime }}</td>
+                        <td class="ticket">{{ item.seat.row + '-' + item.seat.col }}</td>
+                        <td class="ticket">
+                            <button class="ticketButton" v-if="item.isBooking" @click="cancelBuyOrBook(item,true)">取消预定</button>
+                            <button class="ticketButton" v-else @click="cancelBuyOrBook(item,false)">退票</button>
+                            <button class="ticketButton" v-show="item.isBooking" @click="bookToBuy(item)">付款</button>
+                        </td>
+                    </tr> -->
+                    <tr v-for="(item, index) in allMovieTickets" :key="index" class="form-group">
+                        <td class="ticket">{{ item.name }}</td>
+                        <td class="ticket">{{ item.moviename }}</td>
+                        <td class="ticket">{{ item.startTime }}</td>
                         <td class="ticket">{{ item.seat.row + '-' + item.seat.col }}</td>
                         <td class="ticket">
                             <button class="ticketButton" v-if="item.isBooking" @click="cancelBuyOrBook(item,true)">取消预定</button>
