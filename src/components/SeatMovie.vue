@@ -1,21 +1,41 @@
 <script setup>
+import { onMounted, ref, watch } from 'vue';
+import Movie from './Movie.vue';
 
+const chosenMovie = ref()
+chosenMovie.value = JSON.parse(localStorage.getItem("chosenMovie"));
+// console.log(chosenMovie.value.name);
+// onMounted(() => {
+//     const movieData = localStorage.getItem("chosenMovie");
+//     if (movieData) {
+//         chosenMovie.value = JSON.parse(movieData); // 直接赋值，无需 await
+//         // console.log("jump");
+//         // console.log(chosenMovie.value); // 打印完整对象以检查结构
+//         // console.log(chosenMovie.value.name);     
+//     } else {
+//         console.error("没有找到 chosenMovie 的数据");
+//     }
+// });
 </script>
 
 <template>
-    <div id="content">
+    <div id="content" v-if="chosenMovie">
         <div id="imageBox">
-            <img src="../assets/images/movie.jpg" id="movieImage">
+            <img :src="chosenMovie.poster" id="movieImage">
         </div>     
         <div id="wordBox">
-            <h1 id="title">碟中谍8:最终清算</h1>
-            <h3 id="titleEn">Mission: Impossible - The Final Reckoning</h3>
+            <h1 id="title">{{ chosenMovie.name }}</h1>
+            <!-- <h3 id="titleEn">Mission: Impossible - The Final Reckoning</h3> -->
             <ul id="desc">
-                <li>动作 惊悚 冒险</li>
-                <li>美国/170分钟</li>
-                <li>2025-05-30 09:00中国大陆上映</li>
+                <li>{{ chosenMovie.releaseDateText }} 上映</li>
+                <li>演员: {{ chosenMovie.actors.join(" ") }}</li>
+                <li>评分: {{ chosenMovie.rating }}</li>
+                <li>{{ chosenMovie.category }}</li>
             </ul>
         </div>
+    </div>
+    <div v-else>
+        <p>加载中...</p> <!-- 或者其他占位内容 -->
     </div>
 </template>
 
@@ -61,7 +81,7 @@
 
     #title {
         font-family: 'Regular', monospace;
-        font-size: 50px;
+        font-size: 70px;
         color: white;
         text-align: center;
         

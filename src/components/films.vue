@@ -2,6 +2,7 @@
   import { ref, computed, onMounted } from 'vue'
   import { useMovieStore } from '../stores/movies';
   import Movie from './Movie.vue';
+    import { useRouter } from 'vue-router';
   
   const loading = ref(true)
   const selectedCategory = ref('正在热映')
@@ -10,6 +11,7 @@
 
   // TODO：利用api得到真实数据
   const movieStore = useMovieStore();
+  const router = useRouter();
   const mockMovies = movieStore.allMovies;
   console.log('mockMovies:', mockMovies);
   // const filteredMovies = computed(() => {
@@ -19,21 +21,17 @@
   const filteredMovies = computed(() => {
     const result = movies.value.filter(movie => {
       // 打印每个电影的 category 和目标分类，确认是否匹配
-      console.log(
-        '电影名称: ', movie.name,
-        '电影category: ', movie.category,
-        '目标分类: ', selectedCategory.value,
-        '是否匹配: ', movie.category === selectedCategory.value
-      );
+    //   console.log(
+    //     '电影名称: ', movie.name,
+    //     '电影category: ', movie.category,
+    //     '目标分类: ', selectedCategory.value,
+    //     '是否匹配: ', movie.category === selectedCategory.value
+    //   );
       return movie.category === selectedCategory.value;
     });
     console.log('过滤前总数量：', movies.value.length, '过滤后数量：', result.length);
     return result;
   });
-  
-  const selectMovieShowtime = (movie, showtime) => {
-    alert(`选择场次: ${movie.name} - ${formatTime(showtime.startTime)} @ ${showtime.hall}`)
-  }
   
   const fetchMovies = async () => {
     loading.value = true
@@ -49,8 +47,14 @@
     fetchMovies()
   })
 
-  const handleMovieClick = () => {
-    console.log("click!")
+  const handleMovieClick = (movie) => {
+    // console.log("click!")
+    // console.log(movie.showtimes)    
+    localStorage.setItem("chosenMovie", JSON.stringify(movie))
+    // let newValue = JSON.parse(localStorage.getItem("chosenMovie"))
+    // console.log("before jump")
+    // console.log(newValue.id);
+    router.push("/seats")
   }
 
 </script>
@@ -76,7 +80,7 @@
                 :key="movie.id"
                 class="movie-card"
             >
-                <Movie :movie="movie" @click="handleMovieClick"/>
+                <Movie :movie="movie" @click="() => handleMovieClick(movie)"/>
             </div>
         </div>
         <!-- 正在加载 -->

@@ -37,8 +37,7 @@ export const useMovieStore = defineStore('movie', {
                         releaseDateText: movie.comingTitle, // 上映日期文字描述（如“7月5日 周六”）
                         actors: movie.star ? movie.star.split(' / ') : [], // 主演（假设接口返回中有 star 字段）
                         showInfo: movie.showInfo, // 放映信息（如“今天254家影院放映1245场”）
-                        version: movie.version || '普通版', // 版本（如“v3d imax”）
-                        
+                        version: movie.version || '普通版', // 版本（如“v3d imax”）                        
                     };
                 });
                 

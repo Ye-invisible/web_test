@@ -1,9 +1,15 @@
 <script setup>
     import { defineProps } from 'vue';
 
+    const SHOWSIZE = ["小型放映厅","中型放映厅","大型放映厅"]
+
     const props = defineProps({
       movie: Object
     });
+
+    const selectMovieShowtime = (movie, showtime) => {
+      alert(`选择场次: ${movie.name} - ${formatTime(showtime.startTime)} @ ${showtime.hall}`)
+    }
 
     const formatTime = (timeStr) => {
         const date = new Date(timeStr)
@@ -20,7 +26,9 @@
             <h3 class="movie-title">{{ movie.name }}</h3>
             <p class="movie-genre">{{ movie.showInfo }}</p>
             <div class="movie-details">
-              <span class="movie-duration">{{ movie.duration }}分钟</span>
+              <!-- 好像movie类中没有duration这个属性? -->
+              <!-- <span class="movie-duration">{{ movie.duration }}分钟</span> -->
+              <span class="movie-duration"> 60 分钟</span>
               <span class="movie-release">{{ movie.releaseDate }}</span>
             </div>
             <div class="movie-showtimes">
@@ -30,9 +38,9 @@
                 class="showtime-item"
                 @click.stop="selectMovieShowtime(movie, showtime)"
               >
-                <span class="showtime">{{ formatTime(showtime.startTime) }}</span>
+                <span class="showtime">{{ showtime.formattedTime }}</span>
                 <span class="hall">{{ showtime.hall }}</span>
-                <span class="price">¥{{ showtime.price }}</span>
+                <span class="price">{{ SHOWSIZE[showtime.showSize] }}</span>
               </div>
             </div>
         </div>
@@ -132,7 +140,7 @@
   }
   
   .price {
-    color: #ff6b6b;
+    color: #e3c0c0;
     font-weight: bold;
   }
 </style>
