@@ -7,6 +7,7 @@
 
     const userStore = useUserStore()
     const chosenMovieShowTime = ref()
+    // const SCALE = userStore.scale
     chosenMovieShowTime.value = JSON.parse(localStorage.getItem("chosenMovieShowTime"));
 
     const seats = ref(null)
@@ -458,10 +459,10 @@
         // ctx.lineTo(280,600)
         // ctx.lineTo(720,580)
         // ctx.lineTo(720,600)
-        ctx.moveTo(280,570)
-        ctx.lineTo(280,590)
-        ctx.lineTo(720,570)
-        ctx.lineTo(720,590)
+        ctx.moveTo(280,555)
+        ctx.lineTo(280,575)
+        ctx.lineTo(720,555)
+        ctx.lineTo(720,575)
         ctx.fillStyle = '#666'
         ctx.fill()
         ctx.globalAlpha = 1;
@@ -781,20 +782,20 @@
       background-color: transparent;
       position: absolute;
       top: -5%;
-      left: -8%;
+      left: -12%;
     }
 
     #buttons {
         width: 100%;
         position: relative;
         top: -7%;
-        right: -25%;
+        right: -22%;
     }
 
     #info {
         position: relative;
         top: -6%;
-        left: 36%;
+        left: 33%;
         font-family: 'Double', monospace;
         font-size: 20px;
         color: white;

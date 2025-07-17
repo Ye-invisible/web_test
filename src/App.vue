@@ -22,18 +22,29 @@
         // console.log(window.innerHeight)
         // console.log(window.innerWidth)
         // 计算缩放比例
-        userStore.scale = Math.min(userStore.screenWidth / userStore.originScreenWidth, userStore.screenHeight / userStore.originScreenHeight);
+        const scaleWidth = userStore.screenWidth / userStore.originScreenWidth
+        const scaleHeight = userStore.screenHeight / userStore.originScreenHeight
+        userStore.scale = Math.min(scaleWidth, scaleHeight)
+
+        // 应用缩放
+        const appContainer = document.getElementById('all')
+        if (appContainer) {
+            appContainer.style.transform = `scale(${userStore.scale})`
+            appContainer.style.transformOrigin = 'top left'
+            
+            // 补偿缩放后的尺寸
+            appContainer.style.width = `${100/userStore.scale}%`
+            appContainer.style.height = `${100/userStore.scale}%`
+        }
+
 
         const navEntries = performance.getEntriesByType('navigation')
             if (navEntries.length > 0 && navEntries[0].type === 'reload') {
                 router.replace('/buy/single')
             }
-        
-            // 应用缩放
-        // document.getElementById('all').style.transform = `scale(${scale.value})`;
-        // document.getElementById('all').style.transformOrigin = 'top left'; // 设置缩放原点
-
+    
         router.push('/films')
+        console.log("transform")
 
         if (movieStore.allMovies.length === 0) {
             await movieStore.fetchMovies();
@@ -60,11 +71,9 @@
 </template>
 
 <style>
-    /* #all {
-        width: 100%; 
-        height: 100%; 
-        overflow: hidden; 
-    } */
+    #all {
+        transform-origin: top left;
+    }
 
     /* #buttons {
         position: fixed;
