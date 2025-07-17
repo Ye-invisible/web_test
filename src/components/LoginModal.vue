@@ -4,7 +4,7 @@
 
 <template>
   <!-- <div class="modal-backdrop fade show"></div> -->
-  <div class="modal fade" id="LoginModal" tabindex="-1">
+  <div class="modal fade" id="LoginModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">

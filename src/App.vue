@@ -13,7 +13,7 @@
     const router = useRouter()
     const userStore = useUserStore()
     const movieStore = useMovieStore();
-    const scale = ref(1); // 用于存储缩放比例
+    // const scale = ref(1); // 用于存储缩放比例
 
     onMounted(async () => {
         userStore.screenHeight = window.innerHeight
@@ -22,7 +22,7 @@
         // console.log(window.innerHeight)
         // console.log(window.innerWidth)
         // 计算缩放比例
-        scale.value = Math.min(userStore.screenWidth / userStore.originScreenWidth, userStore.screenHeight / userStore.originScreenHeight);
+        userStore.scale = Math.min(userStore.screenWidth / userStore.originScreenWidth, userStore.screenHeight / userStore.originScreenHeight);
 
         const navEntries = performance.getEntriesByType('navigation')
             if (navEntries.length > 0 && navEntries[0].type === 'reload') {
@@ -30,8 +30,8 @@
             }
         
             // 应用缩放
-        document.getElementById('all').style.transform = `scale(${scale.value})`;
-        document.getElementById('all').style.transformOrigin = 'top left'; // 设置缩放原点
+        // document.getElementById('all').style.transform = `scale(${scale.value})`;
+        // document.getElementById('all').style.transformOrigin = 'top left'; // 设置缩放原点
 
         router.push('/films')
 

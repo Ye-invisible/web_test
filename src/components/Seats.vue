@@ -750,7 +750,7 @@
 
 <style scoped>
     #seatsWhole {
-        position: absolute;
+        position: relative;
         width: 55%;
         height: 68%;
         top: 8%;
@@ -780,8 +780,8 @@
     canvas {
       background-color: transparent;
       position: absolute;
-      top: -3%;
-      left: -2%;
+      top: -5%;
+      left: -8%;
     }
 
     #buttons {
