@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="modal-backdrop fade show"></div>
+  <!-- <div class="modal-backdrop fade show"></div> -->
   <div class="modal fade" id="LoginModal" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
