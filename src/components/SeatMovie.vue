@@ -1,19 +1,25 @@
 <script setup>
     import { useMovieStore } from '@/stores/movies';
-import { useUserStore } from '@/stores/user';
+    import { useUserStore } from '@/stores/user';
     import { onMounted, ref, watch } from 'vue';
+    import { useRouter } from 'vue-router';
 
     const chosenMovie = ref()
     const chosenMovieShowTime = ref()
     const SHOWSIZE = ["小型放映厅","中型放映厅","大型放映厅"]
     const userStore = useUserStore()  
     const movieStore = useMovieStore()
-
+    const router = useRouter()
     // console.log("startTime", userStore.movie)
-    onMounted(() => {
+    onMounted(async () => {
         chosenMovie.value = JSON.parse(localStorage.getItem("chosenMovie"));
         // console.log("chosenMovie",chosenMovie.value)
         chosenMovieShowTime.value = JSON.parse(localStorage.getItem("chosenMovieShowTime"));
+        if(!chosenMovie.value){
+            alert("请先选择电影!")
+            await router.push("/films")
+            return
+        }
         const chosenShowTimeIndex = chosenMovie.value.showtimes.findIndex(t => chosenMovieShowTime.value.id === t.id)
 
         // console.log("in seatmovie")
