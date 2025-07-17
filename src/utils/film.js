@@ -6,19 +6,20 @@ export const hallType = {
     4: 'STD5号厅',
     5: 'STDD6号厅'
 };
+const genres = ['正在热映', '即将上映', '经典电影','其他'];
 // 定义 Movie 类
 export class Movie {
-    constructor(id, name, poster, genre, rating, releaseDate, releaseDateText, showInfo, version, actors = []) {
+    constructor(id, name, poster, genre, rating, releaseDate,version) {
         this.id = id; 
         this.name = name;
         this.poster = poster;
         this.genre = genre;
         this.rating = rating;
         this.releaseDate = releaseDate;
-        this.releaseDateText = releaseDateText;
-        this.showInfo = showInfo;
+        // this.releaseDateText = releaseDateText;
+        // this.showInfo = showInfo;
         this.version = version;
-        this.actors = actors;
+        // this.actors = actors;
         this.showtimes = []; // 放映场次
         // this.tickets = [];   // 已售座位
         this.category = '正在热映'; // 默认分类
@@ -95,18 +96,19 @@ export class MovieCollection {
 
     // 从API数据批量添加电影
     addMoviesFromApiData(movieList) {
-        const parsedMovies = movieList.map(movie => {
+        let newMovieList = this.filterRepitiveMovie(movieList)
+        const parsedMovies = newMovieList.map(movie => {
             const newMovie = new Movie(
                 this.counter++,
                 movie.nm,
                 movie.img,
-                movie.genre || '其他',
-                movie.sc > 0 ? movie.sc : '暂无评分',
-                movie.rt,
+                genres[Math.floor(Math.random() * 4)],
+                movie.score ?? '暂无评分',
                 movie.comingTitle,
-                movie.showInfo,
+                // // movie.comingTitle,
+                // movie.showInfo,
                 movie.version || '普通版',
-                movie.star ? movie.star.split(' / ') : []
+                // movie.star ? movie.star.split(' / ') : []
             );
             newMovie.randomCreateshowtimes();
             newMovie.randomCreatecategory();
@@ -115,6 +117,17 @@ export class MovieCollection {
         
         this.movies.push(...parsedMovies);
         return parsedMovies;
+    }
+
+    filterRepitiveMovie(movieList) {
+        // 防止添加重复的电影
+        let newMovieList = []
+        for(let movie of movieList){
+            if(this.movies.every(mo => mo.name !== movie.name)){
+                newMovieList.push(movie)
+            }
+        }
+        return newMovieList
     }
 
     // 根据ID查找电影

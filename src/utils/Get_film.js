@@ -1,9 +1,10 @@
 import { MovieCollection } from './film.js';
+const FILMNUMBERS = 100; // 请求的电影数
 // 注意：选择 axios 或 fetch 其中一种工具即可，这里以 fetch 为例
 export async function fetchMovies() {
   try {
     // 1. 发送请求获取完整数据
-    const response = await fetch('https://apis.netstart.cn/maoyan/index/movieOnInfoList');
+    const response = await fetch(`https://apis.netstart.cn/maoyan/index/moreClassicList?sortId=1&showType=3&limit=${FILMNUMBERS}&offset=0`);
     if (!response.ok) {
       throw new Error(`请求失败，状态码：${response.status}`);
     }

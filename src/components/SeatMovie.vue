@@ -48,8 +48,8 @@ import { useUserStore } from '@/stores/user';
                 <li>放映厅大小: {{ SHOWSIZE[chosenMovieShowTime.showSize ]}}</li>
             </ul>
             <ul class="desc" id="desc2">
-                <li>{{ chosenMovie.releaseDateText }} 上映</li>
-                <li>演员: {{ chosenMovie.actors.join(" ") }}</li>
+                <li>{{ chosenMovie.releaseDate }} 上映</li>
+                <!-- <li>演员: {{ chosenMovie.actors.join(" ") }}</li> -->
                 <li>评分: {{ chosenMovie.rating }}</li>
             </ul>
         </div>
@@ -111,7 +111,7 @@ import { useUserStore } from '@/stores/user';
         background-clip: text;
         color: transparent;
 
-        margin-top: 10%;
+        margin-top: 20%;
     }
 
     #titleEn {
@@ -136,6 +136,6 @@ import { useUserStore } from '@/stores/user';
     }
 
     #desc1 {
-        margin-top: 30%;
+        margin-top: 50%;
     }
 </style>
