@@ -37,7 +37,7 @@ export class Movie {
     }
 
     randomCreatecategory(){
-        var t=Math.floor(Math.random() * 3);
+        var t=Math.floor(Math.random() * 4);
         switch(t){
             case 0:
                 this.category = '正在热映';
@@ -48,6 +48,9 @@ export class Movie {
             case 2:
                 this.category = '经典电影';
                 break;
+            case 3:
+                this.category = '其他';
+                break
         }
     }
     // 添加放映场次

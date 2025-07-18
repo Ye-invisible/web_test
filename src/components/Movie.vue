@@ -1,6 +1,6 @@
 <script setup>
     import { defineProps } from 'vue';
-import { useRouter } from 'vue-router';
+    import { useRouter } from 'vue-router';
 
     const SHOWSIZE = ["小型放映厅","中型放映厅","大型放映厅"]
     const router = useRouter()

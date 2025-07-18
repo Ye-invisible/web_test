@@ -34,6 +34,7 @@ export const useUserStore = defineStore('user', {
                     moviename: "",
                     startTime: -1,
                     seat:{row:-1,col:-1,angle:-1},
+                    imageURL: "",
                     isBooking: false // 是否为预定票，如果不是预定票则为直接购买，点击购买时要弹出付款成功界面，否则不弹出
                   },
   
@@ -49,6 +50,7 @@ export const useUserStore = defineStore('user', {
       name: "",
       movieId: -1,
       showtimeId: -1,
+      imageURL: "",
 
       allTickets: [] // 该电影的所有购票人
     }

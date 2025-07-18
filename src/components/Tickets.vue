@@ -5,6 +5,7 @@
     import 'bootstrap/dist/js/bootstrap.bundle.min.js';
     import Circle from './User.vue';
     import { useMovieStore } from '@/stores/movies';
+    import Ticket from './Ticket.vue';
 
     const userStore = useUserStore()
     const movieStore = useMovieStore()
@@ -28,7 +29,7 @@
     }
 
     const cancelBuyOrBook = (item,flag) => {
-        // flag 为false代表不是预定票
+        // flag 为 false 代表不是预定票
         // 从 allTickets 数组中删除指定的票务项目
         // const index = userStore.allTickets.findIndex(ticket => 
         //     ticket.name === item.name && 
@@ -140,12 +141,25 @@
 </script>
 
 <template>
-    <div id="tickets">
+    <div class="allTickets">
+        <ul>
+            <li v-for="(item, index) in allMovieTickets" :key="index">
+                <Ticket 
+                :item="item"
+                :cancel-buy-or-book="cancelBuyOrBook"
+                :book-to-buy="bookToBuy"/>
+            </li> 
+        </ul>
+    </div>
+    
+    
+    <!-- <div id="tickets">
         <Circle id="circle"></Circle>
         <div id="tableOuter">
             <table id="inputTable" class="table table-striped">
                 <thead id="tableHead">
                     <tr>
+                        <th>电影海报</th>
                         <th>姓名</th>                 
                         <th>电影</th>
                         <th>上映时间</th>
@@ -154,7 +168,7 @@
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <!-- <tr v-for="(item, index) in userStore.allTickets" :key="index" class="form-group">
+                    <tr v-for="(item, index) in userStore.allTickets" :key="index" class="form-group">
                         <td class="ticket">{{ item.name }}</td>
                         <td class="ticket">{{ userStore.movie.name }}</td>
                         <td class="ticket">{{ userStore.movie.startTime }}</td>
@@ -164,22 +178,17 @@
                             <button class="ticketButton" v-else @click="cancelBuyOrBook(item,false)">退票</button>
                             <button class="ticketButton" v-show="item.isBooking" @click="bookToBuy(item)">付款</button>
                         </td>
-                    </tr> -->
+                    </tr>
                     <tr v-for="(item, index) in allMovieTickets" :key="index" class="form-group">
-                        <td class="ticket">{{ item.name }}</td>
-                        <td class="ticket">{{ item.moviename }}</td>
-                        <td class="ticket">{{ item.startTime }}</td>
-                        <td class="ticket">{{ item.seat.row + '-' + item.seat.col }}</td>
-                        <td class="ticket">
-                            <button class="ticketButton" v-if="item.isBooking" @click="cancelBuyOrBook(item,true)">取消预定</button>
-                            <button class="ticketButton" v-else @click="cancelBuyOrBook(item,false)">退票</button>
-                            <button class="ticketButton" v-show="item.isBooking" @click="bookToBuy(item)">付款</button>
-                        </td>
+                        <Ticket 
+                        :item="item"
+                        :cancel-buy-or-book="cancelBuyOrBook"
+                        :book-to-buy="bookToBuy"/>
                     </tr>
                 </tbody>
             </table>
         </div>
-    </div>
+    </div> -->
     <!-- <RouterLink class="form-label sure" to="/welcome" @click.prevent="storeInfo">确定</RouterLink >
     <div>
       <RouterView></RouterView>
@@ -188,21 +197,29 @@
 
 <style>
     @import '@/assets/form-style.css';
-
+/* 
     #circle {
         position: absolute;
         width: 20%;
         height: 50%;
         top: 20%;
         left: 10%;
+    } */
+    .allTickets {
+        position: relative;
+        top: 0%;
+        width: 100%;
+        height: 90%;
+        overflow-y: scroll;
+        scrollbar-width: none;
     }
 
     #tableOuter {
         position: absolute;
-        width: 120%;
+        width: 300%;
         height: 76%;
         top: 3%;
-        left: 15%;
+        left: 0%;
         align-items: center;
         
         border: 5px solid rgb(157, 5, 5);
@@ -212,23 +229,10 @@
     #inputTable {
         width: 170%;
         overflow-x: scroll;
-    }
+    } 
 
-    .ticket {
-        color: black;
-        text-align: center;
-        padding-right: 1%;
-    }
 
-    .ticketButton {
-        width: 40%;
-        border: transparent;
-        border-radius: 5px;
-        opacity: 0.8;
-        margin-left: 10%;
-        /* box-shadow: 1px 2px 3px gray; */
-    }
-    /* #tableOuter {
+    #tableOuter {
         height: 600px;
         overflow-y: scroll;
         overflow-x: scroll;
@@ -246,5 +250,5 @@
     .button {
         width: 100%;
         height: 40px;
-    } */
+    }
 </style>

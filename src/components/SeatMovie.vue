@@ -23,7 +23,7 @@
         const chosenShowTimeIndex = chosenMovie.value.showtimes.findIndex(t => chosenMovieShowTime.value.id === t.id)
 
         // console.log("in seatmovie")
-        // console.log(chosenMovie.value.showtimes)
+        // console.log(chosenMovie.value.poster)
         // console.log(chosenShowTimeIndex)
         userStore.movie = {
             name: chosenMovie.value.name,
@@ -31,11 +31,12 @@
             allTickets: movieStore.movieCollection.findMovieById(chosenMovie.value.id).showtimes[chosenShowTimeIndex].tickets,
             startTime: chosenMovieShowTime.value.formattedTime,
             movieId: chosenMovie.value.id,
-            showtimeId: chosenMovieShowTime.value.id
+            showtimeId: chosenMovieShowTime.value.id,
+            imageURL: chosenMovie.value.poster
         }
         userStore.allTickets = userStore.movie.allTickets
         // console.log("on load userStore movie", chosenMovie.value.showtimes[chosenShowTimeIndex].tickets)
-        // console.log("on load userStore alltickets", userStore.allTickets)
+        console.log("on load userStore.movie", userStore.movie)
     })
 
 </script>

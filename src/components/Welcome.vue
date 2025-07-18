@@ -36,6 +36,7 @@
  
         isProcessing.value = true
 
+        // console.log("movie url", userStore.movie.imageURL)
         // 把人员加入总票夹
         if (userStore.isGroup){
             for(let p of userStore.groupMember){
@@ -44,16 +45,17 @@
                 p.showtimeId = userStore.movie.showtimeId
                 p.moviename = userStore.movie.name
                 p.startTime = userStore.movie.startTime
+                p.imageURL = userStore.movie.imageURL
             }
             userStore.allTickets = [...userStore.allTickets,...userStore.groupMember]
         } else {
             // console.log("IN!")
-            // console.log(userStore.allTickets)
             userStore.singleMember.isBooking = userStore.isBooking
             userStore.singleMember.movieId = userStore.movie.movieId
             userStore.singleMember.showtimeId = userStore.movie.showtimeId
             userStore.singleMember.moviename = userStore.movie.name
             userStore.singleMember.startTime = userStore.movie.startTime
+            userStore.singleMember.imageURL = userStore.movie.imageURL
             userStore.allTickets.push(userStore.singleMember)
         }
         // console.log(userStore.isGroup)

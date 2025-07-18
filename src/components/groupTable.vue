@@ -151,7 +151,7 @@
         background-color: brown;
         /* margin-left: 25%; */
         top: 40%;
-        left: 20%;
+        left: 10%;
         border-radius: 200px;
         border-color: transparent;
         box-shadow: 10px 10px 10px black;
