@@ -84,9 +84,9 @@
   
 <style scoped>
     .movies-container {
-        position: relative;
+        position: fixed;
         left: 1.3%;
-        top: 33%;
+        top: 25%;
         padding: 80px;
 
         width: 95%;
