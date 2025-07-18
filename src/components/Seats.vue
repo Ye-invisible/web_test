@@ -397,7 +397,7 @@
 
         // 计算缩放比例，基于seatWidth
         const scale = seatWidth / 34 // 原始宽度是34
-        const seatHeight = 28 * scale // 原始高度是28
+        const seatHeight = 28 * scale  // 原始高度是28
         
         // 绘制单个座位
         const seat = new Path2D();
@@ -550,11 +550,20 @@
         //     return
         // }
         const rect = seats.value.getBoundingClientRect()
-        const mouseX = e.clientX - rect.left
-        const mouseY = e.clientY - rect.top
-        
+        // console.log("rect.left",rect.left,"rect.top",rect.top)
+         // 考虑canvas的缩放比例
+        const scaleX = seats.value.width / rect.width
+        const scaleY = seats.value.height / rect.height
+         // 计算正确的鼠标坐标（考虑缩放和偏移）
+        const mouseX = (e.clientX - rect.left) * scaleX
+        const mouseY = (e.clientY - rect.top) * scaleY
+        // const mouseX = e.clientX - rect.left
+        // const mouseY = e.clientY - rect.top
+        // console.log("e.clientX", e.clientX)
+        // console.log("e.clientY", e.clientY)
         // 检查是否按下了Ctrl键
         const isCtrlPressed = e.ctrlKey
+        // const scale = seatWidth / 34 * // 计算缩放比例
         const scale = seatWidth / 34 // 计算缩放比例
 
         for (let seat of seatList.value) {
@@ -568,6 +577,8 @@
                 localY >= -14 * scale && localY <= 14 * scale
             ) {
                 // 检查选取的座位是否已经被购买
+                console.log("click")
+                console.log("dx:",dx,"dy:",dy)
                 for(let member of userStore.allTickets){
                     if(member.seat.row == seat.row && member.seat.col == seat.col){
                         alert("不能选取已经售出的座位!")
@@ -782,7 +793,7 @@
       background-color: transparent;
       position: absolute;
       top: -5%;
-      left: -9%;
+      left: -6%;
     }
 
     #buttons {
