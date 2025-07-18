@@ -1,8 +1,8 @@
 <script setup>
     import { ref, onMounted } from 'vue';
-    import 'bootstrap/dist/css/bootstrap.min.css';
-    import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-    import LoginModal from '@/components/LoginModal.vue';
+    // import 'bootstrap/dist/css/bootstrap.min.css';
+    // import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+    // import LoginModal from '@/components/LoginModal.vue';
 
 </script>
 
@@ -33,7 +33,7 @@
             <img src="../assets/images/dog3.jpg" class="userHead" data-bs-toggle="modal" data-bs-target="#LoginModal"/>
         </div>
     </nav>
-    <LoginModal />
+    
 </template>
 
 <style>

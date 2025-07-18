@@ -8,8 +8,12 @@
     import { onMounted, ref } from 'vue'
     import { useRouter } from 'vue-router'
     import { useUserStore } from './stores/user'; 
-    import { useMovieStore } from './stores/movies';  
-
+    import { useMovieStore } from './stores/movies';     
+    
+    import 'bootstrap/dist/css/bootstrap.min.css';
+    import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+    import LoginModal from '@/components/LoginModal.vue';
+    
     const router = useRouter()
     const userStore = useUserStore()
     const movieStore = useMovieStore();
@@ -26,7 +30,6 @@
         const scaleHeight = userStore.screenHeight / userStore.originScreenHeight
         userStore.scale = Math.min(scaleWidth, scaleHeight)
 
-        // 应用缩放
         const appContainer = document.getElementById('all')
         if (appContainer) {
             appContainer.style.transform = `scale(${userStore.scale})`
@@ -39,9 +42,9 @@
 
 
         const navEntries = performance.getEntriesByType('navigation')
-            if (navEntries.length > 0 && navEntries[0].type === 'reload') {
-                router.replace('/buy/single')
-            }
+        if (navEntries.length > 0 && navEntries[0].type === 'reload') {
+            router.replace('/buy/single')
+        }
     
         router.push('/films')
         console.log("transform")
@@ -68,12 +71,13 @@
         <!-- <div id="buy"></div>
         <footer id="footer"></footer> -->
     </div>
+    <LoginModal/>
 </template>
 
 <style>
-    #all {
+    /* #all {
         transform-origin: top left;
-    }
+    } */
 
     /* #buttons {
         position: fixed;
@@ -100,10 +104,8 @@
         z-index:4;
     }
 
-    /* #seats {
-        width: 50%;
-        height: 50%;
-        /* z-index: 4; */
-
-        /* border: 1px solid white; */ 
+    /* #modal {
+        position: fixed;
+        top: 30%;
+    }  */
 </style>

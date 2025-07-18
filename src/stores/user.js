@@ -3,6 +3,8 @@ import { defineStore } from 'pinia'
 export const useUserStore = defineStore('user', {
   state: () => ({
     // 专门用来实现用户选了座没买就返回主界面
+    hasLogin: false,
+    username: "",
     scale: -1,
     halfQuit: false,
     // singleHasChoose: false,
