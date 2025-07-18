@@ -1,3 +1,6 @@
+<script setup>
+</script>
+
 <template>
     <div class="avatar-frame">
         <img src="../assets/images/dog2.jpg" alt="Avatar" class="avatar-image" />
@@ -26,4 +29,6 @@
     height: auto; /* Maintain aspect ratio */
     border-radius: 50%; /* Ensure the image is also circular */
 }
+
+
 </style>

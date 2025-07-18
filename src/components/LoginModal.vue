@@ -37,8 +37,7 @@ const Login = async () => {
     warning.value = "密码不正确!"
   } else {
     warning.value = "登录成功"
-    userStore.hasLogin = true
-    userStore.username = username.value
+    StoreLoginStatus()
   }
 }
 
@@ -55,11 +54,17 @@ const Register = async () => {
 
   if(result) {
     warning.value = "注册成功!"
-    userStore.hasLogin = true
-    userStore.username = username.value
+    StoreLoginStatus()
   } else {
     warning.value = "该用户已经注册!请直接登录!"
   }
+}
+
+const StoreLoginStatus = () => {
+  userStore.hasLogin = true
+  userStore.username = username.value
+  sessionStorage.setItem("login", JSON.stringify(true))
+  sessionStorage.setItem("username", JSON.stringify(username.value))
 }
 
 const checkInput = () => {

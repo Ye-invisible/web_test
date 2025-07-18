@@ -63,3 +63,10 @@ body {
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'ZCOOL'; 
+  src: url('../assets/fonts/ZCOOLKuaiLe-Regular.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}

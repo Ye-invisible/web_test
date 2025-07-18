@@ -52,6 +52,10 @@
         if (movieStore.allMovies.length === 0) {
             await movieStore.fetchMovies();
         }
+
+        //检测登录状态
+        userStore.hasLogin = JSON.parse(sessionStorage.getItem("login"))
+        userStore.username = JSON.parse(sessionStorage.getItem("username"))
     })
 </script>
 
