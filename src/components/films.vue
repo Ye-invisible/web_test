@@ -86,11 +86,10 @@
     .movies-container {
         position: relative;
         left: 1.3%;
-        top: 17%;
+        top: 33%;
         padding: 80px;
 
         width: 95%;
-        height: 1%;
         /* margin: 0; */
         background: linear-gradient(135deg, #0f1013 0%, #740d2d 100%);
         min-height: 100vh;   /* 保证至少填满整个屏幕高度 */
@@ -100,7 +99,7 @@
     .filter-tabs {
         position: absolute;
         top: 2%;
-        left: 35%;
+        left: 37%;
         display: flex;
         justify-content: center;
         gap: 10px;
@@ -136,6 +135,7 @@
         max-height: 70vh; 
         overflow-y: auto; 
         scrollbar-width: none;
+        padding-bottom: 12%;
     }
 
     .movie-card {
