@@ -1,0 +1,254 @@
+<script setup>
+    import { useUserStore } from '@/stores/user';
+    import { onMounted, onUnmounted, ref } from 'vue';
+    import 'bootstrap/dist/css/bootstrap.min.css';
+    import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+    import Circle from './User.vue';
+    import { useMovieStore } from '@/stores/movies';
+    import Ticket from './Ticket.vue';
+
+    const userStore = useUserStore()
+    const movieStore = useMovieStore()
+    const allMovieTickets = ref([])
+
+    let timer = null;
+
+    // 格式化时间的函数
+    const formatTime = (date) => {
+        // if (!date || !(date instanceof Date)) {
+        //     return '未设置'
+        // }
+        console.log(date)
+        // const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const day = String(date.getDate()).padStart(2, '0')
+        const hours = String(date.getHours()).padStart(2, '0')
+        const minutes = String(date.getMinutes()).padStart(2, '0')
+        
+        return `${month}-${day} ${hours}:${minutes}`
+    }
+
+    const cancelBuyOrBook = (item,flag) => {
+        // flag 为 false 代表不是预定票
+        // 从 allTickets 数组中删除指定的票务项目
+        // const index = userStore.allTickets.findIndex(ticket => 
+        //     ticket.name === item.name && 
+        //     ticket.seat.row === item.seat.row && 
+        //     ticket.seat.col === item.seat.col
+        // )
+        console.log("item", item)
+        // userStore.allTickets.splice(index, 1)
+        let movie = movieStore.movieCollection.movies.find(movie => movie.id === item.movieId)
+        let movieIndex = movieStore.movieCollection.movies.findIndex(movie => movie.id === item.movieId)
+        // console.log("find movie", movie)
+        let showtimeIndex = movie.showtimes.findIndex(showtime => showtime.id === item.showtimeId)
+        // console.log("showtimeId", item.showtimeId)
+        let ticketIndex = movie.showtimes[showtimeIndex].tickets.findIndex(tic => {
+            if(tic.seat.col === item.seat.col && tic.seat.row === item.seat.row) return true
+            return false
+        })
+
+        const newShowtimes = [...movie.showtimes]
+        // console.log("newShowtimes", newShowtimes)
+        // console.log("ticketIndex", ticketIndex)
+        // console.log("splice",newShowtimes[showtimeIndex].tickets.splice(ticketIndex,1))
+        const newTickets = [...newShowtimes[showtimeIndex].tickets]
+        newTickets.splice(ticketIndex, 1)
+        newShowtimes[showtimeIndex] = {
+            ...newShowtimes[showtimeIndex],
+            tickets: newTickets
+        }
+
+        movieStore.movieCollection.movies[movieIndex] = {
+            ...movie,
+            showtimes : newShowtimes
+        }
+
+        getAllTickets()
+
+        if(!flag) alert("退款成功！")
+        else alert("取消预定成功!")
+    }
+
+    const deleteOverTime = () => {
+        // userStore.isCleanupOperation = true
+        // 定时的删除超时未支付的票
+        const currentDate = new Date()
+        // console.log("current Time")
+        // console.log(currentDate)
+        const startTime = userStore.movie.startTime
+        // console.log("start Time")
+        // console.log(startTime)
+        // console.log(currentDate > startTime)
+
+        // console.log(userStore.allTickets)
+        // 过滤掉过期的预订票
+        userStore.allTickets = userStore.allTickets.filter(p => {
+            if (p.isBooking && currentDate > startTime) {
+                // 如果预订票过期，返回 false（不保留）               
+                return false
+            }
+            return true // 保留其他票
+        })
+        // userStore.isCleanupOperation = false
+        // console.log(userStore.allTickets)
+    }
+
+    function bookToBuy(item) {
+        // const index = userStore.allTickets.findIndex(ticket => 
+        //     ticket.name === item.name && 
+        //     ticket.seat.row === item.seat.row && 
+        //     ticket.seat.col === item.seat.col
+        // )
+        
+        // userStore.allTickets[index].isBooking = false
+        // 首先找到电影
+        let movie = movieStore.movieCollection.movies.find(movie => movie.id === item.movieId)
+        let showtime = movie.showtimes.find(showtime => showtime.id === item.showtimeId)
+        let ticket = showtime.tickets.find(tic => {
+            if(tic.seat.col === item.seat.col && tic.seat.row === item.seat.row) return true
+            return false
+        })
+        ticket.isBooking = false
+
+        alert("付款成功!")
+        getAllTickets()
+    }
+
+    onMounted(() => {
+        // console.log("In timer")
+        userStore.isBuying = false
+        timer = setInterval(deleteOverTime,1000)
+
+        getAllTickets()
+    })
+
+    const getAllTickets = () => {
+        allMovieTickets.value = []
+        let allmovies = movieStore.movieCollection.movies
+        for(let movie of movieStore.movieCollection.movies){
+            for(let showtime of movie.showtimes){
+                allMovieTickets.value = [...allMovieTickets.value, ...showtime.tickets]
+            }  
+        }
+        // console.log("allMovieTickets", allMovieTickets.value)
+    }
+
+    onUnmounted(() => {
+        userStore.isBuying = true
+        clearInterval(timer)
+    })
+</script>
+
+<template>
+    <div class="allTickets">
+        <ul>
+            <li v-for="(item, index) in allMovieTickets" :key="index">
+                <Ticket 
+                :item="item"
+                :cancel-buy-or-book="cancelBuyOrBook"
+                :book-to-buy="bookToBuy"/>
+            </li> 
+        </ul>
+    </div>
+    
+    
+    <!-- <div id="tickets">
+        <Circle id="circle"></Circle>
+        <div id="tableOuter">
+            <table id="inputTable" class="table table-striped">
+                <thead id="tableHead">
+                    <tr>
+                        <th>电影海报</th>
+                        <th>姓名</th>                 
+                        <th>电影</th>
+                        <th>上映时间</th>
+                        <th>座位号</th>
+                        <th>退票/取消预定</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr v-for="(item, index) in userStore.allTickets" :key="index" class="form-group">
+                        <td class="ticket">{{ item.name }}</td>
+                        <td class="ticket">{{ userStore.movie.name }}</td>
+                        <td class="ticket">{{ userStore.movie.startTime }}</td>
+                        <td class="ticket">{{ item.seat.row + '-' + item.seat.col }}</td>
+                        <td class="ticket">
+                            <button class="ticketButton" v-if="item.isBooking" @click="cancelBuyOrBook(item,true)">取消预定</button>
+                            <button class="ticketButton" v-else @click="cancelBuyOrBook(item,false)">退票</button>
+                            <button class="ticketButton" v-show="item.isBooking" @click="bookToBuy(item)">付款</button>
+                        </td>
+                    </tr>
+                    <tr v-for="(item, index) in allMovieTickets" :key="index" class="form-group">
+                        <Ticket 
+                        :item="item"
+                        :cancel-buy-or-book="cancelBuyOrBook"
+                        :book-to-buy="bookToBuy"/>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div> -->
+    <!-- <RouterLink class="form-label sure" to="/welcome" @click.prevent="storeInfo">确定</RouterLink >
+    <div>
+      <RouterView></RouterView>
+    </div>  -->
+</template>
+
+<style>
+    @import '@/assets/form-style.css';
+/* 
+    #circle {
+        position: absolute;
+        width: 20%;
+        height: 50%;
+        top: 20%;
+        left: 10%;
+    } */
+    .allTickets {
+        position: relative;
+        top: 0%;
+        width: 100%;
+        height: 90%;
+        overflow-y: scroll;
+        scrollbar-width: none;
+    }
+
+    #tableOuter {
+        position: absolute;
+        width: 300%;
+        height: 76%;
+        top: 3%;
+        left: 0%;
+        align-items: center;
+        
+        border: 5px solid rgb(157, 5, 5);
+        
+    }
+
+    #inputTable {
+        width: 170%;
+        overflow-x: scroll;
+    } 
+
+
+    #tableOuter {
+        height: 600px;
+        overflow-y: scroll;
+        overflow-x: scroll;
+        text-align: center;
+    }
+
+    #inputTable {
+        margin: auto;
+    }
+
+    #tableHead {
+        color: black;
+    }
+
+    .button {
+        width: 100%;
+        height: 40px;
+    }
+</style>

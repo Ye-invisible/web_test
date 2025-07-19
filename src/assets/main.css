@@ -1,0 +1,72 @@
+@import './base.css';
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: rgb(10, 10, 10);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    place-items: center;
+  }
+
+  #app {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+  }
+}
+
+body {
+  /* background-image: url(./images/background.jpg); */
+  background-color: rgb(108, 106, 106);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 1;
+}
+
+@font-face {
+  font-family: 'Roboto'; 
+  src: url('../assets/fonts/Roboto_Condensed-Black.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Regular'; 
+  src: url('../assets/fonts/ZhiMangXing-Regular.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Double'; 
+  src: url('../assets/fonts/BitcountGridDouble.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ZCOOL'; 
+  src: url('../assets/fonts/ZCOOLKuaiLe-Regular.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
