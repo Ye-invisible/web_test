@@ -1,5 +1,5 @@
 <script setup>
-    import { defineProps } from 'vue';
+    import { defineProps,computed } from 'vue';
     import { useRouter } from 'vue-router';
 
     const SHOWSIZE = ["小型放映厅","中型放映厅","大型放映厅"]
@@ -8,10 +8,15 @@
     const props = defineProps({
       movie: Object
     });
-
+    const isUpcoming = computed(() => {
+      return props.movie.category === '即将上映';
+    });
     const selectMovieShowtime = (movie, showtime) => {
       // alert(`选择场次: ${movie.name} - ${formatTime(showtime.startTime)} @ ${showtime.hall}`)
-
+      if (isUpcoming.value) {
+        alert(`电影未上映，预计上映时间为 ${movie.releaseDate}`);
+        return;
+      }
       localStorage.setItem("chosenMovie", JSON.stringify(movie))
       localStorage.setItem("chosenMovieShowTime", JSON.stringify(showtime))
       // console.log(movie)

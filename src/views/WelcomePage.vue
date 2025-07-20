@@ -118,7 +118,7 @@ export default {
     },
     
     navigate() {
-      this.$router.push('/seats'); 
+      this.$router.push('/films'); 
     },
     
     processMovieData(movies) {
