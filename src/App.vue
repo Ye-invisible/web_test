@@ -52,7 +52,8 @@
 
         const navEntries = performance.getEntriesByType('navigation')
         if (navEntries.length > 0 && navEntries[0].type === 'reload') {
-            router.replace('/buy/single')
+            // router.replace('/buy/single')
+            router.replace('/')
         }
     
         // router.push('/films')
@@ -69,8 +70,9 @@
 </script>
 
 <template>
-  <div v-if="$route.path !== '/'" id="all">
-    <header id="header">
+  <!-- <div v-if="$route.path !== '/'" id="all"> -->
+  <div id="all">
+    <header id="header" v-if="$route.path !== '/'">
       <Header></Header>
     </header>
     <div id="content">
@@ -78,7 +80,7 @@
     </div>
   </div>
   
-  <RouterView v-else />
+  <!-- <RouterView v-else /> -->
   
   <LoginModal/>
 </template>
