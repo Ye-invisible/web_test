@@ -220,8 +220,8 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   background: linear-gradient(135deg, #1a0000 0%, #3a0000 50%, #1a0000 100%);
   display: flex;

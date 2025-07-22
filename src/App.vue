@@ -71,8 +71,8 @@
 
 <template>
   <!-- <div v-if="$route.path !== '/'" id="all"> -->
-  <div id="all" v-if="$route.path !== '/'">
-    <header id="header">
+  <div id="all">
+    <header id="header" v-if="$route.path !== '/'">
       <Header></Header>
     </header>
     <div id="content">
@@ -81,9 +81,6 @@
   </div>
   
   <!-- <RouterView v-else /> -->
-  <div v-else>
-      <RouterView></RouterView>
-  </div>
   
   <LoginModal/>
 </template>
