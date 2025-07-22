@@ -21,14 +21,14 @@
 
     onMounted(async () => {
     if (router.currentRoute.value.path !== '/') {
-    const appContainer = document.getElementById('all')
-    if (appContainer) {
-      appContainer.style.transform = `scale(${userStore.scale})`
-      appContainer.style.transformOrigin = 'top left'
-      appContainer.style.width = `${100/userStore.scale}%`
-      appContainer.style.height = `${100/userStore.scale}%`
+      const appContainer = document.getElementById('all')
+      if (appContainer) {
+        appContainer.style.transform = `scale(${userStore.scale})`
+        appContainer.style.transformOrigin = 'top left'
+        appContainer.style.width = `${100/userStore.scale}%`
+        appContainer.style.height = `${100/userStore.scale}%`
+      }
     }
-  }
         userStore.screenHeight = window.innerHeight
         userStore.screenWidth = window.innerWidth
 
@@ -71,16 +71,19 @@
 
 <template>
   <!-- <div v-if="$route.path !== '/'" id="all"> -->
-  <div id="all">
-    <header id="header" v-if="$route.path !== '/'">
+  <div id="all" v-if="$route.path !== '/'">
+    <header id="header">
       <Header></Header>
     </header>
     <div id="content">
       <RouterView></RouterView>
-    </div>
+    </div>   
   </div>
   
   <!-- <RouterView v-else /> -->
+  <div v-else>
+      <RouterView></RouterView>
+  </div>
   
   <LoginModal/>
 </template>
