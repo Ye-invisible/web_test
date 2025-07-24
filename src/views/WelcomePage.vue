@@ -217,7 +217,7 @@ export default {
 
 /* 基础布局 */
 .welcome-container {
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
@@ -294,6 +294,7 @@ export default {
 /* ============== 电影轮播区关键修复 ============== */
 .movie-carousel {
   position: relative;
+  margin-top: 5%;
   height: 50vh; /* 减小高度 */
   width: 100%;
   overflow: visible; /* 允许海报超出容器 */

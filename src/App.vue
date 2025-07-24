@@ -72,7 +72,8 @@
 <template>
   <!-- <div v-if="$route.path !== '/'" id="all"> -->
   <div id="all">
-    <header id="header" v-if="$route.path !== '/'">
+    <header id="header"> 
+      <!-- v-if="$route.path !== '/'"> -->
       <Header></Header>
     </header>
     <div id="content">

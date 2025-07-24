@@ -19,13 +19,13 @@
                     <!-- <li class="nav-item tab">
                         <RouterLink class="nav-link" aria-current="page" to="/app">Home</RouterLink>
                     </li> -->
-                    <li class="nav-item tab">
+                    <li class="nav-item tab tab">
                         <RouterLink class="nav-link" aria-current="page" to="/films">movie</RouterLink>
                     </li>                    
-                    <li class="nav-item tab">
+                    <li class="nav-item tab tab">
                         <RouterLink class="nav-link" aria-current="page" to="/seats">seats</RouterLink>
                     </li>
-                    <li class="nav-item tab">
+                    <li class="nav-item tab tab">
                         <RouterLink class="nav-link" aria-current="page" to="/tickets">ticketList</RouterLink>
                     </li>      
                 </ul>
@@ -60,7 +60,11 @@
     }
 
     #container {
+        margin-left: 2%;
         background-color: transparent;
+        display: flex;
+        align-items: center;
+        height: 70%;
         /* z-index: 0; */
     }
 
@@ -85,6 +89,13 @@
         height: 60px;
         margin-left: -15px;
         margin-right: 20px;
+    }
+    #navbarNav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top:8%;
+        margin-left: -10%;
     }
 
     .nav-link:focus {

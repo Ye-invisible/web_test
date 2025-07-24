@@ -9,8 +9,8 @@ export const hallType = {
 const genres = ['正在热映', '即将上映', '经典电影', '其他'];
 // 定义 Movie 类
 export class Movie {
-    constructor(id, name, poster, genre, rating, releaseDate,version) {
-        this.id = id; 
+    constructor(id, name, poster, genre, rating, releaseDate, version) {
+        this.id = id;
         this.name = name;
         this.poster = poster;
         this.genre = genre;
@@ -24,11 +24,44 @@ export class Movie {
         // this.tickets = [];   // 已售座位
         this.category = '正在热映'; // 默认分类
     }
+    // 在组件的 methods 中定义转换函数
+    // 修复日期转换函数（添加完整验证）
+    convertToDate(dateStr) {
+        // 1. 提取月和日（正则匹配“数字月数字日”）
+        const match = dateStr.match(/(\d+)月(\d+)日/);
+        if (!match) {
+            if (dateStr.match(/待定/)) { this.category = '即将上映'; }
+            return null; // 解析失败返回 null
+        }
+        const month = parseInt(match[1], 10); // 提取“月”（如 8）
+        const day = parseInt(match[2], 10);   // 提取“日”（如 8）
+        if(month>=9 ){
+            this.category = '经典电影'; // 如果月份小于5，设置为即将上映
+        }
+        // 2. 补充年份（默认使用当前年份）
+        const year = new Date().getFullYear(); // 如 2024
 
-    randomCreateshowtimes() {  
+        // 3. 生成 Date 对象（注意：月份在 Date 中是 0 开始，需减 1）
+        const date = new Date(year, month - 1, day);
+        date.setHours(9, 0, 0, 0);
+       
+
+        return date; // 返回 valid 的 Date 对象
+    }
+    randomCreateshowtimes() {
+        const releaseDate = this.convertToDate(this.releaseDate);
+        if(!releaseDate) {return }
+        console.log("releaseDate:", releaseDate);
+        
         const startTime = new Date();
+        if(releaseDate < startTime) {
+            releaseDate=startTime
+            const minutes = now.getMinutes();
+            const roundedMinutes = Math.ceil(minutes / 30) * 30;
+            releaseDate.setTime(now.getTime() + (roundedMinutes - minutes) * 60 * 1000);
+        }
         for (let i = 0; i < 3; i++) {
-            const time = new Date(startTime.getTime() + i * 2 * 60 * 60 * 1000); // 每隔2小时
+            const time = new Date(releaseDate.getTime() + i * 2 * 60 * 60 * 1000); // 每隔2小时
             var t = Math.floor(Math.random() * 6)
             const hall = hallType[t]; // 循环使用不同的厅
             const showSize = t % 3; // 随机放映规模
@@ -36,9 +69,48 @@ export class Movie {
         }
     }
 
-    randomCreatecategory(){
-        var t=Math.floor(Math.random() * 4);
-        switch(t){
+    // 修复场次生成函数（正确处理日期计算）
+    // randomCreateShowtimes() {
+    //     // 1. 先将上映日期转换为 Date 对象
+    //     const releaseDate = this.convertToDate(this.releaseDate);
+    //     if (!releaseDate) {
+    //         console.error("无法生成场次：上映日期无效");
+    //         return;
+    //     }
+    //     console.log("releaseDate:", releaseDate);
+    //     // // 2. 设置场次的起始时间（例如：上映日的 9:00 开始）
+    //     const baseTime = new Date(releaseDate);
+    //     baseTime.setHours(9, 0, 0, 0); // 设定当天最早场次时间
+    //     const now = new Date();
+    //     if (baseTime < now) {
+    //         this.category = '正在热映'; 
+    //         const minutes = now.getMinutes();
+    //         const roundedMinutes = Math.ceil(minutes / 30) * 30; // 向上取整到最近的30分钟
+    //         baseTime.setTime(now.getTime() + (roundedMinutes - minutes) * 60 * 1000);
+    //     }
+
+    //     // 3. 生成3个场次，每隔2小时一场
+    //     for (let i = 0; i < 3; i++) {
+    //         // 正确的日期计算：使用 getTime() 获取时间戳后相加
+    //         const time = new Date(baseTime.getTime() + i * 2 * 60 * 60 * 1000);
+
+    //         // 调试输出：格式化显示时间（便于查看）
+    //         console.log(`场次 ${i + 1} 时间: ${time.toLocaleString()}`);
+
+    //         // 随机选择影厅（假设 hallType 是已定义的影厅类型数组）
+    //         const t = Math.floor(Math.random() * hallType.length);
+    //         const hall = hallType[t];
+    //         const showSize = t % 3;
+
+    //         // 添加场次
+    //         this.addShowtime(time, hall, showSize);
+    //     }
+    // }
+
+
+    randomCreatecategory() {
+        var t = Math.floor(Math.random() * 4);
+        switch (t) {
             case 0:
                 this.category = '正在热映';
                 break;
@@ -113,11 +185,12 @@ export class MovieCollection {
                 movie.version || '普通版',
                 // movie.star ? movie.star.split(' / ') : []
             );
+            // newMovie.randomCreatecategory();
+
             newMovie.randomCreateshowtimes();
-            newMovie.randomCreatecategory();
             return newMovie
         });
-        
+
         this.movies.push(...parsedMovies);
         return parsedMovies;
     }
@@ -125,8 +198,8 @@ export class MovieCollection {
     filterRepitiveMovie(movieList) {
         // 防止添加重复的电影
         let newMovieList = []
-        for(let movie of movieList){
-            if(this.movies.every(mo => mo.name !== movie.name)){
+        for (let movie of movieList) {
+            if (this.movies.every(mo => mo.name !== movie.name)) {
                 newMovieList.push(movie)
             }
         }
