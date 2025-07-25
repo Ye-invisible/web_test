@@ -78,9 +78,9 @@
 
     #imageBox {
         position: absolute;
-        width: 50%;
+        width: 45%;
         margin-top: 6%;
-        margin-left: 2%;
+        margin-left: 5%;
         display: inline-block;
 
         /* border: 1px solid white; */

@@ -793,7 +793,7 @@
       background-color: transparent;
       position: absolute;
       top: -5%;
-      left: -6%;
+      left: 0%;
     }
 
     #buttons {
